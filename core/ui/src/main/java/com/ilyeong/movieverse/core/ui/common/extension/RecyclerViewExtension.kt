@@ -1,7 +1,7 @@
-package com.ilyeong.movieverse.presentation.util
+package com.ilyeong.movieverse.core.ui.common.extension
 
 import androidx.recyclerview.widget.RecyclerView
-import com.ilyeong.movieverse.R
+import com.ilyeong.movieverse.core.ui.R
 
 fun RecyclerView.calculateSpanCount(
     margin: Int = resources.getDimensionPixelSize(R.dimen.movieverse_padding_large) * 2

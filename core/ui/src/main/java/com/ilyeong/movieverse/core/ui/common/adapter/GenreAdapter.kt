@@ -1,11 +1,11 @@
-package com.ilyeong.movieverse.presentation.common.adapter
+package com.ilyeong.movieverse.core.ui.common.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.ilyeong.movieverse.domain.model.Genre
-import com.ilyeong.movieverse.presentation.common.viewholder.GenreViewHolder
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
+import com.ilyeong.movieverse.core.model.Genre
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.core.ui.common.viewholder.GenreViewHolder
 
 class GenreAdapter(
     private val itemClickListener: ItemClickListener? = null,

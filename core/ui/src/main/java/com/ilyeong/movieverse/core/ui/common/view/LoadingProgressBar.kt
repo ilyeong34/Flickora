@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.common.view
+package com.ilyeong.movieverse.core.ui.common.view
 
 import android.content.Context
 import android.util.AttributeSet

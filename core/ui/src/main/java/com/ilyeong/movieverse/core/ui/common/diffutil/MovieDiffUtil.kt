@@ -1,7 +1,7 @@
-package com.ilyeong.movieverse.presentation.util
+package com.ilyeong.movieverse.core.ui.common.diffutil
 
+import com.ilyeong.movieverse.core.model.Movie
 import androidx.recyclerview.widget.DiffUtil
-import com.ilyeong.movieverse.domain.model.Movie
 
 object MovieDiffUtil : DiffUtil.ItemCallback<Movie>() {
     override fun areItemsTheSame(

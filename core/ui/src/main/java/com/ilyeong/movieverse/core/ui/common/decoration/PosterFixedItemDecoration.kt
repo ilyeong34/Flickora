@@ -1,10 +1,10 @@
-package com.ilyeong.movieverse.presentation.util
+package com.ilyeong.movieverse.core.ui.common.decoration
 
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import com.ilyeong.movieverse.R
+import com.ilyeong.movieverse.core.ui.R
 
 object PosterFixedItemDecoration : ItemDecoration() {
     override fun getItemOffsets(

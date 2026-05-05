@@ -1,13 +1,13 @@
-package com.ilyeong.movieverse.presentation.common.viewholder
+package com.ilyeong.movieverse.core.ui.common.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
-import com.ilyeong.movieverse.databinding.ItemMoviePosterFixedSizeBinding
-import com.ilyeong.movieverse.domain.model.Movie
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
+import com.ilyeong.movieverse.core.model.Movie
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.core.ui.databinding.ItemMoviePosterFixedSizeBinding
 
 class PosterFixedViewHolder private constructor(
     private val binding: ItemMoviePosterFixedSizeBinding

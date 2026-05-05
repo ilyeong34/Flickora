@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.common.fragment
+package com.ilyeong.movieverse.core.ui.common.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

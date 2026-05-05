@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.common.view
+package com.ilyeong.movieverse.core.ui.common.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import com.ilyeong.movieverse.R
+import com.ilyeong.movieverse.core.ui.R
 
 class ReviewRatingView @JvmOverloads constructor(
     context: Context,

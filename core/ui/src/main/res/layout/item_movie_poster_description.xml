@@ -30,7 +30,7 @@
             android:maxLines="1"
             tools:text="베놈 : 라스트댄스" />
 
-        <com.ilyeong.movieverse.presentation.common.view.ReviewRatingView
+        <com.ilyeong.movieverse.core.ui.common.view.ReviewRatingView
             android:id="@+id/rrv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -1,11 +1,11 @@
-package com.ilyeong.movieverse.presentation.common.viewholder
+package com.ilyeong.movieverse.core.ui.common.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ilyeong.movieverse.databinding.ItemMovieGenreChipBinding
-import com.ilyeong.movieverse.domain.model.Genre
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
+import com.ilyeong.movieverse.core.model.Genre
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.core.ui.databinding.ItemMovieGenreChipBinding
 
 class GenreViewHolder private constructor(
     private val binding: ItemMovieGenreChipBinding

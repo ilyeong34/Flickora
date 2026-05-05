@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.util
+package com.ilyeong.movieverse.core.ui.common.extension
 
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
