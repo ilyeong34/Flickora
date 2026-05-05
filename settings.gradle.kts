@@ -25,6 +25,7 @@ include(":app")
 
 include(":core:model")
 include(":core:ui")
+include(":core:network")
 include(":core:data:data-user")
 include(":core:data:data-movie")
 include(":core:data:data-oauth")
