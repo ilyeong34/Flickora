@@ -27,7 +27,7 @@ include(":core:model")
 include(":core:ui")
 include(":core:data:data-user")
 include(":core:data:data-movie")
-include(":core:data-oauth")
+include(":core:data:data-oauth")
 
 include(":feature:detail")
 include(":feature:genre")
