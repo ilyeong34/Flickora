@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.domain.model
+package com.ilyeong.movieverse.core.model
 
 data class AccountStates(
     val id: Int,

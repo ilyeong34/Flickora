@@ -1,6 +1,5 @@
 package com.ilyeong.movieverse.data.model
 
-import com.ilyeong.movieverse.domain.model.Collection
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
