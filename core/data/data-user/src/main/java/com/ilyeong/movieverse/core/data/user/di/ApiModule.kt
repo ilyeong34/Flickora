@@ -49,5 +49,8 @@ internal object ApiModule {
         movieverseNetwork: MovieverseNetwork,
         interceptors: Provider<Set<@JvmSuppressWildcards Interceptor>>
     ): UserApiService = movieverseNetwork
-        .create<UserApiService>(BuildConfig.TMDB_API_KEY, interceptors.get())
+        .create<UserApiService>(
+            "https://api.themoviedb.org/3/",
+            interceptors.get()
+        )
 }
