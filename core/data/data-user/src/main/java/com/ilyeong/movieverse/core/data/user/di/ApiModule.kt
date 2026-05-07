@@ -50,7 +50,7 @@ internal object ApiModule {
         interceptors: Provider<Set<@JvmSuppressWildcards Interceptor>>
     ): UserApiService = movieverseNetwork
         .create<UserApiService>(
-            "https://api.themoviedb.org/3/",
-            interceptors.get()
+            baseUrl = "https://api.themoviedb.org/3/",
+            interceptors = interceptors.get()
         )
 }
