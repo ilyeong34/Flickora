@@ -9,7 +9,7 @@
         android:name="com.ilyeong.movieverse.feature.detail.DetailFragment"
         android:label="@string/detail">
 
-        <deepLink app:uri="android-app://com.ilyeong.movieverse/detail_fragment" />
+        <deepLink app:uri="android-app://com.ilyeong.movieverse/detail_fragment/{movieId}" />
         <argument
             android:name="movieId"
             app:argType="integer" />
