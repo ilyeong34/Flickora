@@ -20,7 +20,7 @@ internal object ApiModule {
     @Provides
     @Singleton
     @IntoSet
-    fun provideBaseInterceptor(): Interceptor =
+    fun provideInterceptor(): Interceptor =
         Interceptor { chain ->
             val originalRequest = chain.request()
             val newRequest = originalRequest.newBuilder()
