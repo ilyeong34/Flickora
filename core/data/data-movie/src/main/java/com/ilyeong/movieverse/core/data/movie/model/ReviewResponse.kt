@@ -29,14 +29,21 @@ internal fun ReviewResponse.toDomain() = Review(
 )
 
 private fun parseUtcToLocal(dateString: String): String {
-    val utcFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).apply {
-        timeZone = TimeZone.getTimeZone("UTC") // UTC 기준으로 해석
+    val utcFormats = listOf(
+        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+    ).map { pattern ->
+        SimpleDateFormat(pattern, Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
     }
 
-    val date = utcFormat.parse(dateString) ?: return "????-??-??"
+    val date = utcFormats.firstNotNullOfOrNull { format ->
+        runCatching { format.parse(dateString) }.getOrNull()
+    } ?: return "????-??-??"
 
     val localFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).apply {
-        timeZone = TimeZone.getDefault() // 로컬 시간대로 변환
+        timeZone = TimeZone.getDefault()
     }
 
     return localFormat.format(date)
