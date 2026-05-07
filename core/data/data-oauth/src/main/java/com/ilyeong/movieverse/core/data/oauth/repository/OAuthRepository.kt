@@ -1,9 +1,9 @@
-package com.ilyeong.movieverse.data.repository
+package com.ilyeong.movieverse.core.data.oauth.repository
 
-import com.ilyeong.movieverse.domain.model.RequestToken
+import com.ilyeong.movieverse.core.model.RequestToken
 import kotlinx.coroutines.flow.Flow
 
-interface AuthRepository {
+interface OAuthRepository {
 
     fun createRequestToken(): Flow<RequestToken>
     fun createSessionId(requestToken: String): Flow<Unit>
