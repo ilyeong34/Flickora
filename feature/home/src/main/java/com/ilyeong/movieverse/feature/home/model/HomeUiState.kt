@@ -1,9 +1,9 @@
-package com.ilyeong.movieverse.presentation.home.model
+package com.ilyeong.movieverse.feature.home.model
 
-import com.ilyeong.movieverse.domain.model.Genre
-import com.ilyeong.movieverse.domain.model.Movie
+import com.ilyeong.movieverse.core.model.Genre
+import com.ilyeong.movieverse.core.model.Movie
 
-sealed interface HomeUiState {
+internal sealed interface HomeUiState {
     data object Loading : HomeUiState
 
     data class Success(
@@ -13,4 +13,3 @@ sealed interface HomeUiState {
 
     data object Failure : HomeUiState
 }
-

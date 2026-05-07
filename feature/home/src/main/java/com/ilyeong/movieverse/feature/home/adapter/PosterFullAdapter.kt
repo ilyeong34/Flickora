@@ -1,13 +1,13 @@
-package com.ilyeong.movieverse.presentation.home.adapter
+package com.ilyeong.movieverse.feature.home.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.ilyeong.movieverse.domain.model.Movie
-import com.ilyeong.movieverse.presentation.home.viewholder.PosterFullViewHolder
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
-import com.ilyeong.movieverse.presentation.util.MovieDiffUtil
+import com.ilyeong.movieverse.core.model.Movie
+import com.ilyeong.movieverse.core.ui.common.diffutil.MovieDiffUtil
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.feature.home.viewholder.PosterFullViewHolder
 
-class PosterFullAdapter(private val itemClickListener: ItemClickListener) :
+internal class PosterFullAdapter(private val itemClickListener: ItemClickListener) :
     ListAdapter<Movie, PosterFullViewHolder>(MovieDiffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,

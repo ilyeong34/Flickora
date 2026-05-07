@@ -1,31 +1,33 @@
-package com.ilyeong.movieverse.presentation.home
+package com.ilyeong.movieverse.feature.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.MarginPageTransformer
-import com.ilyeong.movieverse.R
-import com.ilyeong.movieverse.databinding.FragmentHomeBinding
-import com.ilyeong.movieverse.presentation.common.adapter.GenreAdapter
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.home.adapter.PosterFixedPagingAdapter
-import com.ilyeong.movieverse.presentation.home.adapter.PosterFullAdapter
-import com.ilyeong.movieverse.presentation.home.model.HomeUiState
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
-import com.ilyeong.movieverse.presentation.util.PosterFixedItemDecoration
+import com.ilyeong.movieverse.core.ui.R
+import com.ilyeong.movieverse.core.ui.common.adapter.GenreAdapter
+import com.ilyeong.movieverse.core.ui.common.decoration.PosterFixedItemDecoration
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.feature.home.adapter.PosterFixedPagingAdapter
+import com.ilyeong.movieverse.feature.home.adapter.PosterFullAdapter
+import com.ilyeong.movieverse.feature.home.databinding.FragmentHomeBinding
+import com.ilyeong.movieverse.feature.home.model.HomeUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+internal class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding =
         FragmentHomeBinding::inflate
@@ -33,13 +35,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel: HomeViewModel by viewModels()
 
     private val movieClickListener = ItemClickListener { movieId ->
-        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movieId)
-        findNavController().navigate(action)
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("android-app://com.ilyeong.movieverse/detail_fragment?movieId=${movieId}".toUri())
+
+        findNavController().navigate(request)
     }
 
     private val genreClickListener = ItemClickListener { genreId ->
-        val action = HomeFragmentDirections.actionHomeFragmentToGenreFragment(genreId)
-        findNavController().navigate(action)
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("android-app://com.ilyeong.movieverse/genre_fragment?genreId=${genreId}".toUri())
+
+        findNavController().navigate(request)
     }
 
     private val posterFullAdapter = PosterFullAdapter(movieClickListener)
@@ -67,8 +73,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setToolbarMenu() {
         binding.tb.setOnMenuItemClickListener { _ ->
-            val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
-            findNavController().navigate(action)
+            val request = NavDeepLinkRequest.Builder
+                .fromUri("android-app://com.ilyeong.movieverse/search_fragment".toUri())
+
+            findNavController().navigate(request)
             true
         }
     }

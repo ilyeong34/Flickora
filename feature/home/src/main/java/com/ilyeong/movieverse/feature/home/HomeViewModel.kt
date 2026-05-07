@@ -1,15 +1,14 @@
-package com.ilyeong.movieverse.presentation.home
+package com.ilyeong.movieverse.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.ilyeong.movieverse.data.repository.MovieRepository
-import com.ilyeong.movieverse.data.repository.UserRepository
-import com.ilyeong.movieverse.domain.model.TimeWindow
-import com.ilyeong.movieverse.presentation.home.model.HomeUiState
-import com.ilyeong.movieverse.presentation.home.model.HomeUiState.Failure
-import com.ilyeong.movieverse.presentation.home.model.HomeUiState.Loading
-import com.ilyeong.movieverse.presentation.home.model.HomeUiState.Success
+import com.ilyeong.movieverse.core.data.movie.repository.MovieRepository
+import com.ilyeong.movieverse.core.data.user.repository.UserRepository
+import com.ilyeong.movieverse.core.model.TimeWindow
+import com.ilyeong.movieverse.feature.home.model.HomeUiState
+import com.ilyeong.movieverse.feature.home.model.HomeUiState.Loading
+import com.ilyeong.movieverse.feature.home.model.HomeUiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +22,7 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+internal class HomeViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
     userRepository: UserRepository,
 ) : ViewModel() {
@@ -60,7 +59,7 @@ class HomeViewModel @Inject constructor(
                 delay(2000L)
             }
             .onEach { _uiState.value = Success(it.first, it.second) }
-            .catch { _uiState.value = Failure }
+            .catch { _uiState.value = HomeUiState.Failure }
             .launchIn(viewModelScope)
     }
 }

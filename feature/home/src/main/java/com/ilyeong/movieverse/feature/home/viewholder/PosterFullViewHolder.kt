@@ -1,15 +1,15 @@
-package com.ilyeong.movieverse.presentation.home.viewholder
+package com.ilyeong.movieverse.feature.home.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
-import com.ilyeong.movieverse.databinding.ItemMoviePosterFullSizeBinding
-import com.ilyeong.movieverse.domain.model.Movie
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
+import com.ilyeong.movieverse.core.model.Movie
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.feature.home.databinding.ItemMoviePosterFullSizeBinding
 
-class PosterFullViewHolder private constructor(
+internal class PosterFullViewHolder private constructor(
     private val binding: ItemMoviePosterFullSizeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
