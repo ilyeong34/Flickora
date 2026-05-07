@@ -20,7 +20,7 @@ import com.ilyeong.movieverse.feature.detail.model.DetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-internal class DetailFragment : BaseFragment<FragmentDetailBinding>() {
+class DetailFragment : BaseFragment<FragmentDetailBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding =
         FragmentDetailBinding::inflate
