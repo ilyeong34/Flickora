@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation
+package com.ilyeong.movieverse
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,8 @@ import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.ilyeong.movieverse.R
+import com.ilyeong.movieverse.core.ui.common.activity.BaseActivity
 import com.ilyeong.movieverse.databinding.ActivityMainBinding
-import com.ilyeong.movieverse.presentation.common.activity.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

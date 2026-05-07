@@ -56,6 +56,19 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
+    implementation(project(":core:model"))
+    implementation(project(":core:data:data-oauth"))
+    implementation(project(":core:data:data-user"))
+    implementation(project(":core:data:data-movie"))
+    
+    implementation(project(":feature:login"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:watchlist"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:detail"))
+    implementation(project(":feature:genre"))
+    implementation(project(":feature:search"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

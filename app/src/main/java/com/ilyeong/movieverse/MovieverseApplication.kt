@@ -1,4 +1,4 @@
-package com.ilyeong
+package com.ilyeong.movieverse
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
