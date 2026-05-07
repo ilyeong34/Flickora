@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil3.load
 import coil3.request.crossfade
+import coil3.request.error
 import com.ilyeong.movieverse.core.model.Cast
 import com.ilyeong.movieverse.core.ui.R
 import com.ilyeong.movieverse.feature.detail.databinding.ItemMovieCastBinding
