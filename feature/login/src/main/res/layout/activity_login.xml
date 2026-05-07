@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.ilyeong.movieverse.presentation.common.view.LoadingProgressBar
+    <com.ilyeong.movieverse.core.ui.common.view.LoadingProgressBar
         android:id="@+id/pb_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

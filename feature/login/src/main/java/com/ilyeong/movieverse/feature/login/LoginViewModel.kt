@@ -1,13 +1,10 @@
-package com.ilyeong.movieverse.presentation.login
+package com.ilyeong.movieverse.feature.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ilyeong.movieverse.data.repository.AuthRepository
-import com.ilyeong.movieverse.presentation.login.model.LoginEvent
-import com.ilyeong.movieverse.presentation.login.model.LoginEvent.NavigateToCustomTabs
-import com.ilyeong.movieverse.presentation.login.model.LoginEvent.NavigateToMain
-import com.ilyeong.movieverse.presentation.login.model.LoginEvent.ShowMessage
-import com.ilyeong.movieverse.presentation.login.model.LoginUiState
+import com.ilyeong.movieverse.core.data.oauth.repository.OAuthRepository
+import com.ilyeong.movieverse.feature.login.model.LoginEvent
+import com.ilyeong.movieverse.feature.login.model.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val oAuthRepository: OAuthRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -33,20 +30,20 @@ class LoginViewModel @Inject constructor(
     val events = _events.asSharedFlow()
 
     fun createRequestToken() {
-        authRepository.createRequestToken()
+        oAuthRepository.createRequestToken()
             .onStart { _uiState.update { it.copy(isLoading = true) } }
-            .onEach { _events.emit(NavigateToCustomTabs("https://www.themoviedb.org/authenticate/${it.requestToken}?redirect_to=ilyeong://movieverse")) }
+            .onEach { _events.emit(LoginEvent.NavigateToCustomTabs("https://www.themoviedb.org/authenticate/${it.requestToken}?redirect_to=ilyeong://movieverse")) }
             .onCompletion { _uiState.update { it.copy(isLoading = false) } }
-            .catch { _events.emit(ShowMessage(it)) }
+            .catch { _events.emit(LoginEvent.ShowMessage(it)) }
             .launchIn(viewModelScope)
     }
 
     fun createSessionId(requestToken: String) {
-        authRepository.createSessionId(requestToken)
+        oAuthRepository.createSessionId(requestToken)
             .onStart { _uiState.update { it.copy(isLoading = true) } }
-            .onEach { _events.emit(NavigateToMain) }
+            .onEach { _events.emit(LoginEvent.NavigateToMain) }
             .onCompletion { _uiState.update { it.copy(isLoading = false) } }
-            .catch { _events.emit(ShowMessage(it)) }
+            .catch { _events.emit(LoginEvent.ShowMessage(it)) }
             .launchIn(viewModelScope)
     }
 }

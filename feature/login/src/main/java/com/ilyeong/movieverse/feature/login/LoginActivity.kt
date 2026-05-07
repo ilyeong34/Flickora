@@ -1,15 +1,16 @@
-package com.ilyeong.movieverse.presentation.login
+package com.ilyeong.movieverse.feature.login
 
+import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.browser.customtabs.CustomTabsIntent
-import com.ilyeong.movieverse.databinding.ActivityLoginBinding
-import com.ilyeong.movieverse.presentation.MainActivity
-import com.ilyeong.movieverse.presentation.common.activity.BaseActivity
-import com.ilyeong.movieverse.presentation.login.model.LoginEvent
+import androidx.core.net.toUri
+import com.ilyeong.movieverse.core.ui.common.activity.BaseActivity
+import com.ilyeong.movieverse.feature.login.databinding.ActivityLoginBinding
+import com.ilyeong.movieverse.feature.login.model.LoginEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,13 +56,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             viewModel.events.collect {
                 when (it) {
                     is LoginEvent.NavigateToCustomTabs -> {
-                        val uri = Uri.parse(it.url)
+                        val uri = it.url.toUri()
                         CustomTabsIntent.Builder().build()
                             .launchUrl(this@LoginActivity, uri)
                     }
 
                     is LoginEvent.NavigateToMain -> {
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        val intent = Intent()
+                        intent.component = ComponentName(
+                            "com.ilyeong.movieverse",
+                            "com.ilyeong.movieverse.MainActivity"
+                        )
                         startActivity(intent)
                         finish()
                     }

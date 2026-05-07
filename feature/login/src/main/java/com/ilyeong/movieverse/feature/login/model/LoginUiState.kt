@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.login.model
+package com.ilyeong.movieverse.feature.login.model
 
 data class LoginUiState(
     val isLoading: Boolean = false,

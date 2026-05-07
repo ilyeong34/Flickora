@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.login.model
+package com.ilyeong.movieverse.feature.login.model
 
 sealed interface LoginEvent {
     data class NavigateToCustomTabs(val url: String) : LoginEvent
