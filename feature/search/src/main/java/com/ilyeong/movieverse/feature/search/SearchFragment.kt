@@ -45,6 +45,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     val itemClickListener = ItemClickListener { movieId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.movieverse/detail_fragment?movieId=${movieId}".toUri())
+            .build()
 
         findNavController().navigate(request)
     }

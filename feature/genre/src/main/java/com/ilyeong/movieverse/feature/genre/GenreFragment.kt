@@ -37,6 +37,7 @@ internal class GenreFragment : BaseFragment<FragmentGenreBinding>() {
     private val genreMovieAdapter = PosterRatioPagingAdapter { movieId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.movieverse/detail_fragment?movieId=${movieId}".toUri())
+            .build()
 
         findNavController().navigate(request)
     }

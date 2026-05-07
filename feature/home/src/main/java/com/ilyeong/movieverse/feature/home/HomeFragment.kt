@@ -37,6 +37,7 @@ internal class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val movieClickListener = ItemClickListener { movieId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.movieverse/detail_fragment?movieId=${movieId}".toUri())
+            .build()
 
         findNavController().navigate(request)
     }
@@ -44,6 +45,7 @@ internal class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val genreClickListener = ItemClickListener { genreId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.movieverse/genre_fragment?genreId=${genreId}".toUri())
+            .build()
 
         findNavController().navigate(request)
     }
@@ -75,6 +77,7 @@ internal class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.tb.setOnMenuItemClickListener { _ ->
             val request = NavDeepLinkRequest.Builder
                 .fromUri("android-app://com.ilyeong.movieverse/search_fragment".toUri())
+                .build()
 
             findNavController().navigate(request)
             true

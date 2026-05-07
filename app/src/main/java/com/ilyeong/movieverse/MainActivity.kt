@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.ilyeong.movieverse.core.ui.common.activity.BaseActivity
@@ -37,8 +38,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun setSystemInsetPadding() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.home_fragment -> {
+            val destinationIds = destination.hierarchy.map { it.id }.toSet()
+
+            when {
+                R.id.home_navigation in destinationIds -> {
                     ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
                         val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
                         v.setPadding(systemBars.left, 0, systemBars.right, 0)
@@ -46,7 +49,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     }
                 }
 
-                R.id.watchlist_fragment, R.id.profile_fragment -> {
+                R.id.watchlist_navigation in destinationIds ||
+                        R.id.profile_navigation in destinationIds -> {
                     ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
                         val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
                         v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
@@ -54,7 +58,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     }
                 }
 
-                R.id.detail_fragment -> {
+                R.id.detail_navigation in destinationIds -> {
                     ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
                         val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
                         v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
@@ -82,11 +86,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.bnv.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bnv.isVisible = (destination.id in listOf(
-                R.id.home_fragment,
-                R.id.watchlist_fragment,
-                R.id.profile_fragment
-            ))
+            val bottomNavigationDestinations = setOf(
+                R.id.home_navigation,
+                R.id.watchlist_navigation,
+                R.id.profile_navigation
+            )
+
+            binding.bnv.isVisible = destination.hierarchy.any {
+                it.id in bottomNavigationDestinations
+            }
         }
     }
 

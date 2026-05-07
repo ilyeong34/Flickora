@@ -2,35 +2,27 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home_fragment">
+    app:startDestination="@id/home_navigation">
 
-    <fragment
-        android:id="@+id/home_fragment"
-        android:name="com.ilyeong.movieverse.feature.home.HomeFragment"
-        android:label="@string/home" />
-
-    <fragment
-        android:id="@+id/watchlist_fragment"
-        android:name="com.ilyeong.movieverse.feature.watchlist.WatchlistFragment"
-        android:label="@string/watchlist" />
-
-    <fragment
-        android:id="@+id/profile_fragment"
-        android:name="com.ilyeong.movieverse.feature.profile.ProfileFragment"
-        android:label="@string/profile" />
-
-    <fragment
-        android:id="@+id/detail_fragment"
-        android:name="com.ilyeong.movieverse.feature.detail.DetailFragment"
-        android:label="@string/detail" />
-
-    <fragment
-        android:id="@+id/search_fragment"
-        android:name="com.ilyeong.movieverse.feature.search.SearchFragment"
-        android:label="@string/search" />
-
-    <fragment
-        android:id="@+id/genre_fragment"
-        android:name="com.ilyeong.movieverse.feature.genre.GenreFragment"
-        android:label="@string/genre" />
+    <include
+        android:id="@+id/login_navigation"
+        app:graph="@navigation/login_navigation" />
+    <include
+        android:id="@+id/home_navigation"
+        app:graph="@navigation/home_navigation" />
+    <include
+        android:id="@+id/watchlist_navigation"
+        app:graph="@navigation/watchlist_navigation" />
+    <include
+        android:id="@+id/profile_navigation"
+        app:graph="@navigation/profile_navigation" />
+    <include
+        android:id="@+id/detail_navigation"
+        app:graph="@navigation/detail_navigation" />
+    <include
+        android:id="@+id/search_navigation"
+        app:graph="@navigation/search_navigation" />
+    <include
+        android:id="@+id/genre_navigation"
+        app:graph="@navigation/genre_navigation" />
 </navigation>

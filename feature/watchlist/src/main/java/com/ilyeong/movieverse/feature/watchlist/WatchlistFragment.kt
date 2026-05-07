@@ -28,6 +28,7 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
     private val watchlistAdapter = PosterDescriptionPagingAdapter { movieId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.movieverse/detail_fragment?movieId=${movieId}".toUri())
+            .build()
 
         findNavController().navigate(request)
     }

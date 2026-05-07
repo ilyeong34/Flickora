@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/detail_nav_graph"
+    android:id="@+id/detail_navigation"
     app:startDestination="@id/detail_fragment">
 
     <fragment
@@ -9,7 +9,7 @@
         android:name="com.ilyeong.movieverse.feature.detail.DetailFragment"
         android:label="@string/detail">
 
-        <deepLink app:uri="android-app://com.ilyeong.movieverse/detail_fragment/{movieId}" />
+        <deepLink app:uri="android-app://com.ilyeong.movieverse/detail_fragment?movieId={movieId}" />
         <argument
             android:name="movieId"
             app:argType="integer" />
