@@ -1,5 +1,6 @@
 package com.ilyeong.movieverse.core.network.di
 
+import com.ilyeong.movieverse.core.network.BuildConfig
 import com.ilyeong.movieverse.core.network.MovieverseNetwork
 import com.ilyeong.movieverse.core.network.MovieverseNetworkImpl
 import dagger.Module
@@ -7,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -33,13 +35,28 @@ internal object NetworkModule {
             level = HttpLoggingInterceptor.Level.BASIC
         }
 
+    /* @Provides Interceptor 만들면 다시 duplicate */
+    @Provides
+    @Singleton
+    fun provideBaseInterceptor(): Interceptor =
+        Interceptor { chain ->
+            val originalRequest = chain.request()
+            val newRequest = originalRequest.newBuilder()
+                .header("accept", "application/json")
+                .header("Authorization", "Bearer ${BuildConfig.TMDB_API_KEY}")
+                .build()
+            chain.proceed(newRequest)
+        }
+
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: HttpLoggingInterceptor,
+        baseInterceptor: Interceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(baseInterceptor)
             .build()
 
     @Provides
@@ -55,6 +72,7 @@ internal object NetworkModule {
         converterFactory: Converter.Factory
     ): Retrofit.Builder =
         Retrofit.Builder()
+            .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(converterFactory)
 
 

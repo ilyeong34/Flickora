@@ -10,18 +10,16 @@ internal class MovieverseNetworkImpl(
 ) : MovieverseNetwork {
 
     override fun <T> create(
-        baseUrl: String,
         service: Class<T>,
-        interceptors: Set<Interceptor>
+        additionalInterceptors: Set<Interceptor>
     ): T {
         val client = baseOkHttpClient.newBuilder()
             .apply {
-                interceptors.forEach { addInterceptor(it) }
+                additionalInterceptors.forEach { addInterceptor(it) }
             }
             .build()
 
         return retrofit
-            .baseUrl(baseUrl)
             .client(client)
             .build()
             .create(service)

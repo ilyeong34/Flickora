@@ -1,9 +1,15 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.devtools.ksp)
 }
+
+val properties = Properties()
+properties.load(FileInputStream("local.properties"))
 
 android {
     namespace = "com.ilyeong.movieverse.core.network"
@@ -14,6 +20,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "TMDB_API_KEY", properties.getProperty("TMDB_API_KEY"))
+        buildConfigField("String", "ACCOUNT_ID", properties.getProperty("ACCOUNT_ID"))
     }
 
     buildTypes {
@@ -25,10 +34,16 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    
     kotlinOptions {
         jvmTarget = "11"
     }

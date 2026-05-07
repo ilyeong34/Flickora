@@ -1,6 +1,5 @@
 package com.ilyeong.movieverse.core.data.user.di
 
-import com.ilyeong.movieverse.core.data.user.BuildConfig
 import com.ilyeong.movieverse.core.data.user.api.UserApiService
 import com.ilyeong.movieverse.core.datastore.user.UserPreferenceDataSource
 import com.ilyeong.movieverse.core.network.MovieverseNetwork
@@ -9,20 +8,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.multibindings.IntoSet
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
-import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
 
-    @Provides
-    @Singleton
-    @IntoSet
-    fun provideSessionInterceptor(
+    private fun createSessionInterceptor(
         userPreferenceDataSource: UserPreferenceDataSource
     ): Interceptor =
         Interceptor { chain ->
@@ -37,8 +31,6 @@ internal object ApiModule {
 
             val newRequest = originalRequest.newBuilder()
                 .url(newUrl)
-                .header("accept", "application/json")
-                .header("Authorization", "Bearer ${BuildConfig.TMDB_API_KEY}")
                 .build()
             chain.proceed(newRequest)
         }
@@ -47,10 +39,13 @@ internal object ApiModule {
     @Singleton
     fun provideUserApiService(
         movieverseNetwork: MovieverseNetwork,
-        interceptors: Provider<Set<@JvmSuppressWildcards Interceptor>>
+        userPreferenceDataSource: UserPreferenceDataSource
     ): UserApiService = movieverseNetwork
         .create<UserApiService>(
-            baseUrl = "https://api.themoviedb.org/3/",
-            interceptors = interceptors.get()
+            additionalInterceptors = setOf(
+                createSessionInterceptor(
+                    userPreferenceDataSource
+                )
+            )
         )
 }
