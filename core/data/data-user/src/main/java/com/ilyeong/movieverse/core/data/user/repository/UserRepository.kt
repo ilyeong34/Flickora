@@ -1,9 +1,9 @@
-package com.ilyeong.movieverse.data.repository
+package com.ilyeong.movieverse.core.data.user.repository
 
 import androidx.paging.PagingData
-import com.ilyeong.movieverse.domain.model.Account
-import com.ilyeong.movieverse.domain.model.AccountStates
-import com.ilyeong.movieverse.domain.model.Movie
+import com.ilyeong.movieverse.core.model.Account
+import com.ilyeong.movieverse.core.model.AccountStates
+import com.ilyeong.movieverse.core.model.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

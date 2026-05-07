@@ -1,11 +1,11 @@
-package com.ilyeong.movieverse.data.model
+package com.ilyeong.movieverse.core.data.user.model
 
-import com.ilyeong.movieverse.domain.model.Account
+import com.ilyeong.movieverse.core.model.Account
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AccountResponse(
+internal data class AccountResponse(
     @SerialName("avatar") val avatar: AvatarResponse = AvatarResponse(
         GravatarResponse(""),
         TmdbResponse("")
@@ -18,7 +18,7 @@ data class AccountResponse(
     @SerialName("username") val username: String = ""
 )
 
-fun AccountResponse.toDomain() = Account(
+internal fun AccountResponse.toDomain() = Account(
     id = id,
     avatarPath = avatar.tmdbResponse.avatarPath,
     name = name,

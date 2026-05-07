@@ -1,6 +1,6 @@
-package com.ilyeong.movieverse.data
+package com.ilyeong.movieverse.core.data.user
 
-import com.ilyeong.movieverse.data.model.RatedResponse
+import com.ilyeong.movieverse.core.data.user.model.RatedResponse
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -17,9 +17,9 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonPrimitive
 
-object RatedSerializer : KSerializer<RatedResponse?> {
+internal object RatedSerializer : KSerializer<RatedResponse?> {
     override val descriptor: SerialDescriptor =
-        buildClassSerialDescriptor("com.ilyeong.movieverse.data.model.RatedResponse") {
+        buildClassSerialDescriptor("com.ilyeong.movieverse.core.data.user.model.RatedResponse") {
             element("value", PrimitiveSerialDescriptor("value", PrimitiveKind.INT))
         }
 

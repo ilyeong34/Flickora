@@ -1,12 +1,12 @@
-package com.ilyeong.movieverse.data.paging
+package com.ilyeong.movieverse.core.data.user.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.ilyeong.movieverse.data.model.toDomain
-import com.ilyeong.movieverse.data.network.UserApiService
-import com.ilyeong.movieverse.domain.model.Movie
+import com.ilyeong.movieverse.core.data.user.api.UserApiService
+import com.ilyeong.movieverse.core.data.user.model.toDomain
+import com.ilyeong.movieverse.core.model.Movie
 
-class WatchlistPagingSource(
+internal class WatchlistPagingSource(
     private val apiService: UserApiService
 ) : PagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {

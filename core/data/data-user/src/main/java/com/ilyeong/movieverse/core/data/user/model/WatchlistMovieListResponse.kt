@@ -1,12 +1,12 @@
-package com.ilyeong.movieverse.data.model
+package com.ilyeong.movieverse.core.data.user.model
 
-import com.ilyeong.movieverse.domain.model.Genre
-import com.ilyeong.movieverse.domain.model.Movie
+import com.ilyeong.movieverse.core.model.Genre
+import com.ilyeong.movieverse.core.model.Movie
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WatchlistMovieListResponse(
+internal data class WatchlistMovieListResponse(
     @SerialName("adult") val adult: Boolean,
     @SerialName("backdrop_path") val backdropPath: String = "",
     @SerialName("genre_ids") val genreIdList: List<Int> = emptyList(),
@@ -23,7 +23,7 @@ data class WatchlistMovieListResponse(
     @SerialName("vote_count") val voteCount: Int
 )
 
-fun WatchlistMovieListResponse.toDomain() = Movie(
+internal fun WatchlistMovieListResponse.toDomain() = Movie(
     adult = adult,
     backdropPath = "https://image.tmdb.org/t/p/original/$backdropPath",
     collection = null,

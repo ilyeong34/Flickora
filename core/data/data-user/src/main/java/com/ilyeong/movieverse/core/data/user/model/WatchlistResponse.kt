@@ -1,10 +1,10 @@
-package com.ilyeong.movieverse.data.model
+package com.ilyeong.movieverse.core.data.user.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WatchlistResponse(
+internal data class WatchlistResponse(
     @SerialName("page") val page: Int,
     @SerialName("results") val resultList: List<WatchlistMovieListResponse> = emptyList(),
     @SerialName("total_pages") val totalPage: Int,

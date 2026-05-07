@@ -1,10 +1,10 @@
-package com.ilyeong.movieverse.data.model
+package com.ilyeong.movieverse.core.data.user.model
 
-import com.ilyeong.movieverse.data.RatedSerializer
+import com.ilyeong.movieverse.core.data.user.RatedSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable(with = RatedSerializer::class)
-data class RatedResponse(
+internal data class RatedResponse(
     @SerialName("value") val value: Int
 )

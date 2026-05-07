@@ -1,18 +1,18 @@
-package com.ilyeong.movieverse.data.network
+package com.ilyeong.movieverse.core.data.user.api
 
-import com.ilyeong.movieverse.BuildConfig
-import com.ilyeong.movieverse.data.model.AccountResponse
-import com.ilyeong.movieverse.data.model.AccountStatesResponse
-import com.ilyeong.movieverse.data.model.WatchlistPostRequest
-import com.ilyeong.movieverse.data.model.WatchlistPostResponse
-import com.ilyeong.movieverse.data.model.WatchlistResponse
+import com.ilyeong.movieverse.core.data.user.BuildConfig
+import com.ilyeong.movieverse.core.data.user.model.AccountResponse
+import com.ilyeong.movieverse.core.data.user.model.AccountStatesResponse
+import com.ilyeong.movieverse.core.data.user.model.WatchlistPostRequest
+import com.ilyeong.movieverse.core.data.user.model.WatchlistPostResponse
+import com.ilyeong.movieverse.core.data.user.model.WatchlistResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface UserApiService {
+internal interface UserApiService {
 
     @GET("account/${BuildConfig.ACCOUNT_ID}")
     suspend fun getAccount(): AccountResponse

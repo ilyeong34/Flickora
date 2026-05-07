@@ -1,10 +1,10 @@
-package com.ilyeong.movieverse.data.model
+package com.ilyeong.movieverse.core.data.user.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WatchlistPostRequest(
+internal data class WatchlistPostRequest(
     @SerialName("media_type") val mediaType: String,
     @SerialName("media_id") val mediaId: Int,
     @SerialName("watchlist") val watchlist: Boolean
