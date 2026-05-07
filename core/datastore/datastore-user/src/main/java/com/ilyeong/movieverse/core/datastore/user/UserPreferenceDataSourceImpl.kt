@@ -7,9 +7,10 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Named
 
 internal class UserPreferenceDataSourceImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    @Named("user") private val dataStore: DataStore<Preferences>
 ) : UserPreferenceDataSource {
     private val sessionIdKey = stringPreferencesKey("session_id")
 

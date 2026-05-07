@@ -9,10 +9,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.internal.Provider
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
+import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
