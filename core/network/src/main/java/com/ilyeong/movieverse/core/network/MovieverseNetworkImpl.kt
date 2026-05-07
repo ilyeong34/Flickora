@@ -12,7 +12,7 @@ internal class MovieverseNetworkImpl(
     override fun <T> create(
         baseUrl: String,
         service: Class<T>,
-        interceptors: List<Interceptor>
+        interceptors: Set<Interceptor>
     ): T {
         val client = baseOkHttpClient.newBuilder()
             .apply {
