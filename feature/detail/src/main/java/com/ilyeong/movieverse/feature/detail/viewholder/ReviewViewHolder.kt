@@ -1,14 +1,13 @@
-package com.ilyeong.movieverse.presentation.detail.viewholder
+package com.ilyeong.movieverse.feature.detail.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil3.load
 import coil3.request.crossfade
-import coil3.request.error
-import com.ilyeong.movieverse.R
-import com.ilyeong.movieverse.databinding.ItemMovieReviewBinding
-import com.ilyeong.movieverse.domain.model.Review
+import com.ilyeong.movieverse.core.model.Review
+import com.ilyeong.movieverse.core.ui.R
+import com.ilyeong.movieverse.feature.detail.databinding.ItemMovieReviewBinding
 
 class ReviewViewHolder private constructor(
     private val binding: ItemMovieReviewBinding
@@ -23,7 +22,7 @@ class ReviewViewHolder private constructor(
         binding.tvUserName.text = review.authorDetails.username
         binding.tvDay.text = review.updatedAt
 
-        binding.rrv.rating = review.authorDetails.rating.toDouble()
+        binding.rrv.rating = review.authorDetails.rating
         binding.rrv.ratingCountIsVisible = false
 
         binding.tvContent.text = review.content

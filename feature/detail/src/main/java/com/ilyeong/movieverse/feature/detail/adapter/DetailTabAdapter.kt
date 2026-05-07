@@ -1,12 +1,12 @@
-package com.ilyeong.movieverse.presentation.detail.adapter
+package com.ilyeong.movieverse.feature.detail.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.ilyeong.movieverse.presentation.detail.InformationFragment
-import com.ilyeong.movieverse.presentation.detail.RecommendedFragment
-import com.ilyeong.movieverse.presentation.detail.ReviewFragment
+import com.ilyeong.movieverse.feature.detail.InformationFragment
+import com.ilyeong.movieverse.feature.detail.RecommendedFragment
+import com.ilyeong.movieverse.feature.detail.ReviewFragment
 
-class DetailTabAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
+internal class DetailTabAdapter(parentFragment: Fragment) : FragmentStateAdapter(parentFragment) {
     private val fragmentList = listOf(
         InformationFragment(),
         RecommendedFragment(),

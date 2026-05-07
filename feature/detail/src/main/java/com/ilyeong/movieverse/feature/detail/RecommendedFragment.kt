@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.detail
+package com.ilyeong.movieverse.feature.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.ilyeong.movieverse.R
-import com.ilyeong.movieverse.databinding.FragmentRecommendedBinding
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.detail.adapter.PosterFixedAdapter
-import com.ilyeong.movieverse.presentation.detail.model.DetailUiState
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
-import com.ilyeong.movieverse.presentation.util.PosterFixedItemDecoration
+import com.ilyeong.movieverse.core.ui.R
+import com.ilyeong.movieverse.core.ui.common.decoration.PosterFixedItemDecoration
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.feature.detail.adapter.PosterFixedAdapter
+import com.ilyeong.movieverse.feature.detail.databinding.FragmentRecommendedBinding
+import com.ilyeong.movieverse.feature.detail.model.DetailUiState
 
-class RecommendedFragment : BaseFragment<FragmentRecommendedBinding>() {
+internal class RecommendedFragment : BaseFragment<FragmentRecommendedBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentRecommendedBinding =
         FragmentRecommendedBinding::inflate

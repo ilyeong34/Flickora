@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.detail
+package com.ilyeong.movieverse.feature.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,16 +11,16 @@ import androidx.navigation.fragment.navArgs
 import coil3.load
 import coil3.request.crossfade
 import com.google.android.material.tabs.TabLayoutMediator
-import com.ilyeong.movieverse.R
-import com.ilyeong.movieverse.databinding.FragmentDetailBinding
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.detail.adapter.DetailTabAdapter
-import com.ilyeong.movieverse.presentation.detail.model.DetailEvent.ShowMessage
-import com.ilyeong.movieverse.presentation.detail.model.DetailUiState
+import com.ilyeong.movieverse.core.ui.R
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.feature.detail.adapter.DetailTabAdapter
+import com.ilyeong.movieverse.feature.detail.databinding.FragmentDetailBinding
+import com.ilyeong.movieverse.feature.detail.model.DetailEvent
+import com.ilyeong.movieverse.feature.detail.model.DetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailFragment : BaseFragment<FragmentDetailBinding>() {
+internal class DetailFragment : BaseFragment<FragmentDetailBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding =
         FragmentDetailBinding::inflate
@@ -132,7 +132,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         repeatOnViewStarted {
             viewModel.events.collect {
                 when (it) {
-                    is ShowMessage -> showMessage(it.error.message.toString())
+                    is DetailEvent.ShowMessage -> showMessage(it.error.message.toString())
                 }
             }
         }

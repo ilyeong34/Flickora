@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.watchlist.adapter
+package com.ilyeong.movieverse.feature.watchlist.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter

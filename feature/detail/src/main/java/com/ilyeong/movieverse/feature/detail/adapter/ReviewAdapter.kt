@@ -1,12 +1,12 @@
-package com.ilyeong.movieverse.presentation.detail.adapter
+package com.ilyeong.movieverse.feature.detail.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.ilyeong.movieverse.domain.model.Review
-import com.ilyeong.movieverse.presentation.detail.viewholder.ReviewViewHolder
+import com.ilyeong.movieverse.core.model.Review
+import com.ilyeong.movieverse.feature.detail.viewholder.ReviewViewHolder
 
-class ReviewAdapter : PagingDataAdapter<Review, ReviewViewHolder>(reviewDiffUtil) {
+internal class ReviewAdapter : PagingDataAdapter<Review, ReviewViewHolder>(reviewDiffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

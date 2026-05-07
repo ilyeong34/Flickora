@@ -1,13 +1,12 @@
-package com.ilyeong.movieverse.presentation.detail
+package com.ilyeong.movieverse.feature.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.ilyeong.movieverse.data.repository.MovieRepository
-import com.ilyeong.movieverse.data.repository.UserRepository
-import com.ilyeong.movieverse.presentation.detail.model.DetailEvent
-import com.ilyeong.movieverse.presentation.detail.model.DetailEvent.ShowMessage
-import com.ilyeong.movieverse.presentation.detail.model.DetailUiState
+import com.ilyeong.movieverse.core.data.movie.repository.MovieRepository
+import com.ilyeong.movieverse.core.data.user.repository.UserRepository
+import com.ilyeong.movieverse.feature.detail.model.DetailEvent
+import com.ilyeong.movieverse.feature.detail.model.DetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,7 +23,7 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(
+internal class DetailViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
     private val userRepository: UserRepository,
 ) : ViewModel() {
@@ -76,8 +75,8 @@ class DetailViewModel @Inject constructor(
         }.catch {
             when (_uiState.value) {
                 is DetailUiState.Loading -> _uiState.value = DetailUiState.Failure
-                is DetailUiState.Success -> _events.emit(ShowMessage(it))
-                is DetailUiState.Failure -> _events.emit(ShowMessage(it))
+                is DetailUiState.Success -> _events.emit(DetailEvent.ShowMessage(it))
+                is DetailUiState.Failure -> _events.emit(DetailEvent.ShowMessage(it))
             }
         }.launchIn(viewModelScope)
     }
@@ -94,7 +93,7 @@ class DetailViewModel @Inject constructor(
                     currentState.copy(movie = currentState.movie.copy(isInWatchlist = watchlist))
             }
             .catch {
-                _events.emit(ShowMessage(it))
+                _events.emit(DetailEvent.ShowMessage(it))
             }
             .launchIn(viewModelScope)
     }

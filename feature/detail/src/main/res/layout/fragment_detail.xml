@@ -60,7 +60,7 @@
             app:layout_constraintStart_toEndOf="@id/tv_movie_title"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.ilyeong.movieverse.presentation.common.view.ReviewRatingView
+        <com.ilyeong.movieverse.core.ui.common.view.ReviewRatingView
             android:id="@+id/rrv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.detail
+package com.ilyeong.movieverse.feature.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.paging.LoadState
-import com.ilyeong.movieverse.databinding.FragmentReviewBinding
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.detail.adapter.ReviewAdapter
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.feature.detail.adapter.ReviewAdapter
+import com.ilyeong.movieverse.feature.detail.databinding.FragmentReviewBinding
 import kotlinx.coroutines.flow.collectLatest
 
-class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
+internal class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentReviewBinding =
         FragmentReviewBinding::inflate

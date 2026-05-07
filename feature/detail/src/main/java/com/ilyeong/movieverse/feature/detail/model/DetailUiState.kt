@@ -1,9 +1,9 @@
-package com.ilyeong.movieverse.presentation.detail.model
+package com.ilyeong.movieverse.feature.detail.model
 
-import com.ilyeong.movieverse.domain.model.Cast
-import com.ilyeong.movieverse.domain.model.Movie
+import com.ilyeong.movieverse.core.model.Cast
+import com.ilyeong.movieverse.core.model.Movie
 
-sealed interface DetailUiState {
+internal sealed interface DetailUiState {
 
     data object Loading : DetailUiState
 

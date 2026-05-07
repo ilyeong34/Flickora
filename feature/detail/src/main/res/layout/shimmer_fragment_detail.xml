@@ -43,7 +43,7 @@
         app:layout_constraintStart_toEndOf="@id/poster_default"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.ilyeong.movieverse.presentation.common.view.ReviewRatingView
+    <com.ilyeong.movieverse.core.ui.common.view.ReviewRatingView
         android:id="@+id/rrv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

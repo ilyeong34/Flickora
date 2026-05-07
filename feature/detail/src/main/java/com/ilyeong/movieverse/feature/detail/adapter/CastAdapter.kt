@@ -1,12 +1,12 @@
-package com.ilyeong.movieverse.presentation.detail.adapter
+package com.ilyeong.movieverse.feature.detail.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.ilyeong.movieverse.domain.model.Cast
-import com.ilyeong.movieverse.presentation.detail.viewholder.CastViewHolder
+import com.ilyeong.movieverse.core.model.Cast
+import com.ilyeong.movieverse.feature.detail.viewholder.CastViewHolder
 
-class CastAdapter : ListAdapter<Cast, CastViewHolder>(castDiffUtil) {
+internal class CastAdapter : ListAdapter<Cast, CastViewHolder>(castDiffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

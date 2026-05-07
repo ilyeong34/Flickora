@@ -1,4 +1,4 @@
-package com.ilyeong.movieverse.presentation.detail
+package com.ilyeong.movieverse.feature.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.ilyeong.movieverse.R
-import com.ilyeong.movieverse.databinding.FragmentInformationBinding
-import com.ilyeong.movieverse.presentation.common.adapter.GenreAdapter
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.detail.adapter.CastAdapter
-import com.ilyeong.movieverse.presentation.detail.model.DetailUiState
-import com.ilyeong.movieverse.presentation.util.PosterFixedItemDecoration
+import com.ilyeong.movieverse.core.ui.R
+import com.ilyeong.movieverse.core.ui.common.adapter.GenreAdapter
+import com.ilyeong.movieverse.core.ui.common.decoration.PosterFixedItemDecoration
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.feature.detail.adapter.CastAdapter
+import com.ilyeong.movieverse.feature.detail.databinding.FragmentInformationBinding
+import com.ilyeong.movieverse.feature.detail.model.DetailUiState
 
-class InformationFragment : BaseFragment<FragmentInformationBinding>() {
+internal class InformationFragment : BaseFragment<FragmentInformationBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentInformationBinding =
         FragmentInformationBinding::inflate
