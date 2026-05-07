@@ -1,10 +1,10 @@
-package com.ilyeong.movieverse.presentation.genre.adapter
+package com.ilyeong.movieverse.feature.genre.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ilyeong.movieverse.presentation.genre.viewholder.ShimmerPosterRatioViewHolder
+import com.ilyeong.movieverse.feature.genre.viewholder.ShimmerPosterRatioViewHolder
 
-class ShimmerPosterRatioAdapter(
+internal class ShimmerPosterRatioAdapter(
     private val itemCount: Int
 ) : RecyclerView.Adapter<ShimmerPosterRatioViewHolder>() {
     override fun onCreateViewHolder(

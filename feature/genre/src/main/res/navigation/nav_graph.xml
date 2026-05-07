@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detail_nav_graph"
+    app:startDestination="@id/genre_fragment">
+
+    <fragment
+        android:id="@+id/genre_fragment"
+        android:name="com.ilyeong.movieverse.feature.genre.GenreFragment"
+        android:label="@string/detail">
+
+        <deepLink app:uri="android-app://com.ilyeong.movieverse/genre_fragment/{genreId}" />
+        <argument
+            android:name="genreId"
+            app:argType="integer" />
+    </fragment>
+</navigation>

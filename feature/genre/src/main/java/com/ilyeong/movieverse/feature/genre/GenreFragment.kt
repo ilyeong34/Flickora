@@ -1,29 +1,31 @@
-package com.ilyeong.movieverse.presentation.genre
+package com.ilyeong.movieverse.feature.genre
 
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import com.ilyeong.movieverse.R
-import com.ilyeong.movieverse.databinding.FragmentGenreBinding
-import com.ilyeong.movieverse.presentation.common.adapter.PosterRatioPagingAdapter
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.genre.adapter.ShimmerPosterRatioAdapter
-import com.ilyeong.movieverse.presentation.util.calculateSpanCount
+import com.ilyeong.movieverse.core.ui.R
+import com.ilyeong.movieverse.core.ui.common.adapter.PosterRatioPagingAdapter
+import com.ilyeong.movieverse.core.ui.common.extension.calculateSpanCount
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.feature.genre.adapter.ShimmerPosterRatioAdapter
+import com.ilyeong.movieverse.feature.genre.databinding.FragmentGenreBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class GenreFragment : BaseFragment<FragmentGenreBinding>() {
+internal class GenreFragment : BaseFragment<FragmentGenreBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentGenreBinding =
         FragmentGenreBinding::inflate
@@ -33,8 +35,10 @@ class GenreFragment : BaseFragment<FragmentGenreBinding>() {
     private val genreId: GenreFragmentArgs by navArgs()
 
     private val genreMovieAdapter = PosterRatioPagingAdapter { movieId ->
-        val action = GenreFragmentDirections.actionGenreFragmentToDetailFragment(movieId)
-        findNavController().navigate(action)
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("android-app://com.ilyeong.movieverse/detail_fragment?movieId=${movieId}".toUri())
+
+        findNavController().navigate(request)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

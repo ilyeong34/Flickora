@@ -1,11 +1,11 @@
-package com.ilyeong.movieverse.presentation.genre.viewholder
+package com.ilyeong.movieverse.feature.genre.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ilyeong.movieverse.databinding.ShimmerItemMoviePosterRatioSizeBinding
+import com.ilyeong.movieverse.feature.genre.databinding.ShimmerItemMoviePosterRatioSizeBinding
 
-class ShimmerPosterRatioViewHolder private constructor(
+internal class ShimmerPosterRatioViewHolder private constructor(
     binding: ShimmerItemMoviePosterRatioSizeBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
