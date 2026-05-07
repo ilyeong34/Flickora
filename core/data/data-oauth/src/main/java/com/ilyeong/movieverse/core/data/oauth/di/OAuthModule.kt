@@ -14,7 +14,7 @@ internal abstract class OAuthModule {
 
     @Binds
     @Singleton
-    fun bindOAuthRepository(
+    abstract fun bindOAuthRepository(
         oAuthRepository: OAuthRepositoryImpl
-    ): OAuthRepository = oAuthRepository
+    ): OAuthRepository
 }
