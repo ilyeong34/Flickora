@@ -1,11 +1,11 @@
-package com.ilyeong.movieverse.presentation.search.adapter
+package com.ilyeong.movieverse.feature.search.adapter
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.ilyeong.movieverse.presentation.search.viewholder.HeaderViewHolder
+import com.ilyeong.movieverse.feature.search.viewholder.HeaderViewHolder
 
-class HeaderAdapter : Adapter<HeaderViewHolder>() {
+internal class HeaderAdapter : Adapter<HeaderViewHolder>() {
     private var title: String = ""
 
     override fun onCreateViewHolder(

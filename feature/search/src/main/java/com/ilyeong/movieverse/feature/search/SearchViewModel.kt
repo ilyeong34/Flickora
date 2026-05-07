@@ -1,16 +1,16 @@
-package com.ilyeong.movieverse.presentation.search
+package com.ilyeong.movieverse.feature.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.ilyeong.movieverse.data.repository.MovieRepository
-import com.ilyeong.movieverse.domain.model.Movie
-import com.ilyeong.movieverse.domain.model.TimeWindow
-import com.ilyeong.movieverse.presentation.search.model.SearchUiState
-import com.ilyeong.movieverse.presentation.search.model.SearchUiState.Failure
-import com.ilyeong.movieverse.presentation.search.model.SearchUiState.Loading
-import com.ilyeong.movieverse.presentation.search.model.SearchUiState.Success
+import com.ilyeong.movieverse.core.data.movie.repository.MovieRepository
+import com.ilyeong.movieverse.core.model.Movie
+import com.ilyeong.movieverse.core.model.TimeWindow
+import com.ilyeong.movieverse.feature.search.model.SearchUiState
+import com.ilyeong.movieverse.feature.search.model.SearchUiState.Failure
+import com.ilyeong.movieverse.feature.search.model.SearchUiState.Loading
+import com.ilyeong.movieverse.feature.search.model.SearchUiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+internal class SearchViewModel @Inject constructor(
     private val movieRepository: MovieRepository
 ) : ViewModel() {
 

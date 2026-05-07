@@ -1,31 +1,33 @@
-package com.ilyeong.movieverse.presentation.search
+package com.ilyeong.movieverse.feature.search
 
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import com.ilyeong.movieverse.R
-import com.ilyeong.movieverse.databinding.FragmentSearchBinding
-import com.ilyeong.movieverse.presentation.common.adapter.PosterRatioPagingAdapter
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.search.adapter.HeaderAdapter
-import com.ilyeong.movieverse.presentation.search.adapter.PosterDescriptionAdapter
-import com.ilyeong.movieverse.presentation.search.model.SearchUiState.Failure
-import com.ilyeong.movieverse.presentation.search.model.SearchUiState.Loading
-import com.ilyeong.movieverse.presentation.search.model.SearchUiState.Success
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
-import com.ilyeong.movieverse.presentation.util.PosterDescriptionItemDecoration
-import com.ilyeong.movieverse.presentation.util.calculateSpanCount
-import com.ilyeong.movieverse.presentation.util.getQueryFlow
+import com.ilyeong.movieverse.core.ui.R
+import com.ilyeong.movieverse.core.ui.common.adapter.PosterRatioPagingAdapter
+import com.ilyeong.movieverse.core.ui.common.decoration.PosterDescriptionItemDecoration
+import com.ilyeong.movieverse.core.ui.common.extension.calculateSpanCount
+import com.ilyeong.movieverse.core.ui.common.extension.getQueryFlow
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.feature.search.adapter.HeaderAdapter
+import com.ilyeong.movieverse.feature.search.adapter.PosterDescriptionAdapter
+import com.ilyeong.movieverse.feature.search.databinding.FragmentSearchBinding
+import com.ilyeong.movieverse.feature.search.model.SearchUiState.Failure
+import com.ilyeong.movieverse.feature.search.model.SearchUiState.Loading
+import com.ilyeong.movieverse.feature.search.model.SearchUiState.Success
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -33,7 +35,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment<FragmentSearchBinding>() {
+internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentSearchBinding =
         FragmentSearchBinding::inflate
@@ -41,8 +43,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     private val viewModel: SearchViewModel by viewModels()
 
     val itemClickListener = ItemClickListener { movieId ->
-        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(movieId)
-        findNavController().navigate(action)
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("android-app://com.ilyeong.movieverse/detail_fragment?movieId=${movieId}".toUri())
+
+        findNavController().navigate(request)
     }
 
     private val trendHeaderAdapter = HeaderAdapter()

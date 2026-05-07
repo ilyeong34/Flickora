@@ -1,11 +1,11 @@
-package com.ilyeong.movieverse.presentation.search.viewholder
+package com.ilyeong.movieverse.feature.search.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.ilyeong.movieverse.databinding.ItemMovieSectionHeaderBinding
+import com.ilyeong.movieverse.feature.search.databinding.ItemMovieSectionHeaderBinding
 
-class HeaderViewHolder private constructor(
+internal class HeaderViewHolder private constructor(
     private val binding: ItemMovieSectionHeaderBinding
 ) : ViewHolder(binding.root) {
 
