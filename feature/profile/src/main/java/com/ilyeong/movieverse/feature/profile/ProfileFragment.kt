@@ -1,5 +1,6 @@
-package com.ilyeong.movieverse.presentation.profile
+package com.ilyeong.movieverse.feature.profile
 
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,19 +11,18 @@ import coil3.load
 import coil3.request.crossfade
 import coil3.request.error
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.ilyeong.movieverse.R
-import com.ilyeong.movieverse.databinding.FragmentProfileBinding
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.login.LoginActivity
-import com.ilyeong.movieverse.presentation.profile.model.ProfileEvent.NavigateToLogin
-import com.ilyeong.movieverse.presentation.profile.model.ProfileEvent.ShowMessage
-import com.ilyeong.movieverse.presentation.profile.model.ProfileUiState.Failure
-import com.ilyeong.movieverse.presentation.profile.model.ProfileUiState.Loading
-import com.ilyeong.movieverse.presentation.profile.model.ProfileUiState.Success
+import com.ilyeong.movieverse.core.ui.R
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.feature.profile.databinding.FragmentProfileBinding
+import com.ilyeong.movieverse.feature.profile.model.ProfileEvent.NavigateToLogin
+import com.ilyeong.movieverse.feature.profile.model.ProfileEvent.ShowMessage
+import com.ilyeong.movieverse.feature.profile.model.ProfileUiState.Failure
+import com.ilyeong.movieverse.feature.profile.model.ProfileUiState.Loading
+import com.ilyeong.movieverse.feature.profile.model.ProfileUiState.Success
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
+internal class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentProfileBinding
         get() = FragmentProfileBinding::inflate
@@ -105,7 +105,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             viewModel.events.collect {
                 when (it) {
                     is NavigateToLogin -> {
-                        val intent = Intent(requireContext(), LoginActivity::class.java)
+                        val intent = Intent()
+                        intent.component = ComponentName(
+                            "com.ilyeong.movieverse",
+                            "com.ilyeong.movieverse.feature.login.LoginActivity"
+                        )
                         startActivity(intent)
                         requireActivity().finish()
                     }

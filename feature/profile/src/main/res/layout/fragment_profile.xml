@@ -18,7 +18,7 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:src="@drawable/test_avatar" />
+        tools:ignore="ImageContrastCheck" />
 
     <TextView
         android:id="@+id/tv_user_name"
