@@ -2,12 +2,12 @@ package com.ilyeong.movieverse.feature.watchlist.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import com.ilyeong.movieverse.domain.model.Movie
-import com.ilyeong.movieverse.presentation.common.viewholder.PosterDescriptionViewHolder
-import com.ilyeong.movieverse.presentation.util.ItemClickListener
-import com.ilyeong.movieverse.presentation.util.MovieDiffUtil
+import com.ilyeong.movieverse.core.model.Movie
+import com.ilyeong.movieverse.core.ui.common.diffutil.MovieDiffUtil
+import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
+import com.ilyeong.movieverse.core.ui.common.viewholder.PosterDescriptionViewHolder
 
-class PosterDescriptionPagingAdapter(
+internal class PosterDescriptionPagingAdapter(
     private val itemClickListener: ItemClickListener
 ) : PagingDataAdapter<Movie, PosterDescriptionViewHolder>(MovieDiffUtil) {
     override fun onCreateViewHolder(

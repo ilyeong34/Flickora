@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="@dimen/movieverse_padding_large">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movieverse_padding_large" />
+
+    <include layout="@layout/shimmer_item_movie_poster_description" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movieverse_padding_large" />
+
+    <include layout="@layout/shimmer_item_movie_poster_description" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movieverse_padding_large" />
+
+    <include layout="@layout/shimmer_item_movie_poster_description" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movieverse_padding_large" />
+
+    <include layout="@layout/shimmer_item_movie_poster_description" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movieverse_padding_large" />
+
+    <include layout="@layout/shimmer_item_movie_poster_description" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movieverse_padding_large" />
+
+    <include layout="@layout/shimmer_item_movie_poster_description" />
+
+</LinearLayout>

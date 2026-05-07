@@ -1,22 +1,24 @@
-package com.ilyeong.movieverse.presentation.watchlist
+package com.ilyeong.movieverse.feature.watchlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import com.ilyeong.movieverse.databinding.FragmentWatchlistBinding
-import com.ilyeong.movieverse.presentation.common.fragment.BaseFragment
-import com.ilyeong.movieverse.presentation.util.PosterDescriptionItemDecoration
-import com.ilyeong.movieverse.presentation.watchlist.adapter.PosterDescriptionPagingAdapter
+import com.ilyeong.movieverse.core.ui.common.decoration.PosterDescriptionItemDecoration
+import com.ilyeong.movieverse.core.ui.common.fragment.BaseFragment
+import com.ilyeong.movieverse.feature.watchlist.adapter.PosterDescriptionPagingAdapter
+import com.ilyeong.movieverse.feature.watchlist.databinding.FragmentWatchlistBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
+internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentWatchlistBinding
         get() = FragmentWatchlistBinding::inflate
@@ -24,8 +26,10 @@ class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
     private val viewModel: WatchlistViewModel by viewModels()
 
     private val watchlistAdapter = PosterDescriptionPagingAdapter { movieId ->
-        val action = WatchlistFragmentDirections.actionWatchlistFragmentToDetailFragment(movieId)
-        findNavController().navigate(action)
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("android-app://com.ilyeong.movieverse/detail_fragment?movieId=${movieId}".toUri())
+
+        findNavController().navigate(request)
     }
 
     private var shouldRefresh = true

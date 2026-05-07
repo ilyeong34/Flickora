@@ -1,14 +1,14 @@
-package com.ilyeong.movieverse.presentation.watchlist
+package com.ilyeong.movieverse.feature.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.ilyeong.movieverse.data.repository.UserRepository
+import com.ilyeong.movieverse.core.data.user.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class WatchlistViewModel @Inject constructor(
+internal class WatchlistViewModel @Inject constructor(
     userRepository: UserRepository
 ) : ViewModel() {
 
