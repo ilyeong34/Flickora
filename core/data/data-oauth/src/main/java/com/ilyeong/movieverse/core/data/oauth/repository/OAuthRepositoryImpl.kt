@@ -1,0 +1,34 @@
+package com.ilyeong.movieverse.core.data.oauth.repository
+
+import android.util.Log
+import com.ilyeong.movieverse.core.data.oauth.api.OAuthApiService
+import com.ilyeong.movieverse.core.data.oauth.model.SessionIdRequest
+import com.ilyeong.movieverse.core.data.oauth.model.toDomain
+import com.ilyeong.movieverse.core.datastore.user.UserPreferenceDataSource
+import com.ilyeong.movieverse.core.model.RequestToken
+import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
+
+internal class OAuthRepositoryImpl @Inject constructor(
+    private val apiService: OAuthApiService,
+    private val userPreferenceDataSource: UserPreferenceDataSource
+) : OAuthRepository {
+
+    override fun createRequestToken() = flow<RequestToken> {
+        val requestToken = apiService.createRequestToken().toDomain()
+        emit(requestToken)
+    }
+
+    override fun createSessionId(requestToken: String) = flow<Unit> {
+        val sessionIdResponse = apiService.createSessionId(SessionIdRequest(requestToken))
+        require(sessionIdResponse.success) { "알 수 없는 오류가 발생했습니다." }
+        userPreferenceDataSource.saveSessionId(sessionIdResponse.sessionId)
+        emit(Unit)
+        Log.d("createSessionId", "createSessionId: $sessionIdResponse")
+    }
+
+    override fun logout() = flow<Unit> {
+        userPreferenceDataSource.saveSessionId("")
+        emit(Unit)
+    }
+}

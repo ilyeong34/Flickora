@@ -2,69 +2,27 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home_fragment">
+    app:startDestination="@id/home_navigation">
 
-    <fragment
-        android:id="@+id/home_fragment"
-        android:name="com.ilyeong.movieverse.presentation.home.HomeFragment"
-        android:label="@string/home">
-        <action
-            android:id="@+id/action_home_fragment_to_detail_fragment"
-            app:destination="@id/detail_fragment" />
-
-        <action
-            android:id="@+id/action_home_fragment_to_search_fragment"
-            app:destination="@id/search_fragment" />
-
-        <action
-            android:id="@+id/action_home_fragment_to_genre_fragment"
-            app:destination="@id/genre_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/watchlist_fragment"
-        android:name="com.ilyeong.movieverse.presentation.watchlist.WatchlistFragment"
-        android:label="@string/watchlist">
-        <action
-            android:id="@+id/action_watchlist_fragment_to_detail_fragment"
-            app:destination="@id/detail_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/profile_fragment"
-        android:name="com.ilyeong.movieverse.presentation.profile.ProfileFragment"
-        android:label="@string/profile" />
-
-    <fragment
-        android:id="@+id/detail_fragment"
-        android:name="com.ilyeong.movieverse.presentation.detail.DetailFragment"
-        android:label="@string/detail">
-        <argument
-            android:name="movieId"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_detail_fragment_to_detail_fragment"
-            app:destination="@id/detail_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/search_fragment"
-        android:name="com.ilyeong.movieverse.presentation.search.SearchFragment"
-        android:label="@string/search">
-        <action
-            android:id="@+id/action_search_fragment_to_detail_fragment"
-            app:destination="@id/detail_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/genre_fragment"
-        android:name="com.ilyeong.movieverse.presentation.genre.GenreFragment"
-        android:label="@string/genre">
-        <argument
-            android:name="genreId"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_genre_fragment_to_detail_fragment"
-            app:destination="@id/detail_fragment" />
-    </fragment>
+    <include
+        android:id="@+id/login_navigation"
+        app:graph="@navigation/login_navigation" />
+    <include
+        android:id="@+id/home_navigation"
+        app:graph="@navigation/home_navigation" />
+    <include
+        android:id="@+id/watchlist_navigation"
+        app:graph="@navigation/watchlist_navigation" />
+    <include
+        android:id="@+id/profile_navigation"
+        app:graph="@navigation/profile_navigation" />
+    <include
+        android:id="@+id/detail_navigation"
+        app:graph="@navigation/detail_navigation" />
+    <include
+        android:id="@+id/search_navigation"
+        app:graph="@navigation/search_navigation" />
+    <include
+        android:id="@+id/genre_navigation"
+        app:graph="@navigation/genre_navigation" />
 </navigation>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detail_navigation"
+    app:startDestination="@id/detail_fragment">
+
+    <fragment
+        android:id="@+id/detail_fragment"
+        android:name="com.ilyeong.movieverse.feature.detail.DetailFragment"
+        android:label="@string/detail">
+
+        <deepLink app:uri="android-app://com.ilyeong.movieverse/detail_fragment?movieId={movieId}" />
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_detail_fragment_to_detail_fragment"
+            app:destination="@id/detail_fragment" />
+    </fragment>
+</navigation>
