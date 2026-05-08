@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@color/dark_gray"
+    app:cardBackgroundColor="@color/black"
     app:strokeColor="@color/transparent"
     app:cardCornerRadius="@dimen/movieverse_padding_medium">
 

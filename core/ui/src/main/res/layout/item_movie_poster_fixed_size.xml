@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/movieverse_poster_default_width"
     android:layout_height="@dimen/movieverse_poster_default_height"
-    app:cardBackgroundColor="@color/dark_gray"
+    app:cardBackgroundColor="@color/black"
     app:strokeColor="@color/transparent"
     app:cardCornerRadius="@dimen/movieverse_padding_medium">
 
