@@ -21,8 +21,9 @@ internal class HeaderAdapter : Adapter<HeaderViewHolder>() {
 
     override fun getItemCount() = 1
     fun updateHeaderTitle(title: String?) {
-        if (this.title == title) return
-        this.title = title ?: ""
+        val newTitle = title.orEmpty()
+        if (this.title == newTitle) return
+        this.title = newTitle
 
         notifyItemChanged(0)
     }
