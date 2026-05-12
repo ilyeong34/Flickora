@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
@@ -26,8 +28,30 @@ internal class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
 
+    var shouldShowLoginUi: Boolean = false
+        private set
+
     private val _events = MutableSharedFlow<LoginEvent>()
     val events = _events.asSharedFlow()
+
+    fun automaticallyLogin() {
+        viewModelScope.launch {
+            try {
+                val verifySessionId = oAuthRepository.verifySessionId()
+
+                if (verifySessionId) {
+                    _events.emit(LoginEvent.NavigateToMain)
+                } else {
+                    shouldShowLoginUi = true
+                }
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+
+                _events.emit(LoginEvent.ShowMessage(e))
+                shouldShowLoginUi = true
+            }
+        }
+    }
 
     fun createRequestToken() {
         oAuthRepository.createRequestToken()
