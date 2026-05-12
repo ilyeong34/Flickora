@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
@@ -44,6 +45,8 @@ internal class LoginViewModel @Inject constructor(
                     shouldShowLoginUi = true
                 }
             } catch (e: Exception) {
+                if (e is CancellationException) throw e
+
                 _events.emit(LoginEvent.ShowMessage(e))
                 shouldShowLoginUi = true
             }
