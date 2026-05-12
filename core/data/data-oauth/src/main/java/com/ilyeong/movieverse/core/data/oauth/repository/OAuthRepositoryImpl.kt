@@ -14,6 +14,11 @@ internal class OAuthRepositoryImpl @Inject constructor(
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : OAuthRepository {
 
+    override suspend fun verifySessionId(): Boolean {
+        val sessionId = userPreferenceDataSource.getSessionId()
+        return sessionId.isNotBlank()
+    }
+
     override fun createRequestToken() = flow<RequestToken> {
         val requestToken = apiService.createRequestToken().toDomain()
         emit(requestToken)
