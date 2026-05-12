@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import com.ilyeong.movieverse.core.data.movie.repository.MovieRepository
 import com.ilyeong.movieverse.core.model.TimeWindow
 import com.ilyeong.movieverse.feature.search.model.SearchUiState
+import com.ilyeong.movieverse.feature.search.model.TrendState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -39,36 +40,22 @@ internal class SearchViewModel @Inject constructor(
     init {
         movieRepository.getTrendingMovieList(TimeWindow.DAY)
             .onStart {
-                _uiState.update { it.copy(isLoading = true) }
+                _uiState.update { it.copy(trendState = TrendState.Loading) }
                 delay(1000L)    // Loading Test
             }
             .onEach { trendMovieList ->
                 when (trendMovieList.isEmpty()) {
-                    true -> _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isFailure = true,
-                            trendMovieList = emptyList()
-                        )
+                    true -> {
+                        _uiState.update { it.copy(trendState = TrendState.Failure) }
                     }
 
-                    false -> _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isFailure = false,
-                            trendMovieList = trendMovieList
-                        )
+                    false -> {
+                        _uiState.update { it.copy(trendState = TrendState.Success(trendMovieList)) }
                     }
                 }
             }
             .catch {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isFailure = true,
-                        trendMovieList = emptyList()
-                    )
-                }
+                _uiState.update { it.copy(trendState = TrendState.Failure) }
             }
             .launchIn(viewModelScope)
     }

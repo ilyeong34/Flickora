@@ -25,6 +25,7 @@ import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
 import com.ilyeong.movieverse.feature.search.adapter.HeaderAdapter
 import com.ilyeong.movieverse.feature.search.adapter.PosterDescriptionAdapter
 import com.ilyeong.movieverse.feature.search.databinding.FragmentSearchBinding
+import com.ilyeong.movieverse.feature.search.model.TrendState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -174,27 +175,29 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                 binding.ldf.root.isVisible = false
                 searchHeaderAdapter.updateHeaderTitle(null)
 
-                if (uiState.isLoading) {
-                    binding.lpb.isVisible = true
-                    binding.tv.isVisible = false
-                    binding.rvTrend.isVisible = false
-                }
+                when (uiState.trendState) {
+                    is TrendState.Loading -> {
+                        binding.lpb.isVisible = true
+                        binding.tv.isVisible = false
+                        binding.rvTrend.isVisible = false
+                    }
 
-                if (uiState.isFailure) {
-                    binding.lpb.isVisible = false
-                    binding.tv.isVisible = true
-                    binding.rvTrend.isVisible = false
-                }
+                    is TrendState.Failure -> {
+                        binding.lpb.isVisible = false
+                        binding.tv.isVisible = true
+                        binding.rvTrend.isVisible = false
+                    }
 
-                if (uiState.trendMovieList.isNotEmpty()) {
-                    binding.lpb.isVisible = false
-                    binding.tv.isVisible = false
-                    binding.rvTrend.isVisible = true
+                    is TrendState.Success -> {
+                        binding.lpb.isVisible = false
+                        binding.tv.isVisible = false
+                        binding.rvTrend.isVisible = true
 
-                    trendHeaderAdapter.updateHeaderTitle(
-                        getString(R.string.movie_section_trending_day)
-                    )
-                    posterDescriptionAdapter.submitList(uiState.trendMovieList)
+                        trendHeaderAdapter.updateHeaderTitle(
+                            getString(R.string.movie_section_trending_day)
+                        )
+                        posterDescriptionAdapter.submitList(uiState.trendState.movieList)
+                    }
                 }
             }
         }
