@@ -25,9 +25,7 @@ import com.ilyeong.movieverse.core.ui.common.listener.ItemClickListener
 import com.ilyeong.movieverse.feature.search.adapter.HeaderAdapter
 import com.ilyeong.movieverse.feature.search.adapter.PosterDescriptionAdapter
 import com.ilyeong.movieverse.feature.search.databinding.FragmentSearchBinding
-import com.ilyeong.movieverse.feature.search.model.SearchUiState.Failure
-import com.ilyeong.movieverse.feature.search.model.SearchUiState.Loading
-import com.ilyeong.movieverse.feature.search.model.SearchUiState.Success
+import com.ilyeong.movieverse.feature.search.model.TrendState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -83,12 +81,6 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                 .distinctUntilChanged()
                 .collectLatest {
                     viewModel.setQuery(it)
-
-                    // 검색 쿼리가 없을 때
-                    if (it.isEmpty()) {
-                        binding.rvSearch.isVisible = false
-                        binding.ldf.root.isVisible = false
-                    }
                 }
         }
     }
@@ -165,36 +157,46 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private fun observeUiState() {
         repeatOnViewStarted {
-            viewModel.uiState.collect {
-                /*
-                검색 하는 중이 아니면 아래를 보여준다..
-                1. Loading -> 처음 Search 화면에 들어왔을 때
-                2. Success -> 트렌트 영화를 가져오는 데 성공했을 때
-                3. Failure -> 트렌트 영화를 가져오는 데 실패했을 때
+            viewModel.uiState.collectLatest { uiState ->
+                val query = uiState.query.trim()
+                val isSearchMode = query.isNotBlank()
 
-                검색하는 중이라면 이 위에 검색 결과를 덧 그린다.
-                검색을 취소하면 다시 위를 보여준다.
-                */
-                when (it) {
-                    is Loading -> {
+                if (isSearchMode) {
+                    // 검색 모드에서는 trend 계층을 절대 보여주지 않는다
+                    binding.lpb.isVisible = false
+                    binding.tv.isVisible = false
+                    binding.rvTrend.isVisible = false
+
+                    return@collectLatest
+                }
+
+                // 여기 아래는 query blank일 때만 실행
+                binding.rvSearch.isVisible = false
+                binding.ldf.root.isVisible = false
+                searchHeaderAdapter.updateHeaderTitle(null)
+
+                when (uiState.trendState) {
+                    is TrendState.Loading -> {
                         binding.lpb.isVisible = true
                         binding.tv.isVisible = false
                         binding.rvTrend.isVisible = false
                     }
 
-                    is Success -> {
+                    is TrendState.Failure -> {
+                        binding.lpb.isVisible = false
+                        binding.tv.isVisible = true
+                        binding.rvTrend.isVisible = false
+                    }
+
+                    is TrendState.Success -> {
                         binding.lpb.isVisible = false
                         binding.tv.isVisible = false
                         binding.rvTrend.isVisible = true
 
-                        trendHeaderAdapter.updateHeaderTitle(getString(R.string.movie_section_trending_day))
-                        posterDescriptionAdapter.submitList(it.trendMovieList)
-                    }
-
-                    is Failure -> {
-                        binding.lpb.isVisible = false
-                        binding.tv.isVisible = true
-                        binding.rvTrend.isVisible = false
+                        trendHeaderAdapter.updateHeaderTitle(
+                            getString(R.string.movie_section_trending_day)
+                        )
+                        posterDescriptionAdapter.submitList(uiState.trendState.movieList)
                     }
                 }
             }
@@ -209,27 +211,41 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         }
 
         repeatOnViewStarted {
-            searchAdapter.loadStateFlow.collectLatest {
-                // 검색 쿼리가 있을 때
-                // Trend RecyclerView 위에 덧 그린다.
-                val loading = it.refresh is LoadState.Loading
-                val notLoading = it.refresh is LoadState.NotLoading
-                val error = it.refresh is LoadState.Error
+            searchAdapter.loadStateFlow.collectLatest { loadState ->
+                val query = viewModel.uiState.value.query.trim()
 
-                //  첫 검색에 성공 했거나 이전 검색 결과가 있을 때
-                binding.rvSearch.isVisible =
-                    (notLoading || (searchAdapter.itemCount > 0))
-                // 첫 검색에 실패 했거나 재시도 중일 때
-                binding.ldf.root.isVisible =
-                    (error || (binding.ldf.root.isVisible && loading))
+                if (query.isBlank()) {
+                    binding.rvSearch.isVisible = false
+                    binding.ldf.root.isVisible = false
+                    searchHeaderAdapter.updateHeaderTitle(null)
+                    return@collectLatest
+                }
 
-                searchHeaderAdapter.updateHeaderTitle(
-                    when {
-                        (searchAdapter.itemCount > 0) -> getString(R.string.search_result)
-                        (searchAdapter.itemCount == 0) -> getString(R.string.search_result_empty)
-                        else -> null
+                val refresh = loadState.refresh
+
+                when (refresh) {
+                    is LoadState.Loading -> {
+                        binding.rvSearch.isVisible = true
+                        binding.ldf.root.isVisible = false
                     }
-                )
+
+                    is LoadState.Error -> {
+                        binding.rvSearch.isVisible = false
+                        binding.ldf.root.isVisible = true
+                    }
+
+                    is LoadState.NotLoading -> {
+                        binding.rvSearch.isVisible = true
+                        binding.ldf.root.isVisible = false
+
+                        searchHeaderAdapter.updateHeaderTitle(
+                            when (searchAdapter.itemCount == 0) {
+                                true -> getString(R.string.search_result_empty)
+                                false -> getString(R.string.search_result)
+                            }
+                        )
+                    }
+                }
             }
         }
     }

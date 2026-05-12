@@ -1,6 +1,5 @@
 package com.ilyeong.movieverse.feature.search.adapter
 
-import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.ilyeong.movieverse.feature.search.viewholder.HeaderViewHolder
@@ -21,10 +20,11 @@ internal class HeaderAdapter : Adapter<HeaderViewHolder>() {
     }
 
     override fun getItemCount() = 1
-
-    @SuppressLint("NotifyDataSetChanged")
     fun updateHeaderTitle(title: String?) {
-        this.title = title ?: ""
-        notifyDataSetChanged()
+        val newTitle = title.orEmpty()
+        if (this.title == newTitle) return
+        this.title = newTitle
+
+        notifyItemChanged(0)
     }
 }
