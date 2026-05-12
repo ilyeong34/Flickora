@@ -44,16 +44,32 @@ internal class SearchViewModel @Inject constructor(
             }
             .onEach { trendMovieList ->
                 when (trendMovieList.isEmpty()) {
-                    true -> _uiState.update { it.copy(isLoading = false, isFailure = true) }
+                    true -> _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isFailure = true,
+                            trendMovieList = emptyList()
+                        )
+                    }
+
                     false -> _uiState.update {
                         it.copy(
                             isLoading = false,
+                            isFailure = false,
                             trendMovieList = trendMovieList
                         )
                     }
                 }
             }
-            .catch { _uiState.update { it.copy(isLoading = false, isFailure = true) } }
+            .catch {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isFailure = true,
+                        trendMovieList = emptyList()
+                    )
+                }
+            }
             .launchIn(viewModelScope)
     }
 
