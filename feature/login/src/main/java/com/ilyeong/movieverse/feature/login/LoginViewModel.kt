@@ -27,7 +27,7 @@ internal class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
 
-    var isAutoLoginFinished: Boolean = false
+    var shouldShowLoginUi: Boolean = false
         private set
 
     private val _events = MutableSharedFlow<LoginEvent>()
@@ -41,11 +41,11 @@ internal class LoginViewModel @Inject constructor(
                 if (verifySessionId) {
                     _events.emit(LoginEvent.NavigateToMain)
                 } else {
-                    isAutoLoginFinished = true
+                    shouldShowLoginUi = true
                 }
             } catch (e: Exception) {
                 _events.emit(LoginEvent.ShowMessage(e))
-                isAutoLoginFinished = true
+                shouldShowLoginUi = true
             }
         }
     }

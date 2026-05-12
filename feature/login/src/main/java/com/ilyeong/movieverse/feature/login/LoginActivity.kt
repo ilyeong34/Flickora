@@ -38,7 +38,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         content.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
-                    if (viewModel.isAutoLoginFinished) {
+                    if (viewModel.shouldShowLoginUi) {
                         content.viewTreeObserver.removeOnPreDrawListener(this)
                         return true
                     } else {
