@@ -24,6 +24,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.automaticallyLogin()
+
         handleDeepLink(intent)
         setUpBtnLogin()
 

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +29,15 @@ internal class LoginViewModel @Inject constructor(
 
     private val _events = MutableSharedFlow<LoginEvent>()
     val events = _events.asSharedFlow()
+
+    fun automaticallyLogin() {
+        viewModelScope.launch {
+            val verifySessionId = oAuthRepository.verifySessionId()
+            if (verifySessionId) {
+                _events.emit(LoginEvent.NavigateToMain)
+            }
+        }
+    }
 
     fun createRequestToken() {
         oAuthRepository.createRequestToken()
