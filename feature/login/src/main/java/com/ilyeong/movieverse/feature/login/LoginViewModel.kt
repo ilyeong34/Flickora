@@ -27,14 +27,25 @@ internal class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
 
+    var isAutoLoginFinished: Boolean = false
+        private set
+
     private val _events = MutableSharedFlow<LoginEvent>()
     val events = _events.asSharedFlow()
 
     fun automaticallyLogin() {
         viewModelScope.launch {
-            val verifySessionId = oAuthRepository.verifySessionId()
-            if (verifySessionId) {
-                _events.emit(LoginEvent.NavigateToMain)
+            try {
+                val verifySessionId = oAuthRepository.verifySessionId()
+
+                if (verifySessionId) {
+                    _events.emit(LoginEvent.NavigateToMain)
+                } else {
+                    isAutoLoginFinished = true
+                }
+            } catch (e: Exception) {
+                _events.emit(LoginEvent.ShowMessage(e))
+                isAutoLoginFinished = true
             }
         }
     }

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
@@ -31,6 +33,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
         observeEvents()
         observeUiState()
+
+        val content: View = findViewById(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    if (viewModel.isAutoLoginFinished) {
+                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+            }
+        )
     }
 
     private fun handleDeepLink(intent: Intent?) {
