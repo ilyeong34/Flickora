@@ -11,6 +11,7 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.ilyeong.movieverse.core.ui.R
 import com.ilyeong.movieverse.core.ui.common.adapter.GenreAdapter
@@ -25,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlin.math.abs
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -85,14 +87,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setMovieBanner() {
+
         binding.vpBanner.adapter = posterFullAdapter
         binding.vpBanner.offscreenPageLimit = 1
         binding.vpBanner.setPageTransformer(
-            MarginPageTransformer(
-                binding.root.context.resources.getDimensionPixelSize(
-                    R.dimen.movieverse_padding_small
+            CompositePageTransformer().also {
+                it.addTransformer(
+                    MarginPageTransformer(
+                        binding.root.context.resources.getDimensionPixelSize(
+                            R.dimen.movieverse_padding_xlarge
+                        )
+                    )
                 )
-            )
+                it.addTransformer { eachPageView: View, positionFromCenter: Float ->
+                    val scale = 1 - abs(positionFromCenter)
+                    eachPageView.scaleY = 0.85f + 0.15f * scale
+                }
+            }
         )
     }
 

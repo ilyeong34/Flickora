@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="100dp"
-    android:layout_height="50dp"
-    android:orientation="horizontal"
-    android:layout_marginTop="@dimen/movieverse_padding_medium"
-    android:layout_marginStart="@dimen/movieverse_padding_small"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/genre"
+    android:textColor="@color/transparent"
+    android:layout_margin="@dimen/movieverse_padding_small"
+    android:importantForAccessibility="no"
+    android:focusable="false"
+    android:clickable="false"
     app:chipBackgroundColor="@color/gray"
-    style="@style/Widget.Material3.Chip.Suggestion.Elevated">
-
-</com.google.android.material.chip.Chip>
+    style="@style/Widget.Material3.Chip.Suggestion.Elevated" />
