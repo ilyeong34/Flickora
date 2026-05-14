@@ -6,5 +6,8 @@
     android:text="@string/genre"
     android:textColor="@color/transparent"
     android:layout_margin="@dimen/movieverse_padding_small"
+    android:importantForAccessibility="no"
+    android:focusable="false"
+    android:clickable="false"
     app:chipBackgroundColor="@color/gray"
     style="@style/Widget.Material3.Chip.Suggestion.Elevated" />
