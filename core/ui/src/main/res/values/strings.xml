@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Movieverse</string>
     <string name="btn_login">Log in with TMDB</string>
+    <string name="continue_as_guest">Continue as Guest</string>
     <string name="login">Login</string>
     <string name="home">Home</string>
     <string name="watchlist">Watchlist</string>
