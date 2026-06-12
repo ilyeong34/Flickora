@@ -24,7 +24,7 @@ internal class UserPreferenceDataSourceImpl @Inject constructor(
     }
 
     override suspend fun isGuestMode(): Boolean =
-        dataStore.data.map { preferences -> preferences[isGuestKey] ?: true }.first()
+        dataStore.data.map { preferences -> preferences[isGuestKey] ?: false }.first()
 
     override suspend fun saveGuestMode(isGuest: Boolean) {
         dataStore.edit { preferences -> preferences[isGuestKey] = isGuest }
