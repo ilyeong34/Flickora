@@ -9,5 +9,5 @@ interface OAuthRepository {
     fun createRequestToken(): Flow<RequestToken>
     fun createSessionId(requestToken: String): Flow<Unit>
     fun logout(): Flow<Unit>
-    fun continueAsGuest(): Flow<Boolean>
+    fun continueAsGuest(): Flow<Unit>
 }

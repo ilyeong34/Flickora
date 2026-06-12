@@ -39,8 +39,9 @@ internal class OAuthRepositoryImpl @Inject constructor(
         emit(Unit)
     }
 
-    override fun continueAsGuest() = flow<Boolean> {
-        val isGuestMode = userPreferenceDataSource.isGuestMode()
-        emit(isGuestMode)
+    override fun continueAsGuest() = flow<Unit> {
+        userPreferenceDataSource.saveSessionId("")
+        userPreferenceDataSource.saveGuestMode(true)
+        emit(Unit)
     }
 }
