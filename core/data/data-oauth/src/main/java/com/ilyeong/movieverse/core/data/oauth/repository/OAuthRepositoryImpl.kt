@@ -14,9 +14,10 @@ internal class OAuthRepositoryImpl @Inject constructor(
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : OAuthRepository {
 
-    override suspend fun verifySessionId(): Boolean {
-        val sessionId = userPreferenceDataSource.getSessionId()
-        return sessionId.isNotBlank()
+    override fun isAuthenticated() = flow<Boolean> {
+        val isAuthenticated = userPreferenceDataSource.isGuestMode() ||
+                userPreferenceDataSource.getSessionId().isNotBlank()
+        emit(isAuthenticated)
     }
 
     override fun createRequestToken() = flow<RequestToken> {
@@ -34,6 +35,12 @@ internal class OAuthRepositoryImpl @Inject constructor(
 
     override fun logout() = flow<Unit> {
         userPreferenceDataSource.saveSessionId("")
+        userPreferenceDataSource.saveGuestMode(false)
         emit(Unit)
+    }
+
+    override fun continueAsGuest() = flow<Boolean> {
+        val isGuestMode = userPreferenceDataSource.isGuestMode()
+        emit(isGuestMode)
     }
 }

@@ -16,9 +16,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
@@ -35,22 +33,18 @@ internal class LoginViewModel @Inject constructor(
     val events = _events.asSharedFlow()
 
     fun automaticallyLogin() {
-        viewModelScope.launch {
-            try {
-                val verifySessionId = oAuthRepository.verifySessionId()
-
-                if (verifySessionId) {
-                    _events.emit(LoginEvent.NavigateToMain)
-                } else {
-                    shouldShowLoginUi = true
+        oAuthRepository.isAuthenticated()
+            .onEach { isAuthenticated ->
+                when (isAuthenticated) {
+                    true -> _events.emit(LoginEvent.NavigateToMain)
+                    false -> shouldShowLoginUi = true
                 }
-            } catch (e: Exception) {
-                if (e is CancellationException) throw e
-
-                _events.emit(LoginEvent.ShowMessage(e))
+            }
+            .catch { error ->
+                _events.emit(LoginEvent.ShowMessage(error))
                 shouldShowLoginUi = true
             }
-        }
+            .launchIn(viewModelScope)
     }
 
     fun createRequestToken() {
@@ -64,6 +58,15 @@ internal class LoginViewModel @Inject constructor(
 
     fun createSessionId(requestToken: String) {
         oAuthRepository.createSessionId(requestToken)
+            .onStart { _uiState.update { it.copy(isLoading = true) } }
+            .onEach { _events.emit(LoginEvent.NavigateToMain) }
+            .onCompletion { _uiState.update { it.copy(isLoading = false) } }
+            .catch { _events.emit(LoginEvent.ShowMessage(it)) }
+            .launchIn(viewModelScope)
+    }
+
+    fun continueAsGuest() {
+        oAuthRepository.continueAsGuest()
             .onStart { _uiState.update { it.copy(isLoading = true) } }
             .onEach { _events.emit(LoginEvent.NavigateToMain) }
             .onCompletion { _uiState.update { it.copy(isLoading = false) } }
