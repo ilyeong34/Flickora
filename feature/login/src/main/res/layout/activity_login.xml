@@ -38,7 +38,8 @@
         android:layout_marginTop="@dimen/movieverse_padding_xlarge"
         app:layout_constraintTop_toBottomOf="@id/btn_login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/transparent" />
 
     <com.ilyeong.movieverse.core.ui.common.view.LoadingProgressBar
         android:id="@+id/pb_loading"
