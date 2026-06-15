@@ -20,6 +20,9 @@ internal interface GuestWatchlistDao {
     @Update
     suspend fun update(entity: GuestWatchlistMovieEntity)
 
+    @Query("SELECT insertedAt FROM guest_watchlist WHERE id = :movieId")
+    suspend fun getInsertedAt(movieId: Int): Long?
+
     @Query("DELETE FROM guest_watchlist WHERE id = :movieId")
     suspend fun delete(movieId: Int)
 

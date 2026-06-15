@@ -5,4 +5,5 @@ interface UserPreferenceDataSource {
     suspend fun saveSessionId(sessionId: String)
     suspend fun isGuestMode(): Boolean
     suspend fun saveGuestMode(isGuest: Boolean)
+    suspend fun saveAuthState(sessionId: String, isGuest: Boolean)
 }

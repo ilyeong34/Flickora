@@ -20,13 +20,20 @@ internal class UserPreferenceDataSourceImpl @Inject constructor(
         dataStore.data.map { preferences -> preferences[sessionIdKey] ?: "" }.first()
 
     override suspend fun saveSessionId(sessionId: String) {
-        dataStore.edit { preferences -> preferences[sessionIdKey] = sessionId }
+        saveAuthState(sessionId, isGuestMode())
     }
 
     override suspend fun isGuestMode(): Boolean =
         dataStore.data.map { preferences -> preferences[isGuestKey] ?: false }.first()
 
     override suspend fun saveGuestMode(isGuest: Boolean) {
-        dataStore.edit { preferences -> preferences[isGuestKey] = isGuest }
+        saveAuthState(getSessionId(), isGuest)
+    }
+
+    override suspend fun saveAuthState(sessionId: String, isGuest: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[sessionIdKey] = sessionId
+            preferences[isGuestKey] = isGuest
+        }
     }
 }

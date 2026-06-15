@@ -46,6 +46,8 @@ internal class UserLocalDataSourceImpl @Inject constructor(
         )
     }
 
+    // Guest watchlist is intentionally local-only.
+    // Login/logout only swaps the active datasource; we do not migrate or merge rows here.
     override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = flow {
         if (!watchlist) {
             guestWatchlistDao.delete(movie.id)
@@ -53,7 +55,8 @@ internal class UserLocalDataSourceImpl @Inject constructor(
             return@flow
         }
 
-        val entity = movie.toGuestWatchlistEntity()
+        val insertedAt = guestWatchlistDao.getInsertedAt(movie.id) ?: System.currentTimeMillis()
+        val entity = movie.toGuestWatchlistEntity(insertedAt = insertedAt)
         val insertedRowId = guestWatchlistDao.upsert(entity)
 
         if (insertedRowId == -1L) {

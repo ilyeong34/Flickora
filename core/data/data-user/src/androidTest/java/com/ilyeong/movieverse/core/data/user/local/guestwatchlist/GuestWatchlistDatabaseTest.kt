@@ -119,7 +119,7 @@ class GuestWatchlistDatabaseTest {
     }
 
     @Test
-    fun addMovieToWatchlistAssignsInsertedAtTimestamp() = runBlocking {
+    fun addMovieToWatchlistPreservesOriginalInsertedAtForExistingRows() = runBlocking {
         val dao = requireNotNull(database).guestWatchlistDao()
         val localDataSource = UserLocalDataSourceImpl(dao)
 
@@ -157,6 +157,32 @@ class GuestWatchlistDatabaseTest {
         val entities = requirePage(page)
         assertEquals(listOf(4, 9), entities.map { it.id })
         assertTrue(entities.first().insertedAt >= entities.last().insertedAt)
+
+        val originalInsertedAt = entities.single { it.id == 9 }.insertedAt
+
+        localDataSource.addMovieToWatchlist(
+            movie(
+                id = 9,
+                title = "Legacy Ninth Updated",
+                overview = "Legacy ninth overview",
+                voteAverage = 9.9,
+                voteCount = 990
+            ),
+            true
+        ).collect {}
+
+        val reloadedPage = dao.getWatchlistPagingSource().load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 10,
+                placeholdersEnabled = false
+            )
+        )
+
+        val reloadedEntities = requirePage(reloadedPage)
+        assertEquals(listOf(4, 9), reloadedEntities.map { it.id })
+        assertEquals(originalInsertedAt, reloadedEntities.single { it.id == 9 }.insertedAt)
+        assertEquals("Legacy Ninth Updated", reloadedEntities.single { it.id == 9 }.title)
     }
 
     @Test

@@ -27,20 +27,17 @@ internal class OAuthRepositoryImpl @Inject constructor(
     override fun createSessionId(requestToken: String) = flow<Unit> {
         val sessionIdResponse = apiService.createSessionId(SessionIdRequest(requestToken))
         require(sessionIdResponse.success) { "알 수 없는 오류가 발생했습니다." }
-        userPreferenceDataSource.saveSessionId(sessionIdResponse.sessionId)
-        userPreferenceDataSource.saveGuestMode(false)
+        userPreferenceDataSource.saveAuthState(sessionIdResponse.sessionId, false)
         emit(Unit)
     }
 
     override fun logout() = flow<Unit> {
-        userPreferenceDataSource.saveSessionId("")
-        userPreferenceDataSource.saveGuestMode(false)
+        userPreferenceDataSource.saveAuthState("", false)
         emit(Unit)
     }
 
     override fun continueAsGuest() = flow<Unit> {
-        userPreferenceDataSource.saveSessionId("")
-        userPreferenceDataSource.saveGuestMode(true)
+        userPreferenceDataSource.saveAuthState("", true)
         emit(Unit)
     }
 }

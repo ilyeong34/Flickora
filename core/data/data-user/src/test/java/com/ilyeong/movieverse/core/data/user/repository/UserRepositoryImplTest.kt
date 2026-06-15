@@ -152,6 +152,11 @@ class UserRepositoryImplTest {
         override suspend fun isGuestMode(): Boolean = currentIsGuestMode
 
         override suspend fun saveGuestMode(isGuest: Boolean) {
+            saveAuthState(currentSessionId, isGuest)
+        }
+
+        override suspend fun saveAuthState(sessionId: String, isGuest: Boolean) {
+            currentSessionId = sessionId
             currentIsGuestMode = isGuest
         }
     }

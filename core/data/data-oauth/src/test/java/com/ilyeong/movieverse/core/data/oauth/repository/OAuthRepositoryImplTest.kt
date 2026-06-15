@@ -47,12 +47,17 @@ class OAuthRepositoryImplTest {
 
         override suspend fun getSessionId(): String = sessionId
         override suspend fun saveSessionId(sessionId: String) {
-            this.sessionId = sessionId
+            saveAuthState(sessionId, isGuestMode)
         }
 
         override suspend fun isGuestMode(): Boolean = isGuestMode
 
         override suspend fun saveGuestMode(isGuest: Boolean) {
+            saveAuthState(sessionId, isGuest)
+        }
+
+        override suspend fun saveAuthState(sessionId: String, isGuest: Boolean) {
+            this.sessionId = sessionId
             isGuestMode = isGuest
         }
     }
