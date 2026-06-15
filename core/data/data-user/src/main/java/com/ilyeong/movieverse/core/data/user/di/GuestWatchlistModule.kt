@@ -27,7 +27,6 @@ internal abstract class GuestWatchlistModule {
             GuestWatchlistDatabase::class.java,
             DATABASE_NAME
         )
-            .fallbackToDestructiveMigration()
             .build()
 
         @Provides
