@@ -100,6 +100,23 @@ class UserRepositoryImplTest {
         assertEquals(0, remote.getAccountCalls)
     }
 
+    @Test
+    fun guest_then_login_getAccount_switchesToRemoteDatasource() = runBlocking {
+        val prefs = FakeUserPreferenceDataSource(isGuest = true)
+        val local = FakeUserLocalDataSource()
+        val remote = FakeUserRemoteDataSource()
+        val repository = UserRepositoryImpl(prefs, local, remote)
+
+        val guestAccount = repository.getAccount().first()
+        prefs.saveGuestMode(false)
+        prefs.saveSessionId("session-123")
+        val remoteAccount = repository.getAccount().first()
+
+        assertEquals("Guest", guestAccount.name)
+        assertEquals("Remote", remoteAccount.name)
+        assertEquals(1, remote.getAccountCalls)
+    }
+
     private fun movie(id: Int, title: String, overview: String): Movie = Movie(
         adult = false,
         collection = null,
@@ -124,10 +141,19 @@ class UserRepositoryImplTest {
     private class FakeUserPreferenceDataSource(
         private val isGuest: Boolean
     ) : UserPreferenceDataSource {
-        override suspend fun getSessionId(): String = ""
-        override suspend fun saveSessionId(sessionId: String) = Unit
-        override suspend fun isGuestMode(): Boolean = isGuest
-        override suspend fun saveGuestMode(isGuest: Boolean) = Unit
+        var currentSessionId: String = ""
+        var currentIsGuestMode: Boolean = isGuest
+
+        override suspend fun getSessionId(): String = currentSessionId
+        override suspend fun saveSessionId(sessionId: String) {
+            currentSessionId = sessionId
+        }
+
+        override suspend fun isGuestMode(): Boolean = currentIsGuestMode
+
+        override suspend fun saveGuestMode(isGuest: Boolean) {
+            currentIsGuestMode = isGuest
+        }
     }
 
     private class FakeUserLocalDataSource : UserLocalDataSource {

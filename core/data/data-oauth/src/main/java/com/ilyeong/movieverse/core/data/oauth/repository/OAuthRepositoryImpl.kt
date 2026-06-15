@@ -1,6 +1,5 @@
 package com.ilyeong.movieverse.core.data.oauth.repository
 
-import android.util.Log
 import com.ilyeong.movieverse.core.data.oauth.api.OAuthApiService
 import com.ilyeong.movieverse.core.data.oauth.model.SessionIdRequest
 import com.ilyeong.movieverse.core.data.oauth.model.toDomain
@@ -29,8 +28,8 @@ internal class OAuthRepositoryImpl @Inject constructor(
         val sessionIdResponse = apiService.createSessionId(SessionIdRequest(requestToken))
         require(sessionIdResponse.success) { "알 수 없는 오류가 발생했습니다." }
         userPreferenceDataSource.saveSessionId(sessionIdResponse.sessionId)
+        userPreferenceDataSource.saveGuestMode(false)
         emit(Unit)
-        Log.d("createSessionId", "createSessionId: $sessionIdResponse")
     }
 
     override fun logout() = flow<Unit> {
