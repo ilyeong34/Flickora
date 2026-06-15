@@ -1,85 +1,52 @@
 package com.ilyeong.movieverse.core.data.user.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.ilyeong.movieverse.core.data.user.api.UserApiService
-import com.ilyeong.movieverse.core.data.user.model.WatchlistPostRequest
-import com.ilyeong.movieverse.core.data.user.model.toDomain
-import com.ilyeong.movieverse.core.data.user.paging.WatchlistPagingSource
+import com.ilyeong.movieverse.core.data.user.datasource.UserLocalDataSource
+import com.ilyeong.movieverse.core.data.user.datasource.UserRemoteDataSource
 import com.ilyeong.movieverse.core.datastore.user.UserPreferenceDataSource
 import com.ilyeong.movieverse.core.model.Account
 import com.ilyeong.movieverse.core.model.AccountStates
 import com.ilyeong.movieverse.core.model.Movie
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 internal class UserRepositoryImpl @Inject constructor(
-    private val apiService: UserApiService,
-    private val userPreferenceDataSource: UserPreferenceDataSource
+    private val userPreferenceDataSource: UserPreferenceDataSource,
+    private val userLocalDataSource: UserLocalDataSource,
+    private val userRemoteDataSource: UserRemoteDataSource,
 ) : UserRepository {
-    override fun getAccount() = flow<Account> {
-        val isGuestMode = userPreferenceDataSource.isGuestMode()
 
-        if (isGuestMode) {
-            emit(Account(id = 0, avatarPath = "", name = "Guest", username = "Guest")) // local data
+    override fun getAccount(): Flow<Account> = flow {
+        if (userPreferenceDataSource.isGuestMode()) {
+            emitAll(userLocalDataSource.getAccount())
         } else {
-            val account = apiService.getAccount().toDomain()
-            emit(account)
+            emitAll(userRemoteDataSource.getAccount())
         }
     }
 
-    override fun getWatchlistMoviePaging() = flow<PagingData<Movie>> {
-        val isGuestMode = userPreferenceDataSource.isGuestMode()
-
-        if (isGuestMode) {
-            emit(PagingData.empty()) // local data
+    override fun getWatchlistMoviePaging(): Flow<PagingData<Movie>> = flow {
+        if (userPreferenceDataSource.isGuestMode()) {
+            emitAll(userLocalDataSource.getWatchlistMoviePaging())
         } else {
-            emitAll(
-                Pager(
-                    config = PagingConfig(
-                        pageSize = 20,
-                        enablePlaceholders = false
-                    ),
-                    pagingSourceFactory = { WatchlistPagingSource(apiService) }
-                ).flow
-            )
+            emitAll(userRemoteDataSource.getWatchlistMoviePaging())
         }
     }
 
-    override fun getMovieAccountStates(movieId: Int) = flow<AccountStates> {
-        val isGuestMode = userPreferenceDataSource.isGuestMode()
-
-        if (isGuestMode) {
-            emit(
-                AccountStates(
-                    id = movieId,
-                    favorite = false,
-                    rated = null,
-                    watchlist = false
-                )
-            )    // local data
+    override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = flow {
+        if (userPreferenceDataSource.isGuestMode()) {
+            emitAll(userLocalDataSource.getMovieAccountStates(movieId))
         } else {
-            val movieAccountStates = apiService.getMovieAccountStates(movieId).toDomain()
-            emit(movieAccountStates)
+            emitAll(userRemoteDataSource.getMovieAccountStates(movieId))
         }
     }
 
-    override fun addMovieToWatchlist(movieId: Int, watchlist: Boolean) = flow<Unit> {
-        // todo local data
-
-        val result = apiService.addMovieToWatchlist(
-            WatchlistPostRequest(
-                mediaType = "movie",
-                mediaId = movieId,
-                watchlist = watchlist
-            )
-        )
-
-        when (result.success) {
-            true -> emit(Unit)
-            false -> throw Exception("Error: ${result.statusCode} - ${result.statusMessage}")
+    override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = flow {
+        if (userPreferenceDataSource.isGuestMode()) {
+            emitAll(userLocalDataSource.addMovieToWatchlist(movie, watchlist))
+        } else {
+            emitAll(userRemoteDataSource.addMovieToWatchlist(movie, watchlist))
         }
     }
 }

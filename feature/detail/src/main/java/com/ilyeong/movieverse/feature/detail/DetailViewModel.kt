@@ -66,17 +66,14 @@ internal class DetailViewModel @Inject constructor(
                 movieSimilarList = similarList,
             )
         }.onStart {
-            when (_uiState.value) {
-                is DetailUiState.Loading -> {}      // no-op
-                is DetailUiState.Success -> {}      // no-op
-                is DetailUiState.Failure -> _uiState.value = DetailUiState.Loading
+            if (_uiState.value is DetailUiState.Failure) {
+                _uiState.value = DetailUiState.Loading
             }
-            // delay(1000L)    // Shimmer Test
         }.catch {
-            when (_uiState.value) {
-                is DetailUiState.Loading -> _uiState.value = DetailUiState.Failure
-                is DetailUiState.Success -> _events.emit(DetailEvent.ShowMessage(it))
-                is DetailUiState.Failure -> _events.emit(DetailEvent.ShowMessage(it))
+            if (_uiState.value is DetailUiState.Loading) {
+                _uiState.value = DetailUiState.Failure
+            } else {
+                _events.emit(DetailEvent.ShowMessage(it))
             }
         }.launchIn(viewModelScope)
     }
@@ -84,10 +81,9 @@ internal class DetailViewModel @Inject constructor(
     fun addMovieToWatchlist() {
         val currentState = uiState.value as? DetailUiState.Success ?: return
 
-        val movieId = currentState.movie.id
         val watchlist = currentState.movie.isInWatchlist.not()
 
-        userRepository.addMovieToWatchlist(movieId, watchlist)
+        userRepository.addMovieToWatchlist(currentState.movie, watchlist)
             .onEach {
                 _uiState.value =
                     currentState.copy(movie = currentState.movie.copy(isInWatchlist = watchlist))
