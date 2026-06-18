@@ -30,6 +30,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
         handleDeepLink(intent)
         setUpBtnLogin()
+        setUpBtnContinueAsGuest()
 
         observeEvents()
         observeUiState()
@@ -66,6 +67,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private fun setUpBtnLogin() {
         binding.btnLogin.setOnClickListener {
             viewModel.createRequestToken()
+        }
+    }
+
+    private fun setUpBtnContinueAsGuest() {
+        binding.btnContinueAsGuest.setOnClickListener {
+            viewModel.continueAsGuest()
         }
     }
 

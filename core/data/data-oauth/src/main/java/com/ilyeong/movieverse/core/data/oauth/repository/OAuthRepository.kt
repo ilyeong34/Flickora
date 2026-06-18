@@ -5,8 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface OAuthRepository {
 
-    suspend fun verifySessionId(): Boolean
+    fun isAuthenticated(): Flow<Boolean>
     fun createRequestToken(): Flow<RequestToken>
     fun createSessionId(requestToken: String): Flow<Unit>
     fun logout(): Flow<Unit>
+    fun continueAsGuest(): Flow<Unit>
 }

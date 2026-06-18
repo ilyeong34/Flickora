@@ -1,6 +1,5 @@
 package com.ilyeong.movieverse.core.data.oauth.repository
 
-import android.util.Log
 import com.ilyeong.movieverse.core.data.oauth.api.OAuthApiService
 import com.ilyeong.movieverse.core.data.oauth.model.SessionIdRequest
 import com.ilyeong.movieverse.core.data.oauth.model.toDomain
@@ -14,9 +13,10 @@ internal class OAuthRepositoryImpl @Inject constructor(
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : OAuthRepository {
 
-    override suspend fun verifySessionId(): Boolean {
-        val sessionId = userPreferenceDataSource.getSessionId()
-        return sessionId.isNotBlank()
+    override fun isAuthenticated() = flow<Boolean> {
+        val isAuthenticated = userPreferenceDataSource.isGuestMode() ||
+                userPreferenceDataSource.getSessionId().isNotBlank()
+        emit(isAuthenticated)
     }
 
     override fun createRequestToken() = flow<RequestToken> {
@@ -27,13 +27,17 @@ internal class OAuthRepositoryImpl @Inject constructor(
     override fun createSessionId(requestToken: String) = flow<Unit> {
         val sessionIdResponse = apiService.createSessionId(SessionIdRequest(requestToken))
         require(sessionIdResponse.success) { "알 수 없는 오류가 발생했습니다." }
-        userPreferenceDataSource.saveSessionId(sessionIdResponse.sessionId)
+        userPreferenceDataSource.saveAuthState(sessionIdResponse.sessionId, false)
         emit(Unit)
-        Log.d("createSessionId", "createSessionId: $sessionIdResponse")
     }
 
     override fun logout() = flow<Unit> {
-        userPreferenceDataSource.saveSessionId("")
+        userPreferenceDataSource.saveAuthState("", false)
+        emit(Unit)
+    }
+
+    override fun continueAsGuest() = flow<Unit> {
+        userPreferenceDataSource.saveAuthState("", true)
         emit(Unit)
     }
 }
