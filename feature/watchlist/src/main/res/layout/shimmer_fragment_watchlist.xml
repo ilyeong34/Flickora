@@ -3,41 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginHorizontal="@dimen/movieverse_padding_large">
+    android:layout_marginHorizontal="@dimen/flickora_padding_large">
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="@dimen/movieverse_padding_large" />
+        android:layout_height="@dimen/flickora_padding_large" />
 
     <include layout="@layout/shimmer_item_movie_poster_description" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="@dimen/movieverse_padding_large" />
+        android:layout_height="@dimen/flickora_padding_large" />
 
     <include layout="@layout/shimmer_item_movie_poster_description" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="@dimen/movieverse_padding_large" />
+        android:layout_height="@dimen/flickora_padding_large" />
 
     <include layout="@layout/shimmer_item_movie_poster_description" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="@dimen/movieverse_padding_large" />
+        android:layout_height="@dimen/flickora_padding_large" />
 
     <include layout="@layout/shimmer_item_movie_poster_description" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="@dimen/movieverse_padding_large" />
+        android:layout_height="@dimen/flickora_padding_large" />
 
     <include layout="@layout/shimmer_item_movie_poster_description" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="@dimen/movieverse_padding_large" />
+        android:layout_height="@dimen/flickora_padding_large" />
 
     <include layout="@layout/shimmer_item_movie_poster_description" />
 

@@ -2,11 +2,11 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/movieverse_poster_default_width"
-    android:layout_height="@dimen/movieverse_poster_default_height"
+    android:layout_width="@dimen/flickora_poster_default_width"
+    android:layout_height="@dimen/flickora_poster_default_height"
     app:cardBackgroundColor="@color/black"
     app:strokeColor="@color/transparent"
-    app:cardCornerRadius="@dimen/movieverse_padding_medium">
+    app:cardCornerRadius="@dimen/flickora_padding_medium">
 
     <ImageView
         android:id="@+id/iv_poster"
@@ -23,6 +23,6 @@
         android:gravity="center"
         android:textColor="@color/white"
         style="@style/TextAppearance.Material3.BodyMedium"
-        tools:text="영화 제목" />
+        tools:text="Movie title" />
 
 </com.google.android.material.card.MaterialCardView>

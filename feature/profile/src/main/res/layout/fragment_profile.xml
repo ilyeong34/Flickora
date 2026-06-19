@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/movieverse_padding_xlarge"
+    android:padding="@dimen/flickora_padding_xlarge"
     android:background="@color/black">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -13,7 +13,7 @@
         android:layout_height="70dp"
         android:contentDescription="@string/des_user_avatar"
         android:scaleType="centerCrop"
-        android:layout_marginTop="@dimen/movieverse_padding_xlarge"
+        android:layout_marginTop="@dimen/flickora_padding_xlarge"
         android:src="@drawable/ic_profile_filled_gray_24"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,13 +27,14 @@
         android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         android:textStyle="bold"
-        android:layout_marginStart="@dimen/movieverse_padding_xlarge"
+        android:layout_marginStart="@dimen/flickora_padding_xlarge"
         app:layout_constraintTop_toTopOf="@id/iv_avatar"
         app:layout_constraintStart_toEndOf="@id/iv_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-        tools:text="홍길동" />
+        tools:text="John Doe" />
 
+    <!--
     <ImageView
         android:id="@+id/iv_setting"
         android:layout_width="wrap_content"
@@ -51,8 +52,8 @@
         android:text="@string/setting"
         android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-        android:layout_marginTop="@dimen/movieverse_padding_xlarge"
-        android:layout_marginStart="@dimen/movieverse_padding_xlarge"
+        android:layout_marginTop="@dimen/flickora_padding_xlarge"
+        android:layout_marginStart="@dimen/flickora_padding_xlarge"
         app:layout_constraintTop_toBottomOf="@id/iv_avatar"
         app:layout_constraintStart_toEndOf="@id/iv_setting" />
 
@@ -73,8 +74,8 @@
         android:text="@string/help_center"
         android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-        android:layout_marginTop="@dimen/movieverse_padding_xlarge"
-        android:layout_marginStart="@dimen/movieverse_padding_xlarge"
+        android:layout_marginTop="@dimen/flickora_padding_xlarge"
+        android:layout_marginStart="@dimen/flickora_padding_xlarge"
         app:layout_constraintTop_toBottomOf="@id/tv_setting"
         app:layout_constraintStart_toEndOf="@id/iv_help_center" />
 
@@ -95,10 +96,11 @@
         android:text="@string/announcements"
         android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-        android:layout_marginTop="@dimen/movieverse_padding_xlarge"
-        android:layout_marginStart="@dimen/movieverse_padding_xlarge"
+        android:layout_marginTop="@dimen/flickora_padding_xlarge"
+        android:layout_marginStart="@dimen/flickora_padding_xlarge"
         app:layout_constraintTop_toBottomOf="@id/tv_help_center"
         app:layout_constraintStart_toEndOf="@id/iv_announcements" />
+    -->
 
     <ImageView
         android:id="@+id/iv_logout"
@@ -117,9 +119,9 @@
         android:text="@string/logout"
         android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-        android:layout_marginTop="@dimen/movieverse_padding_xlarge"
-        android:layout_marginStart="@dimen/movieverse_padding_xlarge"
-        app:layout_constraintTop_toBottomOf="@id/tv_announcements"
+        android:layout_marginTop="@dimen/flickora_padding_xlarge"
+        android:layout_marginStart="@dimen/flickora_padding_xlarge"
+        app:layout_constraintTop_toBottomOf="@id/iv_avatar"
         app:layout_constraintStart_toEndOf="@id/iv_logout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

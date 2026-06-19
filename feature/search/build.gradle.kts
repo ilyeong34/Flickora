@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ilyeong.movieverse.feature.search"
+    namespace = "com.ilyeong.flickora.feature.search"
     compileSdk = 35
 
     defaultConfig {

@@ -20,7 +20,7 @@
             android:id="@+id/shimmer_banner_previous"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="@dimen/movieverse_padding_xlarge"
+            android:layout_marginEnd="@dimen/flickora_padding_xlarge"
             android:paddingTop="?attr/actionBarSize"
             android:scaleY="0.85"
             app:layout_constraintDimensionRatio="1:1.7"
@@ -49,7 +49,7 @@
             android:id="@+id/shimmer_banner_next"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/movieverse_padding_xlarge"
+            android:layout_marginStart="@dimen/flickora_padding_xlarge"
             android:paddingTop="?attr/actionBarSize"
             android:scaleY="0.85"
             app:layout_constraintDimensionRatio="1:1.7"
@@ -64,10 +64,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/movieverse_padding_large"
+        android:layout_marginTop="@dimen/flickora_padding_large"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/movieverse_padding_medium"
-        android:paddingEnd="@dimen/movieverse_padding_medium">
+        android:paddingStart="@dimen/flickora_padding_medium"
+        android:paddingEnd="@dimen/flickora_padding_medium">
 
         <include layout="@layout/shimmer_item_movie_genre_chip" />
 
@@ -85,9 +85,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/movieverse_padding_large"
-        android:paddingStart="@dimen/movieverse_padding_medium"
-        android:paddingEnd="@dimen/movieverse_padding_medium">
+        android:layout_marginTop="@dimen/flickora_padding_large"
+        android:paddingStart="@dimen/flickora_padding_medium"
+        android:paddingEnd="@dimen/flickora_padding_medium">
 
         <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
 
@@ -105,9 +105,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/movieverse_padding_large"
-        android:paddingStart="@dimen/movieverse_padding_medium"
-        android:paddingEnd="@dimen/movieverse_padding_medium">
+        android:layout_marginTop="@dimen/flickora_padding_large"
+        android:paddingStart="@dimen/flickora_padding_medium"
+        android:paddingEnd="@dimen/flickora_padding_medium">
 
         <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
 

@@ -28,7 +28,7 @@
             android:id="@+id/rvWatchlist"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingHorizontal="@dimen/movieverse_padding_large"
+            android:paddingHorizontal="@dimen/flickora_padding_large"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

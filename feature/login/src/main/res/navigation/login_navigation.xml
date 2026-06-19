@@ -6,5 +6,5 @@
 
     <activity
         android:id="@+id/login_activity"
-        android:name="com.ilyeong.movieverse.feature.login.LoginActivity" />
+        android:name="com.ilyeong.flickora.feature.login.LoginActivity" />
 </navigation>

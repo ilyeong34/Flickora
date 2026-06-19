@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ilyeong.movieverse.feature.detail"
+    namespace = "com.ilyeong.flickora.feature.detail"
     compileSdk = 35
 
     defaultConfig {

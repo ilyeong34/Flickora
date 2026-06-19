@@ -6,9 +6,9 @@
 
     <fragment
         android:id="@+id/search_fragment"
-        android:name="com.ilyeong.movieverse.feature.search.SearchFragment"
+        android:name="com.ilyeong.flickora.feature.search.SearchFragment"
         android:label="@string/search">
 
-        <deepLink app:uri="android-app://com.ilyeong.movieverse/search_fragment" />
+        <deepLink app:uri="android-app://com.ilyeong.flickora/search_fragment" />
     </fragment>
 </navigation>

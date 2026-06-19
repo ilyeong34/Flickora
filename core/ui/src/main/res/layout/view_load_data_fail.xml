@@ -17,7 +17,7 @@
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/movieverse_padding_xlarge"
+        android:layout_marginTop="@dimen/flickora_padding_xlarge"
         android:text="@string/retry"
         android:textColor="@color/white"
         android:backgroundTint="@color/gray" />
