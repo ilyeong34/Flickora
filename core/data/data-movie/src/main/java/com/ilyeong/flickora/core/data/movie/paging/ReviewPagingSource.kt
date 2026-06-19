@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.ilyeong.flickora.core.data.movie.api.MovieApiService
 import com.ilyeong.flickora.core.data.movie.model.toDomain
 import com.ilyeong.flickora.core.model.Review
-import kotlinx.coroutines.delay
 
 internal class ReviewPagingSource(
     private val apiService: MovieApiService,
@@ -19,7 +18,7 @@ internal class ReviewPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Review> {
-        delay(1000L)
+        // delay(1000L)
         val page = params.key ?: 1
 
         return try {

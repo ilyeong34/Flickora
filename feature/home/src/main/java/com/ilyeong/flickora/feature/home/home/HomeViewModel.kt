@@ -10,7 +10,6 @@ import com.ilyeong.flickora.feature.home.model.HomeUiState
 import com.ilyeong.flickora.feature.home.model.HomeUiState.Loading
 import com.ilyeong.flickora.feature.home.model.HomeUiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,7 +55,7 @@ internal class HomeViewModel @Inject constructor(
         combine(trendingDayFlow, genreFlow, ::Pair)
             .onStart {
                 _uiState.value = Loading
-                delay(2000L)
+                // delay(2000L)
             }
             .onEach { _uiState.value = Success(it.first, it.second) }
             .catch { _uiState.value = HomeUiState.Failure }

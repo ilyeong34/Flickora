@@ -8,7 +8,6 @@ import com.ilyeong.flickora.core.model.Genre
 import com.ilyeong.flickora.feature.genre.model.GenreUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -29,7 +28,7 @@ internal class GenreViewModel @Inject constructor(
     val genreMoviePaging = _genreId
         .filterNotNull()
         .flatMapLatest {
-            delay(1000L)        // Shimmer Test
+            // delay(1000L)        // Shimmer Test
             movieRepository.getMovieListByGenrePaging(it)
         }
         .cachedIn(viewModelScope)

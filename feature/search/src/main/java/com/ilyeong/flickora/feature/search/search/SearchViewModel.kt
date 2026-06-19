@@ -9,7 +9,6 @@ import com.ilyeong.flickora.feature.search.model.SearchUiState
 import com.ilyeong.flickora.feature.search.model.TrendState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -41,7 +40,7 @@ internal class SearchViewModel @Inject constructor(
         movieRepository.getTrendingMovieList(TimeWindow.DAY)
             .onStart {
                 _uiState.update { it.copy(trendState = TrendState.Loading) }
-                delay(1000L)    // Loading Test
+                // delay(1000L)    // Loading Test
             }
             .onEach { trendMovieList ->
                 when (trendMovieList.isEmpty()) {
