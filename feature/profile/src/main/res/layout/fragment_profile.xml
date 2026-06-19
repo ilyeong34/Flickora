@@ -34,6 +34,7 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
         tools:text="홍길동" />
 
+    <!--
     <ImageView
         android:id="@+id/iv_setting"
         android:layout_width="wrap_content"
@@ -99,6 +100,7 @@
         android:layout_marginStart="@dimen/flickora_padding_xlarge"
         app:layout_constraintTop_toBottomOf="@id/tv_help_center"
         app:layout_constraintStart_toEndOf="@id/iv_announcements" />
+    -->
 
     <ImageView
         android:id="@+id/iv_logout"
@@ -119,7 +121,7 @@
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         android:layout_marginTop="@dimen/flickora_padding_xlarge"
         android:layout_marginStart="@dimen/flickora_padding_xlarge"
-        app:layout_constraintTop_toBottomOf="@id/tv_announcements"
+        app:layout_constraintTop_toBottomOf="@id/iv_avatar"
         app:layout_constraintStart_toEndOf="@id/iv_logout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,6 +42,8 @@ internal class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun setUnusedBtn() {
+        /*
+        아직 기능이 없는 메뉴들은 클릭 동작을 보류한다.
         val builder = MaterialAlertDialogBuilder(
             requireContext(),
             R.style.Theme_Movieserse_AlertDialog
@@ -55,6 +57,7 @@ internal class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.tvSetting.setOnClickListener { builder.show() }
         binding.tvHelpCenter.setOnClickListener { builder.show() }
         binding.tvAnnouncements.setOnClickListener { builder.show() }
+        */
     }
 
     private fun setLogoutBtn() {
