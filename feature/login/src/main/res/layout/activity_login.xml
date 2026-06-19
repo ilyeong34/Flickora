@@ -35,13 +35,13 @@
         android:layout_weight="1"
         android:text="@string/continue_as_guest"
         android:textColor="@color/white"
-        android:layout_marginTop="@dimen/movieverse_padding_xlarge"
+        android:layout_marginTop="@dimen/flickora_padding_xlarge"
         app:layout_constraintTop_toBottomOf="@id/btn_login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/transparent" />
 
-    <com.ilyeong.movieverse.core.ui.common.view.LoadingProgressBar
+    <com.ilyeong.flickora.core.ui.common.view.LoadingProgressBar
         android:id="@+id/pb_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:cardBackgroundColor="@color/black"
     app:strokeColor="@color/transparent"
-    app:cardCornerRadius="@dimen/movieverse_padding_medium">
+    app:cardCornerRadius="@dimen/flickora_padding_medium">
 
     <ImageView
         android:id="@+id/iv_poster"

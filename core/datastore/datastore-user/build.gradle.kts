@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ilyeong.movieverse.core.datastore.user"
+    namespace = "com.ilyeong.flickora.core.datastore.user"
     compileSdk = 35
 
     defaultConfig {

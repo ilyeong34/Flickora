@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/movieverse_padding_large"
+    android:layout_margin="@dimen/flickora_padding_large"
     android:background="@color/black">
 
     <androidx.cardview.widget.CardView
@@ -30,7 +30,7 @@
         android:id="@+id/tv_user_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/movieverse_padding_large"
+        android:layout_marginStart="@dimen/flickora_padding_large"
         android:textColor="@color/gray"
         android:ellipsize="end"
         android:maxLines="1"
@@ -39,7 +39,7 @@
         app:layout_constraintStart_toEndOf="@id/iv_avatarCard"
         tools:text="웜뱃" />
 
-    <com.ilyeong.movieverse.core.ui.common.view.ReviewRatingView
+    <com.ilyeong.flickora.core.ui.common.view.ReviewRatingView
         android:id="@+id/rrv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/light_gray"
-        android:lineSpacingExtra="@dimen/movieverse_padding_small"
+        android:lineSpacingExtra="@dimen/flickora_padding_small"
         android:maxLines="3"
         android:ellipsize="end"
         app:layout_constraintTop_toBottomOf="@id/tv_day"

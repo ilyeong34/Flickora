@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/movieverse_poster_default_height"
+    android:layout_height="@dimen/flickora_poster_default_height"
     android:orientation="horizontal"
     android:background="@color/black">
 
@@ -11,7 +11,7 @@
         layout="@layout/item_movie_poster_fixed_size" />
 
     <Space
-        android:layout_width="@dimen/movieverse_padding_large"
+        android:layout_width="@dimen/flickora_padding_large"
         android:layout_height="match_parent" />
 
     <LinearLayout
@@ -30,7 +30,7 @@
             android:maxLines="1"
             tools:text="베놈 : 라스트댄스" />
 
-        <com.ilyeong.movieverse.core.ui.common.view.ReviewRatingView
+        <com.ilyeong.flickora.core.ui.common.view.ReviewRatingView
             android:id="@+id/rrv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ilyeong.movieverse.feature.watchlist"
+    namespace = "com.ilyeong.flickora.feature.watchlist"
     compileSdk = 35
 
     defaultConfig {

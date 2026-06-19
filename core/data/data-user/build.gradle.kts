@@ -12,7 +12,7 @@ val properties = Properties()
 properties.load(FileInputStream("local.properties"))
 
 android {
-    namespace = "com.ilyeong.movieverse.core.data.user"
+    namespace = "com.ilyeong.flickora.core.data.user"
     compileSdk = 35
 
     defaultConfig {

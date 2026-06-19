@@ -1,0 +1,50 @@
+package com.ilyeong.flickora.core.data.movie.model
+
+import com.ilyeong.flickora.core.model.Review
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
+
+@Serializable
+internal data class ReviewResponse(
+    @SerialName("author") val author: String,
+    @SerialName("author_details") val authorDetailsResponse: AuthorDetailsResponse,
+    @SerialName("content") val content: String,
+    @SerialName("created_at") val createdAt: String,
+    @SerialName("id") val id: String,
+    @SerialName("updated_at") val updatedAt: String,
+    @SerialName("url") val url: String
+)
+
+internal fun ReviewResponse.toDomain() = Review(
+    author = author,
+    authorDetails = authorDetailsResponse.toDomain(),
+    content = content,
+    createdAt = parseUtcToLocal(createdAt),
+    id = id,
+    updatedAt = parseUtcToLocal(updatedAt),
+    url = url
+)
+
+private fun parseUtcToLocal(dateString: String): String {
+    val utcFormats = listOf(
+        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+    ).map { pattern ->
+        SimpleDateFormat(pattern, Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
+    }
+
+    val date = utcFormats.firstNotNullOfOrNull { format ->
+        runCatching { format.parse(dateString) }.getOrNull()
+    } ?: return "????-??-??"
+
+    val localFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).apply {
+        timeZone = TimeZone.getDefault()
+    }
+
+    return localFormat.format(date)
+}

@@ -6,18 +6,18 @@
     android:orientation="horizontal">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="@dimen/movieverse_poster_default_width"
-        android:layout_height="@dimen/movieverse_poster_default_height"
+        android:layout_width="@dimen/flickora_poster_default_width"
+        android:layout_height="@dimen/flickora_poster_default_height"
         android:background="@color/gray"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
 
     <Space
-        android:layout_width="@dimen/movieverse_padding_large"
+        android:layout_width="@dimen/flickora_padding_large"
         android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="@dimen/movieverse_poster_default_height"
+        android:layout_height="@dimen/flickora_poster_default_height"
         android:layout_weight="1"
         android:background="@color/gray" />
 </LinearLayout>

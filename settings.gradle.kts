@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Movieverse"
+rootProject.name = "Flickora"
 
 include(":app")
 

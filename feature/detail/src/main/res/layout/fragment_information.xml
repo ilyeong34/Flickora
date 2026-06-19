@@ -20,19 +20,19 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
-            android:layout_marginBottom="@dimen/movieverse_padding_small" />
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small" />
 
         <TextView
             android:id="@+id/tv_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
-            android:lineSpacingExtra="@dimen/movieverse_padding_small"
+            android:lineSpacingExtra="@dimen/flickora_padding_small"
             android:maxLines="5"
             android:ellipsize="end"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
-            android:layout_marginBottom="@dimen/movieverse_padding_large"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
             tools:text="환상의 케미스트리의 에디 브록과 그의 심비오트 베놈은 그들을 노리는 정체불명 존재의 추격을 피해 같이 도망을 다니게 된다. 한편 베놈의 창조자 널은 고향 행성에서부터 그들을 찾아내기 위해 지구를 침략하고 에디와 베놈은 그동안 겪어보지 못한 최악의 위기를 맞이하게 되는데…" />
 
         <TextView
@@ -42,7 +42,7 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
             tools:text="주요 등장인물" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/movieverse_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_movie_cast" />
 
@@ -60,9 +60,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
             android:text="@string/info_empty"
-            android:layout_marginTop="@dimen/movieverse_padding_small"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
-            android:layout_marginBottom="@dimen/movieverse_padding_large" />
+            android:layout_marginTop="@dimen/flickora_padding_small"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large" />
 
         <TextView
             android:layout_width="match_parent"
@@ -71,14 +71,14 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large" />
+            android:layout_marginHorizontal="@dimen/flickora_padding_large" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_movie_genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/movieverse_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_movie_genre_chip" />
 
@@ -88,8 +88,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
             android:text="@string/info_empty"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
-            android:layout_marginBottom="@dimen/movieverse_padding_large" />
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large" />
 
         <TextView
             android:layout_width="match_parent"
@@ -98,8 +98,8 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
-            android:layout_marginBottom="@dimen/movieverse_padding_small"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
             tools:text="추가 정보" />
 
         <TextView
@@ -108,8 +108,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
             android:textSize="13sp"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
-            android:layout_marginBottom="@dimen/movieverse_padding_small"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
             tools:text="개봉일   2024-10-22" />
 
         <TextView
@@ -118,8 +118,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
             android:textSize="13sp"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
-            android:layout_marginBottom="@dimen/movieverse_padding_small"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
             tools:text="재생시간   1시간 49분" />
 
         <TextView
@@ -128,8 +128,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
             android:textSize="13sp"
-            android:layout_marginHorizontal="@dimen/movieverse_padding_large"
-            android:layout_marginBottom="@dimen/movieverse_padding_small"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
             tools:text="오디오   영어" />
 
     </LinearLayout>

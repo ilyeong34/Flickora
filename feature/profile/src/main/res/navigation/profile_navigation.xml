@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/profile_fragment"
-        android:name="com.ilyeong.movieverse.feature.profile.ProfileFragment"
+        android:name="com.ilyeong.flickora.feature.profile.ProfileFragment"
         android:label="@string/profile" />
 </navigation>

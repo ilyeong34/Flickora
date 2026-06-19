@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/movieverse_padding_large"
+    android:layout_margin="@dimen/flickora_padding_large"
     android:background="@color/black">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -22,7 +22,7 @@
         android:id="@+id/tv_user_name"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/movieverse_padding_large"
+        android:layout_marginStart="@dimen/flickora_padding_large"
         android:textColor="@color/gray"
         android:ellipsize="end"
         android:maxLines="1"
@@ -44,7 +44,7 @@
         android:id="@+id/tv_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:lineSpacingExtra="@dimen/movieverse_padding_small"
+        android:lineSpacingExtra="@dimen/flickora_padding_small"
         android:maxLines="3"
         android:ellipsize="end"
         android:background="@color/gray"

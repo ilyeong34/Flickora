@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:text="@string/genre"
     android:textColor="@color/transparent"
-    android:layout_margin="@dimen/movieverse_padding_small"
+    android:layout_margin="@dimen/flickora_padding_small"
     android:importantForAccessibility="no"
     android:focusable="false"
     android:clickable="false"

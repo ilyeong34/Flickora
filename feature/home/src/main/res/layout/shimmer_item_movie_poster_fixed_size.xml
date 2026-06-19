@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/movieverse_poster_default_width"
-    android:layout_height="@dimen/movieverse_poster_default_height"
-    android:layout_margin="@dimen/movieverse_padding_small"
+    android:layout_width="@dimen/flickora_poster_default_width"
+    android:layout_height="@dimen/flickora_poster_default_height"
+    android:layout_margin="@dimen/flickora_padding_small"
     android:background="@color/gray"
     app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small">
 

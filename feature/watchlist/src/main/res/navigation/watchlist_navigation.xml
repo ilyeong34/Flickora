@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/watchlist_fragment"
-        android:name="com.ilyeong.movieverse.feature.watchlist.WatchlistFragment"
+        android:name="com.ilyeong.flickora.feature.watchlist.WatchlistFragment"
         android:label="@string/watchlist" />
 </navigation>
