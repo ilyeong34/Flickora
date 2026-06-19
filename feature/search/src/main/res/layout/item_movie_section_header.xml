@@ -9,6 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        tools:text="인기영화 Top 10" />
+        tools:text="Top 10 Popular Movies" />
 
 </LinearLayout>

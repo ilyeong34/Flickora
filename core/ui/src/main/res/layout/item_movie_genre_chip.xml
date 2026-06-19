@@ -8,6 +8,6 @@
     android:textColor="@color/white"
     app:chipBackgroundColor="@color/dark_gray"
     style="@style/Widget.Material3.Chip.Suggestion.Elevated"
-    tools:text="공포">
+    tools:text="Horror">
 
 </com.google.android.material.chip.Chip>

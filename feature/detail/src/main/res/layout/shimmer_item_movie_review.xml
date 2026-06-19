@@ -29,7 +29,7 @@
         android:background="@color/gray"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_avatar"
-        tools:text="웜뱃" />
+        tools:text="Wombat" />
 
     <TextView
         android:id="@+id/tv_day"

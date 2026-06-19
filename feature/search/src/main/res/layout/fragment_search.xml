@@ -30,7 +30,7 @@
             app:searchIcon="@drawable/ic_search_light_gray_24"
             app:closeIcon="@drawable/ic_close_24"
             app:iconifiedByDefault="false"
-            app:queryHint="영화를 검색해보세요..."
+            app:queryHint="Search for movies..."
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

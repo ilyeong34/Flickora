@@ -26,7 +26,7 @@ internal class OAuthRepositoryImpl @Inject constructor(
 
     override fun createSessionId(requestToken: String) = flow<Unit> {
         val sessionIdResponse = apiService.createSessionId(SessionIdRequest(requestToken))
-        require(sessionIdResponse.success) { "알 수 없는 오류가 발생했습니다." }
+        require(sessionIdResponse.success) { "An unknown error occurred." }
         userPreferenceDataSource.saveAuthState(sessionIdResponse.sessionId, false)
         emit(Unit)
     }

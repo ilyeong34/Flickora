@@ -32,7 +32,7 @@
         android:textStyle="bold"
         android:textSize="11sp"
         android:layout_marginBottom="5dp"
-        tools:text="톰 하디" />
+        tools:text="Tom Hardy" />
 
     <TextView
         android:id="@+id/tv_character"
@@ -41,5 +41,5 @@
         android:textColor="@color/gray"
         android:textStyle="bold"
         android:textSize="11sp"
-        tools:text="Eddie Brock / Venom 역" />
+        tools:text="As Eddie Brock / Venom" />
 </LinearLayout>

@@ -26,7 +26,7 @@ internal class MovieRepositoryImpl @Inject constructor(
     private val apiService: MovieApiService
 ) : MovieRepository {
 
-    // [개선] 정보 먼저 보내고 collect 추가한 데이터를 다시 보냄 (2번 보내기)
+    // Improvement: emit the base data first, then emit the enriched collection data again.
     override fun getMovieDetail(movieId: Int) = flow<Movie> {
         val movieDetail = apiService.getMovieDetail(movieId).toDomain()
         val collection = movieDetail.collection

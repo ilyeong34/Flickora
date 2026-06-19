@@ -35,7 +35,7 @@ internal object NetworkModule {
             level = HttpLoggingInterceptor.Level.BASIC
         }
 
-    /* @Provides Interceptor 만들면 다시 duplicate */
+    /* Creating another @Provides Interceptor causes duplicates again. */
     @Provides
     @Singleton
     fun provideBaseInterceptor(): Interceptor =

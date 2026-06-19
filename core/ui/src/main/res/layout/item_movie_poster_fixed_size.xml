@@ -23,6 +23,6 @@
         android:gravity="center"
         android:textColor="@color/white"
         style="@style/TextAppearance.Material3.BodyMedium"
-        tools:text="영화 제목" />
+        tools:text="Movie title" />
 
 </com.google.android.material.card.MaterialCardView>

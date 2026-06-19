@@ -68,22 +68,22 @@ internal class RecommendedFragment : BaseFragment<FragmentRecommendedBinding>() 
                     }
 
                     is DetailUiState.Success -> {
-                        // 시리즈 영화
+                        // Collection movies
                         collectionAdapter.submitList(it.collectionMovieList)
                         binding.tvMovieSection1.isVisible = it.collectionMovieList.isNotEmpty()
                         binding.rvMovieSection1.isVisible = it.collectionMovieList.isNotEmpty()
 
-                        // 추천 영화
+                        // Recommended movies
                         recommendationAdapter.submitList(it.movieRecommendationList)
                         binding.tvMovieSection2.isVisible = it.movieRecommendationList.isNotEmpty()
                         binding.rvMovieSection2.isVisible = it.movieRecommendationList.isNotEmpty()
 
-                        // 관련 영화
+                        // Similar movies
                         similarAdapter.submitList(it.movieSimilarList)
                         binding.tvMovieSection3.isVisible = it.movieSimilarList.isNotEmpty()
                         binding.rvMovieSection3.isVisible = it.movieSimilarList.isNotEmpty()
 
-                        // 빈 화면
+                        // Empty state
                         binding.tvReviewEmpty.isVisible =
                             it.collectionMovieList.isEmpty()
                                     && it.movieRecommendationList.isEmpty()

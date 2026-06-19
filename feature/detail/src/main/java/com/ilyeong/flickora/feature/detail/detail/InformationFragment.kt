@@ -64,23 +64,23 @@ internal class InformationFragment : BaseFragment<FragmentInformationBinding>() 
                     is DetailUiState.Success -> {
                         val movie = it.movie
 
-                        // 줄거리
+                        // Overview
                         binding.tvOverview.text = when (movie.overview.isBlank()) {
                             true -> getString(R.string.info_empty)
                             false -> movie.overview
                         }
 
-                        // 주요 등장인물
+                        // Main cast
                         castAdapter.submitList(it.cast)
                         binding.rvMovieCast.isVisible = it.cast.isNotEmpty()
                         binding.tvMovieCastEmpty.isVisible = it.cast.isEmpty()
 
-                        // 장르
+                        // Genres
                         genreAdapter.submitList(movie.genreList)
                         binding.rvMovieGenre.isVisible = movie.genreList.isNotEmpty()
                         binding.tvMovieGenreEmpty.isVisible = movie.genreList.isEmpty()
 
-                        // 추가 정보
+                        // Additional info
                         binding.tvRelease.text = when (movie.releaseDate.isBlank()) {
                             true -> getString(R.string.release_empty)
                             false -> getString(R.string.release, movie.releaseDate)

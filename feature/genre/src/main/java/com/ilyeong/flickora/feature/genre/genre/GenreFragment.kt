@@ -126,8 +126,8 @@ internal class GenreFragment : BaseFragment<FragmentGenreBinding>() {
     private fun observeUiState() {
         repeatOnViewStarted {
             viewModel.uiState.collect {
-                // 장르 이름을 가져오지 못하면 그냥 보여주지 않는다.
-                // 중요한 거는 장르 영화 목록
+                // Hide the title if we cannot resolve the genre name.
+                // The important part is the genre movie list.
                 binding.tb.title = it.genre.name
             }
         }

@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rrv"
         app:layout_constraintStart_toEndOf="@id/iv_avatarCard"
-        tools:text="웜뱃" />
+        tools:text="Wombat" />
 
     <com.ilyeong.flickora.core.ui.common.view.ReviewRatingView
         android:id="@+id/rrv"

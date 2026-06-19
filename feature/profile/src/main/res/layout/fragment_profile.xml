@@ -32,7 +32,7 @@
         app:layout_constraintStart_toEndOf="@id/iv_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-        tools:text="홍길동" />
+        tools:text="John Doe" />
 
     <!--
     <ImageView

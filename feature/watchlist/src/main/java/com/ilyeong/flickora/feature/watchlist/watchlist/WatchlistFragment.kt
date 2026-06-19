@@ -66,7 +66,7 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
 
         repeatOnViewStarted {
             watchlistAdapter.loadStateFlow.collectLatest {
-                // 최초 생성 시 한 번만 refresh 호출
+                // Call refresh only once on the initial creation.
                 if (shouldRefresh) {
                     refreshData()
                     shouldRefresh = false
@@ -74,7 +74,7 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
 
                 when (it.refresh) {
                     is LoadState.Loading -> {
-                        // 최초 로딩일 때만 Shimmer
+                        // Show shimmer only during the initial loading state.
                         if (watchlistAdapter.itemCount == 0) {
                             binding.sfl.startShimmer()
                             binding.sfl.isVisible = true

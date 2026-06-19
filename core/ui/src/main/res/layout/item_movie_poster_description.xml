@@ -28,7 +28,7 @@
             android:textSize="20sp"
             android:ellipsize="end"
             android:maxLines="1"
-            tools:text="베놈 : 라스트댄스" />
+            tools:text="Venom: The Last Dance" />
 
         <com.ilyeong.flickora.core.ui.common.view.ReviewRatingView
             android:id="@+id/rrv"
@@ -42,7 +42,7 @@
             android:layout_weight="1"
             android:textColor="@color/gray"
             android:ellipsize="end"
-            tools:text="죽음이 우리를 갈라놓을 때까지! 환상의 케미스트리의 에디 브록(톰 하디)과 그의 심비오트 베놈은 그들을 노리는 정체불명 존재의 추격을 피해 같이 도망을 다니게 된다. 한편 베놈의 창조자 ‘널’은 고향 행성에서부터 그들을 찾아내기 위해 지구를 침략하고 에디와 베놈은 그동안 겪어보지 못한 최악의 위기를 맞이하게 되는데… 마지막 운명을 건 대서사의 클라이맥스 우리는 끝까지 함께한다!" />
+            tools:text="Until death do us part! Eddie Brock (Tom Hardy) and his symbiote Venom are forced to flee together while being hunted by an unknown entity. Meanwhile, Venom's creator, 'Knull,' invades Earth from his home planet to track them down, and Eddie and Venom are thrown into the worst crisis they've ever faced... the climax of an epic final showdown, together until the end!" />
 
     </LinearLayout>
 

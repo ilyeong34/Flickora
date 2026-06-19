@@ -43,7 +43,7 @@ internal class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private fun setUnusedBtn() {
         /*
-        아직 기능이 없는 메뉴들은 클릭 동작을 보류한다.
+        Keep the click actions disabled until these menu items are implemented.
         val builder = MaterialAlertDialogBuilder(
             requireContext(),
             R.style.Theme_Movieserse_AlertDialog

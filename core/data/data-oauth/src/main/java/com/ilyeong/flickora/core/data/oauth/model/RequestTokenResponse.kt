@@ -12,6 +12,6 @@ internal data class RequestTokenResponse(
 )
 
 internal fun RequestTokenResponse.toDomain(): RequestToken {
-    require(success) { "알 수 없는 오류가 발생했습니다." }
+    require(success) { "An unknown error occurred." }
     return RequestToken(requestToken = requestToken)
 }

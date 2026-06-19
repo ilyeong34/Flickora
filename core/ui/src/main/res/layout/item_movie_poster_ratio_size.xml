@@ -32,7 +32,7 @@
             android:gravity="center"
             android:textColor="@color/white"
             style="@style/TextAppearance.Material3.BodyMedium"
-            tools:text="영화 제목"
+            tools:text="Movie title"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

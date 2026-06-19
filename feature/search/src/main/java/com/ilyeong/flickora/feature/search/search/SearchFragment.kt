@@ -162,7 +162,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                 val isSearchMode = query.isNotBlank()
 
                 if (isSearchMode) {
-                    // 검색 모드에서는 trend 계층을 절대 보여주지 않는다
+                    // Never show the trending section while search mode is active.
                     binding.lpb.isVisible = false
                     binding.tv.isVisible = false
                     binding.rvTrend.isVisible = false
@@ -170,7 +170,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                     return@collectLatest
                 }
 
-                // 여기 아래는 query blank일 때만 실행
+                // Everything below runs only when the query is blank.
                 binding.rvSearch.isVisible = false
                 binding.ldf.root.isVisible = false
                 searchHeaderAdapter.updateHeaderTitle(null)
