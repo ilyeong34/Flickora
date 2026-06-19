@@ -216,7 +216,8 @@
             android:layout_height="?attr/actionBarSize"
             android:paddingStart="@dimen/flickora_padding_large"
             android:paddingEnd="@dimen/flickora_padding_large"
-            app:navigationIcon="@drawable/ic_logo"
+            app:logo="@drawable/flickora_wordmark"
+            app:logoDescription="@string/app_name"
             app:menu="@menu/home_app_bar_menu"
             app:layout_scrollFlags="noScroll" />
     </com.google.android.material.appbar.AppBarLayout>
