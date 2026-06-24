@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.ilyeong.flickora.core.data.movie.repository.MovieRepository
+import com.ilyeong.flickora.core.data.tv.repository.TvRepository
 import com.ilyeong.flickora.core.data.user.repository.UserRepository
 import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.feature.home.model.HomeUiState
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
+    tvRepository: TvRepository,
     userRepository: UserRepository,
 ) : ViewModel() {
 
@@ -41,6 +43,7 @@ internal class HomeViewModel @Inject constructor(
             .cachedIn(viewModelScope)
     val topRatedMoviePaging =
         movieRepository.getTopRatedMoviePaging(maxPage = 3).cachedIn(viewModelScope)
+    val popularTvPaging = tvRepository.getPopularTvPaging(maxPage = 3).cachedIn(viewModelScope)
 
     init {
         loadData()

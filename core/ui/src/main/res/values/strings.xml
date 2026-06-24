@@ -18,7 +18,7 @@
     <string name="genre">Genre</string>
     <string name="more_info">More Info</string>
     <string name="release">Release Date &#160;&#160;&#160; %s</string>
-    <string name="runtime_long">Runtime &#160;&#160;&#160; %d hours %d minutes</string>
+    <string name="runtime_long">Runtime &#160;&#160;&#160; %1$d hours %2$d minutes</string>
     <string name="runtime_short">Runtime &#160;&#160;&#160; %d minutes</string>
     <string name="language">Audio &#160;&#160;&#160; %s</string>
     <string name="search_result">Search Results</string>
@@ -51,6 +51,7 @@
     <string name="movie_section_trending_week">Trending Week</string>
     <string name="movie_section_trending_day">Trending Day</string>
     <string name="movie_section_watchlist">Watchlist</string>
+    <string name="tv_section_popular">Popular TV Series</string>
     <string name="movie_section_collection">Collection</string>
     <string name="movie_section_recommendation">Recommendation</string>
     <string name="movie_section_similar">Similar</string>

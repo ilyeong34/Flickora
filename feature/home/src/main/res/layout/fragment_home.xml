@@ -180,6 +180,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:listitem="@layout/item_movie_poster_fixed_size" />
 
+            <TextView
+                android:id="@+id/tv_tv_section_popular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_movie_section6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/tv_section_popular" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_tv_section_popular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_tv_section_popular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

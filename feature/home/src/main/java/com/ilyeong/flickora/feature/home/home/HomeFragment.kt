@@ -18,6 +18,7 @@ import com.ilyeong.flickora.core.ui.common.adapter.GenreAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
+import com.ilyeong.flickora.feature.home.adapter.PopularTvPosterPagingAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterFixedPagingAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterFullAdapter
 import com.ilyeong.flickora.feature.home.databinding.FragmentHomeBinding
@@ -60,6 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val popularAdapter = PosterFixedPagingAdapter(movieClickListener)
     private val nowPlayingAdapter = PosterFixedPagingAdapter(movieClickListener)
     private val trendingAdapter = PosterFixedPagingAdapter(movieClickListener)
+    private val popularTvAdapter = PopularTvPosterPagingAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -119,6 +121,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.tvMovieSection4.text = getString(R.string.movie_section_now_playing)
         binding.tvMovieSection5.text = getString(R.string.movie_section_trending_week)
         binding.tvMovieSection6.text = getString(R.string.movie_section_top_rated)
+        binding.tvTvSectionPopular.text = getString(R.string.tv_section_popular)
 
         binding.rvMovieSection1.adapter = watchlistAdapter
         binding.rvMovieSection2.adapter = upcomingAdapter
@@ -126,6 +129,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.rvMovieSection4.adapter = nowPlayingAdapter
         binding.rvMovieSection5.adapter = trendingAdapter
         binding.rvMovieSection6.adapter = topRatedAdapter
+        binding.rvTvSectionPopular.adapter = popularTvAdapter
 
         binding.rvMovieSection1.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection2.addItemDecoration(PosterFixedItemDecoration)
@@ -133,6 +137,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.rvMovieSection4.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection5.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection6.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvTvSectionPopular.addItemDecoration(PosterFixedItemDecoration)
     }
 
     private fun setRetryBtn() {
@@ -181,6 +186,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         repeatOnViewStarted {
             viewModel.topRatedMoviePaging.collectLatest {
                 topRatedAdapter.submitData(it)
+            }
+        }
+
+        repeatOnViewStarted {
+            viewModel.popularTvPaging.collectLatest {
+                popularTvAdapter.submitData(it)
             }
         }
 
