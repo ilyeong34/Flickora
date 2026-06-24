@@ -10,6 +10,7 @@ import androidx.paging.LoadState
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.ReviewAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentReviewBinding
+import com.ilyeong.flickora.feature.detail.detail.DetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 internal class ReviewFragment : BaseFragment<FragmentReviewBinding>() {

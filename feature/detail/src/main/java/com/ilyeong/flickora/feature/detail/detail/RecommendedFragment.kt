@@ -13,6 +13,7 @@ import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.detail.adapter.PosterFixedAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentRecommendedBinding
+import com.ilyeong.flickora.feature.detail.detail.DetailViewModel
 import com.ilyeong.flickora.feature.detail.model.DetailUiState
 
 internal class RecommendedFragment : BaseFragment<FragmentRecommendedBinding>() {

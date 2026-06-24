@@ -1,4 +1,4 @@
-package com.ilyeong.flickora.feature.detail
+package com.ilyeong.flickora.feature.detail.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

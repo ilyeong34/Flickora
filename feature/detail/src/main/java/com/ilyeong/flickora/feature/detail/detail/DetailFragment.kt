@@ -1,4 +1,4 @@
-package com.ilyeong.flickora.feature.detail
+package com.ilyeong.flickora.feature.detail.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater

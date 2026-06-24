@@ -12,6 +12,7 @@ import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.CastAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentInformationBinding
+import com.ilyeong.flickora.feature.detail.detail.DetailViewModel
 import com.ilyeong.flickora.feature.detail.model.DetailUiState
 
 internal class InformationFragment : BaseFragment<FragmentInformationBinding>() {
