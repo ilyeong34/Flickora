@@ -3,10 +3,14 @@ package com.ilyeong.flickora.core.data.tv.paging
 import androidx.paging.PagingSource
 import com.ilyeong.flickora.core.data.tv.api.TvApiService
 import com.ilyeong.flickora.core.data.tv.model.AggregateCreditsResponse
+import com.ilyeong.flickora.core.data.tv.model.AiringTodayResponse
+import com.ilyeong.flickora.core.data.tv.model.OnTheAirResponse
 import com.ilyeong.flickora.core.data.tv.model.PopularResponse
 import com.ilyeong.flickora.core.data.tv.model.RecommendationListResponse
 import com.ilyeong.flickora.core.data.tv.model.ReviewListResponse
 import com.ilyeong.flickora.core.data.tv.model.SimilarListResponse
+import com.ilyeong.flickora.core.data.tv.model.TopRatedResponse
+import com.ilyeong.flickora.core.data.tv.model.TrendingResponse
 import com.ilyeong.flickora.core.data.tv.model.TvDetailResponse
 import com.ilyeong.flickora.core.data.tv.model.TvResponse
 import org.junit.Assert.assertEquals
@@ -73,5 +77,16 @@ class PopularPagingSourceTest {
         ): ReviewListResponse = error("unused")
 
         override suspend fun getPopularTvList(page: Int): PopularResponse = response
+
+        override suspend fun getTopRatedTvList(page: Int): TopRatedResponse = error("unused")
+
+        override suspend fun getTrendingTvList(
+            timeWindow: String,
+            page: Int
+        ): TrendingResponse = error("unused")
+
+        override suspend fun getOnTheAirTvList(page: Int): OnTheAirResponse = error("unused")
+
+        override suspend fun getAiringTodayTvList(page: Int): AiringTodayResponse = error("unused")
     }
 }

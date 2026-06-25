@@ -60,6 +60,19 @@ internal class HomeViewModel @Inject constructor(
     val popularTvPaging = tvRepository.getPopularTvPaging(maxPage = 3)
         .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
         .cachedIn(viewModelScope)
+    val topRatedTvPaging = tvRepository.getTopRatedTvPaging(maxPage = 3)
+        .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+        .cachedIn(viewModelScope)
+    val trendingWeekTvPaging =
+        tvRepository.getTrendingTvPaging(timeWindow = TimeWindow.WEEK, maxPage = 3)
+            .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+            .cachedIn(viewModelScope)
+    val onTheAirTvPaging = tvRepository.getOnTheAirTvPaging(maxPage = 3)
+        .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+        .cachedIn(viewModelScope)
+    val airingTodayTvPaging = tvRepository.getAiringTodayTvPaging(maxPage = 3)
+        .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+        .cachedIn(viewModelScope)
 
     init {
         loadData()

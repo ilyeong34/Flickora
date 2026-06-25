@@ -5,10 +5,15 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ilyeong.flickora.core.data.tv.api.TvApiService
 import com.ilyeong.flickora.core.data.tv.model.toDomain
+import com.ilyeong.flickora.core.data.tv.paging.AiringTodayPagingSource
+import com.ilyeong.flickora.core.data.tv.paging.OnTheAirPagingSource
 import com.ilyeong.flickora.core.data.tv.paging.PopularPagingSource
+import com.ilyeong.flickora.core.data.tv.paging.TopRatedPagingSource
+import com.ilyeong.flickora.core.data.tv.paging.TrendingPagingSource
 import com.ilyeong.flickora.core.data.tv.paging.TvReviewPagingSource
 import com.ilyeong.flickora.core.model.Cast
 import com.ilyeong.flickora.core.model.Review
+import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.core.model.TvSeries
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -55,6 +60,55 @@ internal class TvRepositoryImpl @Inject constructor(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { PopularPagingSource(apiService, maxPage) }
+        ).flow
+    }
+
+    override fun getTopRatedTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { TopRatedPagingSource(apiService, maxPage) }
+        ).flow
+    }
+
+    override fun getTrendingTvPaging(
+        timeWindow: TimeWindow,
+        maxPage: Int
+    ): Flow<PagingData<TvSeries>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                TrendingPagingSource(
+                    apiService = apiService,
+                    timeWindow = timeWindow.name.lowercase(),
+                    maxPage = maxPage
+                )
+            }
+        ).flow
+    }
+
+    override fun getOnTheAirTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { OnTheAirPagingSource(apiService, maxPage) }
+        ).flow
+    }
+
+    override fun getAiringTodayTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { AiringTodayPagingSource(apiService, maxPage) }
         ).flow
     }
 }
