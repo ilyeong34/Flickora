@@ -55,13 +55,13 @@
     <string name="des_movie_cast">Movie Cast</string>
     <string name="des_user_avatar">User Avatar</string>
 
-    <string name="movie_section_top_rated">Top Rated</string>
-    <string name="movie_section_upcoming">Upcoming</string>
-    <string name="movie_section_popular">Popular</string>
-    <string name="movie_section_now_playing">Now Playing</string>
-    <string name="movie_section_trending_week">Trending Week</string>
+    <string name="movie_section_top_rated">Top Rated Movie</string>
+    <string name="movie_section_upcoming">Upcoming Movie</string>
+    <string name="movie_section_popular">Popular Movie</string>
+    <string name="movie_section_now_playing">Now Playing Movie</string>
+    <string name="movie_section_trending_week">Trending Week Movie</string>
     <string name="movie_section_trending_day">Trending Day</string>
-    <string name="movie_section_watchlist">Watchlist</string>
+    <string name="movie_section_watchlist">Watchlist Movie</string>
     <string name="tv_section_popular">Popular TV Series</string>
     <string name="movie_section_collection">Collection</string>
     <string name="movie_section_recommendation">Recommendation</string>
