@@ -239,7 +239,7 @@
             android:layout_height="?attr/actionBarSize"
             android:paddingStart="@dimen/flickora_padding_large"
             android:paddingEnd="@dimen/flickora_padding_large"
-            app:logo="@drawable/flickora_wordmark_toolbar"
+            app:logo="@drawable/ic_flickora_foreground"
             app:logoDescription="@string/app_name"
             app:menu="@menu/home_app_bar_menu"
             app:layout_scrollFlags="noScroll" />
