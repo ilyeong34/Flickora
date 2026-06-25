@@ -4,42 +4,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
+    <ImageView
         android:id="@+id/iv_backdrop"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/dark_gray"
+        android:contentDescription="@string/des_movie_backdrop"
+        android:background="@color/medium_gray"
         app:layout_constraintDimensionRatio="1:0.5"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <View
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/poster_default"
-        android:layout_width="100dp"
-        android:layout_height="140dp"
+        android:layout_width="@dimen/flickora_poster_default_width"
+        android:layout_height="@dimen/flickora_poster_default_height"
+        android:background="@color/medium_gray"
+        app:strokeColor="@color/medium_gray"
+        app:strokeWidth="0.5dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small"
         android:layout_marginStart="@dimen/flickora_padding_large"
-        android:background="@color/dark_gray"
-        app:layout_constraintBottom_toBottomOf="@id/iv_backdrop"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/rrv" />
 
-    <View
+    <TextView
         android:id="@+id/tv_tv_title"
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="@dimen/flickora_padding_large"
-        android:background="@color/dark_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/poster_default"
-        app:layout_constraintTop_toTopOf="@id/poster_default" />
-
-    <View
-        android:id="@+id/rrv"
-        android:layout_width="120dp"
-        android:layout_height="18dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/medium_gray"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:layout_marginTop="@dimen/flickora_padding_large"
-        android:background="@color/dark_gray"
+        android:layout_marginHorizontal="@dimen/flickora_padding_large"
+        android:background="@color/medium_gray"
+        app:layout_constraintTop_toBottomOf="@id/iv_backdrop"
+        app:layout_constraintStart_toEndOf="@id/poster_default"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.ilyeong.flickora.core.ui.common.view.ReviewRatingView
+        android:id="@+id/rrv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/medium_gray"
+        app:layout_constraintTop_toBottomOf="@id/tv_tv_title"
         app:layout_constraintStart_toStartOf="@id/tv_tv_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_tv_title" />
+        app:layout_constraintEnd_toEndOf="@id/tv_tv_title" />
+
+    <TextView
+        android:id="@+id/tl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/medium_gray"
+        android:layout_marginTop="@dimen/flickora_padding_large"
+        app:layout_constraintTop_toBottomOf="@id/poster_default"
+        app:layout_constraintStart_toStartOf="@id/poster_default"
+        app:layout_constraintEnd_toEndOf="@id/rrv" />
+
+    <TextView
+        android:id="@+id/t"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/medium_gray"
+        android:layout_marginVertical="@dimen/flickora_padding_large"
+        app:layout_constraintTop_toBottomOf="@id/tl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tl"
+        app:layout_constraintEnd_toEndOf="@id/tl" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
