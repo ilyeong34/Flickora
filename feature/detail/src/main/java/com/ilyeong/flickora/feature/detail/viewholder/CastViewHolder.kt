@@ -2,7 +2,6 @@ package com.ilyeong.flickora.feature.detail.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil3.load
 import coil3.request.crossfade
 import coil3.request.error
@@ -12,7 +11,7 @@ import com.ilyeong.flickora.feature.detail.databinding.ItemMovieCastBinding
 
 class CastViewHolder private constructor(
     private val binding: ItemMovieCastBinding
-) : ViewHolder(binding.root) {
+) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
 
     fun bind(cast: Cast) {
         binding.ivCast.load(cast.profilePath) {

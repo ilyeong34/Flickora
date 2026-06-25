@@ -3,9 +3,9 @@ package com.ilyeong.flickora.feature.detail.model
 import com.ilyeong.flickora.core.model.Cast
 import com.ilyeong.flickora.core.model.Movie
 
-internal sealed interface DetailUiState {
+internal sealed interface MovieDetailUiState {
 
-    data object Loading : DetailUiState
+    data object Loading : MovieDetailUiState
 
     data class Success(
         val movie: Movie,
@@ -13,7 +13,7 @@ internal sealed interface DetailUiState {
         val collectionMovieList: List<Movie>,
         val movieRecommendationList: List<Movie>,
         val movieSimilarList: List<Movie>,
-    ) : DetailUiState
+    ) : MovieDetailUiState
 
-    data object Failure : DetailUiState
+    data object Failure : MovieDetailUiState
 }

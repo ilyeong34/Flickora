@@ -10,15 +10,15 @@ import androidx.paging.LoadState
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.ReviewAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentReviewBinding
-import com.ilyeong.flickora.feature.detail.detail.DetailViewModel
+import com.ilyeong.flickora.feature.detail.movie.MovieDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 
-internal class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
+internal class MovieReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentReviewBinding =
         FragmentReviewBinding::inflate
 
-    private val viewModel: DetailViewModel by viewModels({ requireParentFragment() })
+    private val viewModel: MovieDetailViewModel by viewModels({ requireParentFragment() })
 
     private val reviewAdapter = ReviewAdapter()
 

@@ -13,9 +13,9 @@ import coil3.request.crossfade
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
+import com.ilyeong.flickora.feature.detail.adapter.TvDetailTabAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentTvDetailBinding
-import com.ilyeong.flickora.feature.detail.tvdetail.adapter.TvDetailTabAdapter
-import com.ilyeong.flickora.feature.detail.tvdetail.model.TvDetailUiState
+import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -6,10 +6,11 @@
 
     <fragment
         android:id="@+id/detail_fragment"
-        android:name="com.ilyeong.flickora.feature.detail.detail.DetailFragment"
+        android:name="com.ilyeong.flickora.feature.detail.movie.MovieDetailFragment"
         android:label="@string/detail">
 
         <deepLink app:uri="android-app://com.ilyeong.flickora/detail_fragment?movieId={movieId}" />
+        <deepLink app:uri="android-app://com.ilyeong.flickora/movie_detail_fragment?movieId={movieId}" />
         <argument
             android:name="movieId"
             app:argType="integer" />

@@ -2,7 +2,6 @@ package com.ilyeong.flickora.feature.detail.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil3.load
 import coil3.request.crossfade
 import coil3.request.error
@@ -12,7 +11,7 @@ import com.ilyeong.flickora.feature.detail.databinding.ItemMovieReviewBinding
 
 class ReviewViewHolder private constructor(
     private val binding: ItemMovieReviewBinding
-) : ViewHolder(binding.root) {
+) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
 
     fun bind(review: Review) {
         binding.ivAvatar.load(review.authorDetails.avatarPath) {

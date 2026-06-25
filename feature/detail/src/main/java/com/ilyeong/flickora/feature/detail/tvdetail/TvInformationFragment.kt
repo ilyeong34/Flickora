@@ -12,7 +12,7 @@ import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.CastAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentTvInformationBinding
-import com.ilyeong.flickora.feature.detail.tvdetail.model.TvDetailUiState
+import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
 import kotlinx.coroutines.flow.collectLatest
 
 internal class TvInformationFragment : BaseFragment<FragmentTvInformationBinding>() {
@@ -30,7 +30,6 @@ internal class TvInformationFragment : BaseFragment<FragmentTvInformationBinding
 
         setCast()
         setGenre()
-        observeCastPreview()
         observeUiState()
     }
 
@@ -44,17 +43,6 @@ internal class TvInformationFragment : BaseFragment<FragmentTvInformationBinding
         binding.rvTvGenre.addItemDecoration(PosterFixedItemDecoration)
     }
 
-    private fun observeCastPreview() {
-        repeatOnViewStarted {
-            viewModel.castPreviewList.collectLatest { castList ->
-                val castPreviewList = castList.take(10)
-                castAdapter.submitList(castPreviewList)
-                binding.rvTvCast.isVisible = castPreviewList.isNotEmpty()
-                binding.tvTvCastEmpty.isVisible = castPreviewList.isEmpty()
-            }
-        }
-    }
-
     private fun observeUiState() {
         repeatOnViewStarted {
             viewModel.uiState.collect { state ->
@@ -65,6 +53,11 @@ internal class TvInformationFragment : BaseFragment<FragmentTvInformationBinding
 
                     is TvDetailUiState.Success -> {
                         val tvSeries = state.tvSeries
+                        val castPreviewList = state.cast
+
+                        castAdapter.submitList(castPreviewList)
+                        binding.rvTvCast.isVisible = castPreviewList.isNotEmpty()
+                        binding.tvTvCastEmpty.isVisible = castPreviewList.isEmpty()
 
                         binding.tvOverview.text = when (tvSeries.overview.isBlank()) {
                             true -> getString(R.string.info_empty)

@@ -16,6 +16,7 @@ import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.detail.adapter.PosterFixedAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentTvRecommendedBinding
+import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
 import kotlinx.coroutines.flow.collectLatest
 
 internal class TvRecommendedFragment : BaseFragment<FragmentTvRecommendedBinding>() {
@@ -47,31 +48,45 @@ internal class TvRecommendedFragment : BaseFragment<FragmentTvRecommendedBinding
     private fun setRecommendation() {
         binding.rvRecommendation.adapter = recommendationAdapter
         binding.rvRecommendation.addItemDecoration(PosterFixedItemDecoration)
+        binding.tvRecommendationSection.text = getString(R.string.movie_section_recommendation)
     }
 
     private fun setSimilar() {
         binding.rvSimilar.adapter = similarAdapter
         binding.rvSimilar.addItemDecoration(PosterFixedItemDecoration)
+        binding.tvSimilarSection.text = getString(R.string.movie_section_similar)
     }
 
     private fun observeRecommendationContent() {
         repeatOnViewStarted {
-            viewModel.recommendationList.collectLatest { recommendationList ->
-                val previewList = recommendationList.take(10)
-                recommendationAdapter.submitList(previewList.map { it.toPosterUiModel() })
-                binding.tvRecommendationSection.isVisible = previewList.isNotEmpty()
-                binding.rvRecommendation.isVisible = previewList.isNotEmpty()
-                updateEmptyState()
-            }
-        }
+            viewModel.uiState.collectLatest { state ->
+                when (state) {
+                    is TvDetailUiState.Success -> {
+                        val recommendationPreviewList = state.recommendationList
+                        recommendationAdapter.submitList(
+                            recommendationPreviewList.map { it.toPosterUiModel() }
+                        )
+                        binding.tvRecommendationSection.isVisible = recommendationPreviewList.isNotEmpty()
+                        binding.rvRecommendation.isVisible = recommendationPreviewList.isNotEmpty()
 
-        repeatOnViewStarted {
-            viewModel.similarList.collectLatest { similarList ->
-                val previewList = similarList.take(10)
-                similarAdapter.submitList(previewList.map { it.toPosterUiModel() })
-                binding.tvSimilarSection.isVisible = previewList.isNotEmpty()
-                binding.rvSimilar.isVisible = previewList.isNotEmpty()
-                updateEmptyState()
+                        val similarPreviewList = state.similarList
+                        similarAdapter.submitList(similarPreviewList.map { it.toPosterUiModel() })
+                        binding.tvSimilarSection.isVisible = similarPreviewList.isNotEmpty()
+                        binding.rvSimilar.isVisible = similarPreviewList.isNotEmpty()
+
+                        updateEmptyState()
+                    }
+
+                    else -> {
+                        recommendationAdapter.submitList(emptyList())
+                        similarAdapter.submitList(emptyList())
+                        binding.tvRecommendationSection.isVisible = false
+                        binding.rvRecommendation.isVisible = false
+                        binding.tvSimilarSection.isVisible = false
+                        binding.rvSimilar.isVisible = false
+                        updateEmptyState()
+                    }
+                }
             }
         }
     }

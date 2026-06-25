@@ -1,4 +1,4 @@
-package com.ilyeong.flickora.feature.detail.detail
+package com.ilyeong.flickora.feature.detail.movie
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,21 +13,22 @@ import coil3.request.crossfade
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
-import com.ilyeong.flickora.feature.detail.adapter.DetailTabAdapter
+import com.ilyeong.flickora.feature.detail.adapter.MovieDetailTabAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentDetailBinding
+import com.ilyeong.flickora.feature.detail.movie.MovieDetailFragmentArgs
 import com.ilyeong.flickora.feature.detail.model.DetailEvent
-import com.ilyeong.flickora.feature.detail.model.DetailUiState
+import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailFragment : BaseFragment<FragmentDetailBinding>() {
+class MovieDetailFragment : BaseFragment<FragmentDetailBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding =
         FragmentDetailBinding::inflate
 
-    private val viewModel: DetailViewModel by viewModels()
+    private val viewModel: MovieDetailViewModel by viewModels()
 
-    private val movieId: DetailFragmentArgs by navArgs()
+    private val movieId: MovieDetailFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +60,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
     }
 
     private fun setMovieTab() {
-        binding.vpTab.adapter = DetailTabAdapter(this)
+        binding.vpTab.adapter = MovieDetailTabAdapter(this)
         binding.vpTab.setUserInputEnabled(false)
 
         TabLayoutMediator(binding.tl, binding.vpTab) { tab, position ->
@@ -81,14 +82,14 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         repeatOnViewStarted {
             viewModel.uiState.collect {
                 when (it) {
-                    DetailUiState.Loading -> {
+                    MovieDetailUiState.Loading -> {
                         binding.sfl.startShimmer()
                         binding.sfl.isVisible = true
                         binding.content.isVisible = false
                         binding.ldf.root.isVisible = false
                     }
 
-                    is DetailUiState.Success -> {
+                    is MovieDetailUiState.Success -> {
                         binding.sfl.stopShimmer()
                         binding.sfl.isVisible = false
                         binding.content.isVisible = true
@@ -117,7 +118,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
                         }
                     }
 
-                    DetailUiState.Failure -> {
+                    MovieDetailUiState.Failure -> {
                         binding.sfl.stopShimmer()
                         binding.sfl.isVisible = false
                         binding.content.isVisible = false

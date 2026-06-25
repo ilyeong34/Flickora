@@ -65,8 +65,6 @@
     <string name="movie_section_trending_day">Trending Day</string>
     <string name="movie_section_watchlist">Watchlist</string>
     <string name="tv_section_popular">Popular TV Series</string>
-    <string name="tv_section_recommendation">Recommendation</string>
-    <string name="tv_section_similar">Similar</string>
     <string name="movie_section_collection">Collection</string>
     <string name="movie_section_recommendation">Recommendation</string>
     <string name="movie_section_similar">Similar</string>

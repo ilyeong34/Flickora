@@ -14,19 +14,19 @@ import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.detail.adapter.PosterFixedAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentRecommendedBinding
-import com.ilyeong.flickora.feature.detail.detail.DetailFragmentDirections
-import com.ilyeong.flickora.feature.detail.detail.DetailViewModel
-import com.ilyeong.flickora.feature.detail.model.DetailUiState
+import com.ilyeong.flickora.feature.detail.movie.MovieDetailFragmentDirections
+import com.ilyeong.flickora.feature.detail.movie.MovieDetailViewModel
+import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
 
-internal class RecommendedFragment : BaseFragment<FragmentRecommendedBinding>() {
+internal class MovieRecommendedFragment : BaseFragment<FragmentRecommendedBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentRecommendedBinding =
         FragmentRecommendedBinding::inflate
 
-    private val viewModel: DetailViewModel by viewModels({ requireParentFragment() })
+    private val viewModel: MovieDetailViewModel by viewModels({ requireParentFragment() })
 
     private val itemClickListener = ItemClickListener { movieId ->
-        val action = DetailFragmentDirections.actionDetailFragmentToDetailFragment(movieId)
+        val action = MovieDetailFragmentDirections.actionDetailFragmentToDetailFragment(movieId)
         findNavController().navigate(action)
     }
 
@@ -66,11 +66,11 @@ internal class RecommendedFragment : BaseFragment<FragmentRecommendedBinding>() 
         repeatOnViewStarted {
             viewModel.uiState.collect {
                 when (it) {
-                    is DetailUiState.Loading -> {
+                    is MovieDetailUiState.Loading -> {
                         /* no-op */
                     }
 
-                    is DetailUiState.Success -> {
+                    is MovieDetailUiState.Success -> {
                         // Collection movies
                         collectionAdapter.submitList(
                             it.collectionMovieList.map { movie -> movie.toPosterUiModel() }
@@ -99,7 +99,7 @@ internal class RecommendedFragment : BaseFragment<FragmentRecommendedBinding>() 
                                     && it.movieSimilarList.isEmpty()
                     }
 
-                    is DetailUiState.Failure -> {
+                    is MovieDetailUiState.Failure -> {
                         /* no-op */
                     }
                 }

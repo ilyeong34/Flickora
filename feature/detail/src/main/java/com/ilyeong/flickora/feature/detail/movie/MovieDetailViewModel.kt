@@ -1,4 +1,4 @@
-package com.ilyeong.flickora.feature.detail.detail
+package com.ilyeong.flickora.feature.detail.movie
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,7 +6,7 @@ import androidx.paging.cachedIn
 import com.ilyeong.flickora.core.data.movie.repository.MovieRepository
 import com.ilyeong.flickora.core.data.user.repository.UserRepository
 import com.ilyeong.flickora.feature.detail.model.DetailEvent
-import com.ilyeong.flickora.feature.detail.model.DetailUiState
+import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,13 +23,13 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
-internal class DetailViewModel @Inject constructor(
+internal class MovieDetailViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
     private val userRepository: UserRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
-    val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<MovieDetailUiState>(MovieDetailUiState.Loading)
+    val uiState: StateFlow<MovieDetailUiState> = _uiState.asStateFlow()
 
     private val _events = MutableSharedFlow<DetailEvent>()
     val events = _events.asSharedFlow()
@@ -58,7 +58,7 @@ internal class DetailViewModel @Inject constructor(
             similarListFlow,
         ) { detail, accountStates, credit, recommendationList, similarList ->
 
-            _uiState.value = DetailUiState.Success(
+            _uiState.value = MovieDetailUiState.Success(
                 movie = detail.copy(isInWatchlist = accountStates.watchlist),
                 cast = credit.cast,
                 collectionMovieList = detail.collection?.partList ?: emptyList(),
@@ -66,12 +66,12 @@ internal class DetailViewModel @Inject constructor(
                 movieSimilarList = similarList,
             )
         }.onStart {
-            if (_uiState.value is DetailUiState.Failure) {
-                _uiState.value = DetailUiState.Loading
+            if (_uiState.value is MovieDetailUiState.Failure) {
+                _uiState.value = MovieDetailUiState.Loading
             }
         }.catch {
-            if (_uiState.value is DetailUiState.Loading) {
-                _uiState.value = DetailUiState.Failure
+            if (_uiState.value is MovieDetailUiState.Loading) {
+                _uiState.value = MovieDetailUiState.Failure
             } else {
                 _events.emit(DetailEvent.ShowMessage(it))
             }
@@ -79,7 +79,7 @@ internal class DetailViewModel @Inject constructor(
     }
 
     fun addMovieToWatchlist() {
-        val currentState = uiState.value as? DetailUiState.Success ?: return
+        val currentState = uiState.value as? MovieDetailUiState.Success ?: return
 
         val watchlist = currentState.movie.isInWatchlist.not()
 

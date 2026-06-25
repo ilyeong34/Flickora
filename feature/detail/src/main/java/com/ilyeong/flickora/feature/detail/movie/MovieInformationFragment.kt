@@ -12,15 +12,15 @@ import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.CastAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentInformationBinding
-import com.ilyeong.flickora.feature.detail.detail.DetailViewModel
-import com.ilyeong.flickora.feature.detail.model.DetailUiState
+import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
+import com.ilyeong.flickora.feature.detail.movie.MovieDetailViewModel
 
-internal class InformationFragment : BaseFragment<FragmentInformationBinding>() {
+internal class MovieInformationFragment : BaseFragment<FragmentInformationBinding>() {
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentInformationBinding =
         FragmentInformationBinding::inflate
 
-    private val viewModel: DetailViewModel by viewModels({ requireParentFragment() })
+    private val viewModel: MovieDetailViewModel by viewModels({ requireParentFragment() })
 
     private val castAdapter = CastAdapter()
     private val genreAdapter = GenreAdapter()
@@ -58,11 +58,11 @@ internal class InformationFragment : BaseFragment<FragmentInformationBinding>() 
         repeatOnViewStarted {
             viewModel.uiState.collect {
                 when (it) {
-                    DetailUiState.Loading -> {
+                    MovieDetailUiState.Loading -> {
                         /* no-op */
                     }
 
-                    is DetailUiState.Success -> {
+                    is MovieDetailUiState.Success -> {
                         val movie = it.movie
 
                         // Overview
@@ -106,7 +106,7 @@ internal class InformationFragment : BaseFragment<FragmentInformationBinding>() 
                         }
                     }
 
-                    DetailUiState.Failure -> {
+                    MovieDetailUiState.Failure -> {
                         /* no-op */
                     }
                 }
