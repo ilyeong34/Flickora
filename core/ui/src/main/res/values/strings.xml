@@ -2,7 +2,6 @@
     <string name="app_name">Flickora</string>
     <string name="btn_login">Log in with TMDB</string>
     <string name="continue_as_guest">Continue as Guest</string>
-    <string name="login">Login</string>
     <string name="home">Home</string>
     <string name="watchlist">Watchlist</string>
     <string name="profile">Profile</string>
@@ -53,7 +52,6 @@
 
     <string name="des_movie_poster">Movie Poster</string>
     <string name="des_movie_backdrop">Movie Backdrop</string>
-    <string name="des_movie_bookmark">Movie Bookmark</string>
     <string name="des_movie_cast">Movie Cast</string>
     <string name="des_user_avatar">User Avatar</string>
 
