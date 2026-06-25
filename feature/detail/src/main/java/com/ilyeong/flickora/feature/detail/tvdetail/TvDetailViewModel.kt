@@ -41,7 +41,7 @@ internal class TvDetailViewModel @Inject constructor(
         _tvSeriesId.value = tvSeriesId
 
         val detailFlow = tvRepository.getTvDetail(tvSeriesId)
-        val castFlow = tvRepository.getTvCastPreview(tvSeriesId)
+        val castFlow = tvRepository.getTvCast(tvSeriesId)
         val recommendationListFlow = tvRepository.getTvRecommendationList(tvSeriesId)
         val similarListFlow = tvRepository.getTvSimilarList(tvSeriesId)
 

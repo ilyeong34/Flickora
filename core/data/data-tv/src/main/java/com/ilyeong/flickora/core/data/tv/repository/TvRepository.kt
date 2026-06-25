@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TvRepository {
     fun getTvDetail(tvSeriesId: Int): Flow<TvSeries>
-    fun getTvCastPreview(tvSeriesId: Int): Flow<List<Cast>>
+    fun getTvCast(tvSeriesId: Int): Flow<List<Cast>>
     fun getTvRecommendationList(tvSeriesId: Int): Flow<List<TvSeries>>
     fun getTvSimilarList(tvSeriesId: Int): Flow<List<TvSeries>>
     fun getTvReviewPaging(tvSeriesId: Int): Flow<PagingData<Review>>

@@ -10,7 +10,6 @@ import com.ilyeong.flickora.core.data.tv.paging.TvReviewPagingSource
 import com.ilyeong.flickora.core.model.Cast
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TvSeries
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -20,37 +19,23 @@ internal class TvRepositoryImpl @Inject constructor(
 ) : TvRepository {
 
     override fun getTvDetail(tvSeriesId: Int) = flow<TvSeries> {
-        emit(apiService.getTvDetail(tvSeriesId).toDomain())
+        val tvDetail = apiService.getTvDetail(tvSeriesId).toDomain()
+        emit(tvDetail)
     }
 
-    override fun getTvCastPreview(tvSeriesId: Int) = flow<List<Cast>> {
-        try {
-            emit(apiService.getTvAggregateCredits(tvSeriesId).toDomain())
-        } catch (e: CancellationException) {
-            throw e
-        } catch (_: Exception) {
-            emit(emptyList())
-        }
+    override fun getTvCast(tvSeriesId: Int) = flow<List<Cast>> {
+        val tvCast = apiService.getTvAggregateCredits(tvSeriesId).toDomain()
+        emit(tvCast)
     }
 
     override fun getTvRecommendationList(tvSeriesId: Int) = flow<List<TvSeries>> {
-        try {
-            emit(apiService.getTvRecommendationList(tvSeriesId).toDomain())
-        } catch (e: CancellationException) {
-            throw e
-        } catch (_: Exception) {
-            emit(emptyList())
-        }
+        val tvRecommendationList = apiService.getTvRecommendationList(tvSeriesId).toDomain()
+        emit(tvRecommendationList)
     }
 
     override fun getTvSimilarList(tvSeriesId: Int) = flow<List<TvSeries>> {
-        try {
-            emit(apiService.getTvSimilarList(tvSeriesId).toDomain())
-        } catch (e: CancellationException) {
-            throw e
-        } catch (_: Exception) {
-            emit(emptyList())
-        }
+        val tvSimilarList = apiService.getTvSimilarList(tvSeriesId).toDomain()
+        emit(tvSimilarList)
     }
 
     override fun getTvReviewPaging(tvSeriesId: Int): Flow<PagingData<Review>> {
