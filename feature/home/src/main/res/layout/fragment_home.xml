@@ -237,9 +237,7 @@
             android:id="@+id/tb"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:paddingStart="@dimen/flickora_padding_large"
-            android:paddingEnd="@dimen/flickora_padding_large"
-            app:logo="@drawable/ic_flickora_foreground"
+            app:navigationIcon="@drawable/ic_flickora_top_app_bar_24"
             app:logoDescription="@string/app_name"
             app:menu="@menu/home_app_bar_menu"
             app:layout_scrollFlags="noScroll" />
