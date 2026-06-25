@@ -331,6 +331,9 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_flickora_top_app_bar_24"
             app:logoDescription="@string/app_name"
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/TextAppearance.Flickora.HomeToolbarTitle"
+            app:titleTextColor="@color/white"
             app:menu="@menu/home_app_bar_menu"
             app:layout_scrollFlags="noScroll" />
     </com.google.android.material.appbar.AppBarLayout>

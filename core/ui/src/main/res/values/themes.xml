@@ -8,6 +8,14 @@
 
     <style name="Theme.Flickora" parent="Base.Theme.Flickora" />
 
+    <style name="TextAppearance.Flickora.HomeToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="Theme.Movieserse.SearchView.TextAppearance" parent="TextAppearance.Material3.SearchView">
         <item name="colorAccent">@color/light_gray</item>   <!-- For EditText Cursor Color -->
         <item name="android:editTextColor">@color/light_gray</item> <!-- For EditText Text Color -->
