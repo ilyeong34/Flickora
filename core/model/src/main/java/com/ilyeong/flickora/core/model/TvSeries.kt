@@ -15,4 +15,11 @@ data class TvSeries(
     val name: String,
     val voteAverage: Double,
     val voteCount: Int,
+    val lastAirDate: String = "",
+    val status: String = "",
+    val numberOfSeasons: Int = 0,
+    val episodeRunTime: List<Int> = emptyList(),
+    val spokenLanguageList: List<SpokenLanguage> = emptyList(),
+    val numberOfEpisodes: Int = 0,
+    val inProduction: Boolean = false,
 )

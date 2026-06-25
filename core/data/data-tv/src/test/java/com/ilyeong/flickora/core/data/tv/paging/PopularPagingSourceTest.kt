@@ -2,7 +2,12 @@ package com.ilyeong.flickora.core.data.tv.paging
 
 import androidx.paging.PagingSource
 import com.ilyeong.flickora.core.data.tv.api.TvApiService
+import com.ilyeong.flickora.core.data.tv.model.AggregateCreditsResponse
 import com.ilyeong.flickora.core.data.tv.model.PopularResponse
+import com.ilyeong.flickora.core.data.tv.model.RecommendationListResponse
+import com.ilyeong.flickora.core.data.tv.model.ReviewListResponse
+import com.ilyeong.flickora.core.data.tv.model.SimilarListResponse
+import com.ilyeong.flickora.core.data.tv.model.TvDetailResponse
 import com.ilyeong.flickora.core.data.tv.model.TvResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -47,6 +52,26 @@ class PopularPagingSourceTest {
     private class FakeTvApiService(
         private val response: PopularResponse
     ) : TvApiService {
+        override suspend fun getTvDetail(tvSeriesId: Int): TvDetailResponse = error("unused")
+
+        override suspend fun getTvRecommendationList(
+            tvSeriesId: Int,
+            page: Int
+        ): RecommendationListResponse = error("unused")
+
+        override suspend fun getTvSimilarList(
+            tvSeriesId: Int,
+            page: Int
+        ): SimilarListResponse = error("unused")
+
+        override suspend fun getTvAggregateCredits(tvSeriesId: Int): AggregateCreditsResponse =
+            error("unused")
+
+        override suspend fun getTvReviewList(
+            tvSeriesId: Int,
+            page: Int
+        ): ReviewListResponse = error("unused")
+
         override suspend fun getPopularTvList(page: Int): PopularResponse = response
     }
 }

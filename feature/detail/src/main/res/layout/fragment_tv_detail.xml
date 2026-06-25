@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:contentDescription="@string/des_movie_backdrop"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/test_backdrop" />
+
+        <include
+            layout="@layout/item_movie_poster_fixed_size"
+            android:id="@+id/poster_default"
+            android:layout_width="100dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="@dimen/flickora_padding_large"
+            app:layout_constraintBottom_toBottomOf="@id/rrv"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/test_poster" />
+
+        <TextView
+            android:id="@+id/tv_tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/flickora_padding_large"
+            android:layout_marginTop="@dimen/flickora_padding_large"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/poster_default"
+            app:layout_constraintTop_toBottomOf="@id/iv_backdrop"
+            tools:text="The Last of Us" />
+
+        <com.ilyeong.flickora.core.ui.common.view.ReviewRatingView
+            android:id="@+id/rrv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/flickora_padding_large"
+            app:layout_constraintStart_toStartOf="@id/tv_tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_tv_title" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/flickora_padding_large"
+            android:layout_marginTop="@dimen/flickora_padding_large"
+            android:background="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/poster_default"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/white"
+            app:tabTextColor="@color/tab_menu_selector">
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_tab"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tl"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/sfl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/shimmer_fragment_tv_detail" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <include
+        android:id="@+id/ldf"
+        layout="@layout/view_load_data_fail" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back_background_24" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

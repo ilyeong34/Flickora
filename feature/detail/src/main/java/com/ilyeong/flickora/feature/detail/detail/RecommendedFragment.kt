@@ -11,6 +11,7 @@ import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
+import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.detail.adapter.PosterFixedAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentRecommendedBinding
 import com.ilyeong.flickora.feature.detail.detail.DetailFragmentDirections
@@ -71,17 +72,23 @@ internal class RecommendedFragment : BaseFragment<FragmentRecommendedBinding>() 
 
                     is DetailUiState.Success -> {
                         // Collection movies
-                        collectionAdapter.submitList(it.collectionMovieList)
+                        collectionAdapter.submitList(
+                            it.collectionMovieList.map { movie -> movie.toPosterUiModel() }
+                        )
                         binding.tvMovieSection1.isVisible = it.collectionMovieList.isNotEmpty()
                         binding.rvMovieSection1.isVisible = it.collectionMovieList.isNotEmpty()
 
                         // Recommended movies
-                        recommendationAdapter.submitList(it.movieRecommendationList)
+                        recommendationAdapter.submitList(
+                            it.movieRecommendationList.map { movie -> movie.toPosterUiModel() }
+                        )
                         binding.tvMovieSection2.isVisible = it.movieRecommendationList.isNotEmpty()
                         binding.rvMovieSection2.isVisible = it.movieRecommendationList.isNotEmpty()
 
                         // Similar movies
-                        similarAdapter.submitList(it.movieSimilarList)
+                        similarAdapter.submitList(
+                            it.movieSimilarList.map { movie -> movie.toPosterUiModel() }
+                        )
                         binding.tvMovieSection3.isVisible = it.movieSimilarList.isNotEmpty()
                         binding.rvMovieSection3.isVisible = it.movieSimilarList.isNotEmpty()
 

@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":core:data:data-oauth"))
     implementation(project(":core:data:data-user"))
     implementation(project(":core:data:data-movie"))
+    implementation(project(":core:data:data-tv"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

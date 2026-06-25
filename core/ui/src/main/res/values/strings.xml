@@ -10,6 +10,7 @@
     <string name="detail">Detail</string>
 
     <string name="information">Information</string>
+    <string name="episode">Episode</string>
     <string name="recommended">Recommended Content</string>
     <string name="review">Review</string>
     <string name="overview">Overview</string>
@@ -17,6 +18,12 @@
     <string name="character">%s Role</string>
     <string name="genre">Genre</string>
     <string name="more_info">More Info</string>
+    <string name="first_air_date">First Air Date &#160;&#160;&#160; %s</string>
+    <string name="last_air_date">Last Air Date &#160;&#160;&#160; %s</string>
+    <string name="status">Status &#160;&#160;&#160; %s</string>
+    <string name="season_count">Season Count &#160;&#160;&#160; %d</string>
+    <string name="audio">Audio &#160;&#160;&#160; %s</string>
+    <string name="episode_runtime">Runtime Per Episode &#160;&#160;&#160; %s</string>
     <string name="release">Release Date &#160;&#160;&#160; %s</string>
     <string name="runtime_long">Runtime &#160;&#160;&#160; %1$d hours %2$d minutes</string>
     <string name="runtime_short">Runtime &#160;&#160;&#160; %d minutes</string>
@@ -33,6 +40,12 @@
 
     <string name="watchlist_empty">No items in watchlist.</string>
     <string name="info_empty">No information available.</string>
+    <string name="first_air_date_empty">First Air Date &#160;&#160;&#160; No information available.</string>
+    <string name="last_air_date_empty">Last Air Date &#160;&#160;&#160; No information available.</string>
+    <string name="status_empty">Status &#160;&#160;&#160; No information available.</string>
+    <string name="season_count_empty">Season Count &#160;&#160;&#160; No information available.</string>
+    <string name="audio_empty">Audio &#160;&#160;&#160; No information available.</string>
+    <string name="episode_runtime_empty">Runtime Per Episode &#160;&#160;&#160; No information available.</string>
     <string name="release_empty">Release Date &#160;&#160;&#160; No information available.</string>
     <string name="runtime_empty">Runtime &#160;&#160;&#160; No information available.</string>
     <string name="language_empty">Audio &#160;&#160;&#160; No information available.</string>
@@ -52,6 +65,8 @@
     <string name="movie_section_trending_day">Trending Day</string>
     <string name="movie_section_watchlist">Watchlist</string>
     <string name="tv_section_popular">Popular TV Series</string>
+    <string name="tv_section_recommendation">Recommendation</string>
+    <string name="tv_section_similar">Similar</string>
     <string name="movie_section_collection">Collection</string>
     <string name="movie_section_recommendation">Recommendation</string>
     <string name="movie_section_similar">Similar</string>

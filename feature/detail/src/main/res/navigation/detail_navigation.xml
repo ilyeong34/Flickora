@@ -17,4 +17,15 @@
             android:id="@+id/action_detail_fragment_to_detail_fragment"
             app:destination="@id/detail_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/tv_detail_fragment"
+        android:name="com.ilyeong.flickora.feature.detail.tvdetail.TvDetailFragment"
+        android:label="@string/detail">
+
+        <deepLink app:uri="android-app://com.ilyeong.flickora/tv_detail_fragment?tvSeriesId={tvSeriesId}" />
+        <argument
+            android:name="tvSeriesId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

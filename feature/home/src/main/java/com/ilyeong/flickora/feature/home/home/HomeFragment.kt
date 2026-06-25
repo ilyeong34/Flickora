@@ -18,7 +18,6 @@ import com.ilyeong.flickora.core.ui.common.adapter.GenreAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
-import com.ilyeong.flickora.feature.home.adapter.PopularTvPosterPagingAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterFixedPagingAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterFullAdapter
 import com.ilyeong.flickora.feature.home.databinding.FragmentHomeBinding
@@ -45,6 +44,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         findNavController().navigate(request)
     }
 
+    private val tvSeriesClickListener = ItemClickListener { tvSeriesId ->
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("android-app://com.ilyeong.flickora/tv_detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
+            .build()
+
+        findNavController().navigate(request)
+    }
+
     private val genreClickListener = ItemClickListener { genreId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.flickora/genre_fragment?genreId=${genreId}".toUri())
@@ -61,7 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val popularAdapter = PosterFixedPagingAdapter(movieClickListener)
     private val nowPlayingAdapter = PosterFixedPagingAdapter(movieClickListener)
     private val trendingAdapter = PosterFixedPagingAdapter(movieClickListener)
-    private val popularTvAdapter = PopularTvPosterPagingAdapter()
+    private val popularTvAdapter = PosterFixedPagingAdapter(tvSeriesClickListener)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

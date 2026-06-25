@@ -5,31 +5,31 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
-import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
+import com.ilyeong.flickora.core.ui.common.model.PosterUiModel
 import com.ilyeong.flickora.core.ui.databinding.ItemMoviePosterDescriptionBinding
 
 class PosterDescriptionViewHolder private constructor(
     private val binding: ItemMoviePosterDescriptionBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(movie: Movie, itemClickListener: ItemClickListener) {
-        binding.posterDefault.ivPoster.load(movie.posterPath) {
+    fun bind(poster: PosterUiModel, itemClickListener: ItemClickListener) {
+        binding.posterDefault.ivPoster.load(poster.posterPath) {
             crossfade(true)
             listener(
                 onStart = { _ -> binding.posterDefault.tvPosterTitle.text = null },
-                onError = { _, _ -> binding.posterDefault.tvPosterTitle.text = movie.title }
+                onError = { _, _ -> binding.posterDefault.tvPosterTitle.text = poster.title }
             )
         }
-        binding.tvTitle.text = movie.title
+        binding.tvTitle.text = poster.title
 
-        binding.rrv.rating = movie.voteAverage.toDouble()
-        binding.rrv.ratingCount = movie.voteCount
+        binding.rrv.rating = poster.voteAverage
+        binding.rrv.ratingCount = poster.voteCount
 
-        binding.tvDescription.text = movie.overview
+        binding.tvDescription.text = poster.overview
 
         binding.root.setOnClickListener {
-            itemClickListener.onItemClick(movie.id)
+            itemClickListener.onItemClick(poster.id)
         }
     }
 

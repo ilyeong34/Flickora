@@ -14,7 +14,8 @@ import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.core.model.TvSeries
-import com.ilyeong.flickora.feature.home.adapter.PopularTvPosterDiffUtil
+import com.ilyeong.flickora.core.ui.common.diffutil.PosterUiModelDiffUtil
+import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.home.model.HomeUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,7 +43,7 @@ class HomeViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun loadData_emitsSuccess_andPopularTvPagingEmitsTvSeries() = runTest {
+    fun loadData_emitsSuccess_andPopularTvPagingEmitsPosterUiModel() = runTest {
         val tvFixture = tvSeriesFixture()
         val viewModel = HomeViewModel(
             movieRepository = FakeMovieRepository(),
@@ -55,7 +56,7 @@ class HomeViewModelTest {
         assertTrue(viewModel.uiState.value is HomeUiState.Success)
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = PopularTvPosterDiffUtil,
+            diffCallback = PosterUiModelDiffUtil,
             updateCallback = NoopListUpdateCallback,
             mainDispatcher = Dispatchers.Main,
             workerDispatcher = UnconfinedTestDispatcher(testScheduler)
@@ -64,7 +65,7 @@ class HomeViewModelTest {
         differ.submitData(viewModel.popularTvPaging.first())
         advanceUntilIdle()
 
-        assertEquals(tvFixture, differ.snapshot().items.single())
+        assertEquals(tvFixture.toPosterUiModel(), differ.snapshot().items.single())
     }
 
     private class FakeMovieRepository : MovieRepository {
@@ -131,6 +132,20 @@ class HomeViewModelTest {
     private class FakeTvRepository(
         private val tvFixture: TvSeries
     ) : TvRepository {
+        override fun getTvDetail(tvSeriesId: Int): Flow<TvSeries> = unusedFlow()
+
+        override fun getTvCastPreview(tvSeriesId: Int): Flow<List<com.ilyeong.flickora.core.model.Cast>> =
+            flowOf(emptyList())
+
+        override fun getTvRecommendationList(tvSeriesId: Int): Flow<List<TvSeries>> =
+            flowOf(emptyList())
+
+        override fun getTvSimilarList(tvSeriesId: Int): Flow<List<TvSeries>> =
+            flowOf(emptyList())
+
+        override fun getTvReviewPaging(tvSeriesId: Int): Flow<PagingData<Review>> =
+            flowOf(PagingData.from(emptyList()))
+
         override fun getPopularTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> =
             flowOf(PagingData.from(listOf(tvFixture)))
     }
@@ -144,6 +159,7 @@ class HomeViewModelTest {
         override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = unusedFlow()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     class MainDispatcherRule(
         private val dispatcher: TestDispatcher = UnconfinedTestDispatcher()
     ) : TestWatcher() {
