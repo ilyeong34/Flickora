@@ -28,7 +28,7 @@ internal class TvRecommendedFragment : BaseFragment<FragmentTvRecommendedBinding
 
     private val itemClickListener = ItemClickListener { tvSeriesId ->
         val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/tv_detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
+            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
             .build()
 
         findNavController().navigate(request)
@@ -66,7 +66,8 @@ internal class TvRecommendedFragment : BaseFragment<FragmentTvRecommendedBinding
                         recommendationAdapter.submitList(
                             recommendationPreviewList.map { it.toPosterUiModel() }
                         )
-                        binding.tvRecommendationSection.isVisible = recommendationPreviewList.isNotEmpty()
+                        binding.tvRecommendationSection.isVisible =
+                            recommendationPreviewList.isNotEmpty()
                         binding.rvRecommendation.isVisible = recommendationPreviewList.isNotEmpty()
 
                         val similarPreviewList = state.similarList

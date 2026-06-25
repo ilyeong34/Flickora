@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val tvSeriesClickListener = ItemClickListener { tvSeriesId ->
         val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/tv_detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
+            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
             .build()
 
         findNavController().navigate(request)
