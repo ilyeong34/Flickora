@@ -8,35 +8,57 @@
 
     <style name="Theme.Flickora" parent="Base.Theme.Flickora" />
 
-    <style name="Theme.Movieserse.SearchView.TextAppearance" parent="TextAppearance.Material3.SearchView">
+    <style name="TextAppearance.Flickora.HomeToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Theme.Flickora.SearchView.TextAppearance" parent="TextAppearance.Material3.SearchView">
         <item name="colorAccent">@color/light_gray</item>   <!-- For EditText Cursor Color -->
         <item name="android:editTextColor">@color/light_gray</item> <!-- For EditText Text Color -->
         <item name="android:textColorHint">@color/light_gray
         </item> <!-- For EditText Hint Text Color -->
     </style>
 
-    <style name="Theme.Movieserse.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="alertDialogStyle">@style/Theme.Movieserse.AlertDialog.Style
+    <style name="Theme.Flickora.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="alertDialogStyle">@style/Theme.Flickora.AlertDialog.Style
         </item> <!-- For AlertDialog Background Color -->
-        <item name="materialAlertDialogBodyTextStyle">@style/Theme.Movieserse.AlertDialog.Text
+        <item name="materialAlertDialogBodyTextStyle">@style/Theme.Flickora.AlertDialog.Text
         </item> <!-- For AlertDialog Text Color -->
-        <item name="buttonBarPositiveButtonStyle">@style/Theme.Movieserse.AlertDialog.Button
+        <item name="buttonBarPositiveButtonStyle">@style/Theme.Flickora.AlertDialog.Button
         </item> <!-- For AlertDialog Button Text Color -->
-        <item name="buttonBarNegativeButtonStyle">@style/Theme.Movieserse.AlertDialog.Button
+        <item name="buttonBarNegativeButtonStyle">@style/Theme.Flickora.AlertDialog.Button
         </item> <!-- For AlertDialog Button Text Color -->
     </style>
 
-    <style name="Theme.Movieserse.AlertDialog.Text" parent="@style/MaterialAlertDialog.Material3.Body.Text">
+    <style name="Theme.Flickora.AlertDialog.Text" parent="@style/MaterialAlertDialog.Material3.Body.Text">
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="Theme.Movieserse.AlertDialog.Style" parent="@style/MaterialAlertDialog.Material3">
+    <style name="Theme.Flickora.AlertDialog.Style" parent="@style/MaterialAlertDialog.Material3">
         <item name="backgroundTint">@color/dim_gray</item>
     </style>
 
-    <style name="Theme.Movieserse.AlertDialog.Button" parent="Widget.Material3.Button.TextButton.Dialog">
+    <style name="Theme.Flickora.AlertDialog.Button" parent="Widget.Material3.Button.TextButton.Dialog">
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="Theme.Flickora.TextInputLayout.OutlinedBox.ExposedDropdownMenu" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.ExposedDropdownMenu</item>
+        <item name="boxStrokeColor">@color/transparent</item>
+        <item name="boxStrokeErrorColor">@color/transparent</item>
+        <item name="hintTextColor">@color/gray</item>
+        <item name="endIconTint">@color/gray</item>
+    </style>
 
+    <style name="ThemeOverlay.App.ExposedDropdownMenu" parent="">
+        <item name="colorControlActivated">@color/transparent</item>
+        <item name="colorControlNormal">@color/transparent</item>
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorOnSurface">@color/transparent</item>
+        <item name="colorError">@color/transparent</item>
+    </style>
 </resources>

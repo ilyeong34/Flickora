@@ -4,7 +4,7 @@
     android:layout_width="@dimen/flickora_poster_default_width"
     android:layout_height="@dimen/flickora_poster_default_height"
     android:layout_margin="@dimen/flickora_padding_small"
-    android:background="@color/gray"
+    android:background="@color/medium_gray"
     app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small">
 
 </com.google.android.material.imageview.ShapeableImageView>

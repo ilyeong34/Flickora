@@ -47,12 +47,16 @@ dependencies {
     implementation(project(":core:data:data-oauth"))
     implementation(project(":core:data:data-user"))
     implementation(project(":core:data:data-movie"))
+    implementation(project(":core:data:data-tv"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.paging.testing)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.espresso.core)
     
     // navigation

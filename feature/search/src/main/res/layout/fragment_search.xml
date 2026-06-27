@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/dark_gray"
-            android:theme="@style/Theme.Movieserse.SearchView.TextAppearance"
+            android:theme="@style/Theme.Flickora.SearchView.TextAppearance"
             app:searchIcon="@drawable/ic_search_light_gray_24"
             app:closeIcon="@drawable/ic_close_24"
             app:iconifiedByDefault="false"

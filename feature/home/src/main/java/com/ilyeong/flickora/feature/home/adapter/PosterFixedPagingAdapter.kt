@@ -2,14 +2,14 @@ package com.ilyeong.flickora.feature.home.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import com.ilyeong.flickora.core.model.Movie
-import com.ilyeong.flickora.core.ui.common.diffutil.MovieDiffUtil
+import com.ilyeong.flickora.core.ui.common.diffutil.PosterUiModelDiffUtil
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
+import com.ilyeong.flickora.core.ui.common.model.PosterUiModel
 import com.ilyeong.flickora.core.ui.common.viewholder.PosterFixedViewHolder
 
 internal class PosterFixedPagingAdapter(
     private val itemClickListener: ItemClickListener
-) : PagingDataAdapter<Movie, PosterFixedViewHolder>(MovieDiffUtil) {
+) : PagingDataAdapter<PosterUiModel, PosterFixedViewHolder>(PosterUiModelDiffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

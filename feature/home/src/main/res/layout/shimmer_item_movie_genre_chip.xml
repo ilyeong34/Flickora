@@ -9,5 +9,5 @@
     android:importantForAccessibility="no"
     android:focusable="false"
     android:clickable="false"
-    app:chipBackgroundColor="@color/gray"
+    app:chipBackgroundColor="@color/medium_gray"
     style="@style/Widget.Material3.Chip.Suggestion.Elevated" />

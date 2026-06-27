@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:paddingTop="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:text="@string/overview"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
+            android:ellipsize="end"
+            android:lineSpacingExtra="@dimen/flickora_padding_small"
+            android:maxLines="5"
+            android:textColor="@color/gray"
+            tools:text="A haunted and mysterious thriller following the fate of a small island town." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:text="@string/credit"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="Main Cast" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tv_cast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_movie_cast" />
+
+        <TextView
+            android:id="@+id/tv_tv_cast_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
+            android:text="@string/info_empty"
+            android:textColor="@color/gray"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:text="@string/genre"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tv_genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_movie_genre_chip" />
+
+        <TextView
+            android:id="@+id/tv_tv_genre_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
+            android:text="@string/info_empty"
+            android:textColor="@color/gray"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:text="@string/more_info"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="Additional Info" />
+
+        <TextView
+            android:id="@+id/tv_first_air_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            tools:text="First Air Date   2025-01-01" />
+
+        <TextView
+            android:id="@+id/tv_last_air_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            tools:text="Last Air Date   2025-03-01" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            tools:text="Status   Returning Series" />
+
+        <TextView
+            android:id="@+id/tv_season_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            tools:text="Season Count   3" />
+
+        <TextView
+            android:id="@+id/tv_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            tools:text="Audio   English" />
+
+        <TextView
+            android:id="@+id/tv_episode_runtime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            tools:text="Runtime Per Episode   45m" />
+
+    </LinearLayout>
+
+</ScrollView>

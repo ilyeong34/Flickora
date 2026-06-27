@@ -22,6 +22,7 @@ import com.ilyeong.flickora.core.ui.common.extension.calculateSpanCount
 import com.ilyeong.flickora.core.ui.common.extension.getQueryFlow
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
+import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.search.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.search.adapter.PosterDescriptionAdapter
 import com.ilyeong.flickora.feature.search.databinding.FragmentSearchBinding
@@ -196,7 +197,9 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                         trendHeaderAdapter.updateHeaderTitle(
                             getString(R.string.movie_section_trending_day)
                         )
-                        posterDescriptionAdapter.submitList(uiState.trendState.movieList)
+                        posterDescriptionAdapter.submitList(
+                            uiState.trendState.movieList.map { it.toPosterUiModel() }
+                        )
                     }
                 }
             }

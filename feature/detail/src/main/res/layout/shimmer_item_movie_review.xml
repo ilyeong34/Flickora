@@ -11,7 +11,7 @@
         android:id="@+id/iv_avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@color/gray"
+        android:background="@color/medium_gray"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -23,10 +23,10 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/flickora_padding_large"
-        android:textColor="@color/gray"
+        android:textColor="@color/medium_gray"
         android:ellipsize="end"
         android:maxLines="1"
-        android:background="@color/gray"
+        android:background="@color/medium_gray"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_avatar"
         tools:text="Wombat" />
@@ -36,7 +36,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textSize="11sp"
-        android:background="@color/gray"
+        android:background="@color/medium_gray"
         app:layout_constraintTop_toBottomOf="@id/tv_user_name"
         app:layout_constraintStart_toStartOf="@id/tv_user_name" />
 
@@ -47,7 +47,7 @@
         android:lineSpacingExtra="@dimen/flickora_padding_small"
         android:maxLines="3"
         android:ellipsize="end"
-        android:background="@color/gray"
+        android:background="@color/medium_gray"
         app:layout_constraintTop_toBottomOf="@id/tv_day"
         app:layout_constraintStart_toStartOf="@id/tv_day"
         app:layout_constraintEnd_toEndOf="parent"

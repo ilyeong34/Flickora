@@ -2,7 +2,6 @@
     <string name="app_name">Flickora</string>
     <string name="btn_login">Log in with TMDB</string>
     <string name="continue_as_guest">Continue as Guest</string>
-    <string name="login">Login</string>
     <string name="home">Home</string>
     <string name="watchlist">Watchlist</string>
     <string name="profile">Profile</string>
@@ -10,6 +9,8 @@
     <string name="detail">Detail</string>
 
     <string name="information">Information</string>
+    <string name="episode">Episode</string>
+    <string name="season">Season</string>
     <string name="recommended">Recommended Content</string>
     <string name="review">Review</string>
     <string name="overview">Overview</string>
@@ -17,8 +18,14 @@
     <string name="character">%s Role</string>
     <string name="genre">Genre</string>
     <string name="more_info">More Info</string>
+    <string name="first_air_date">First Air Date &#160;&#160;&#160; %s</string>
+    <string name="last_air_date">Last Air Date &#160;&#160;&#160; %s</string>
+    <string name="status">Status &#160;&#160;&#160; %s</string>
+    <string name="season_count">Season Count &#160;&#160;&#160; %d</string>
+    <string name="audio">Audio &#160;&#160;&#160; %s</string>
+    <string name="episode_runtime">Runtime Per Episode &#160;&#160;&#160; %s</string>
     <string name="release">Release Date &#160;&#160;&#160; %s</string>
-    <string name="runtime_long">Runtime &#160;&#160;&#160; %d hours %d minutes</string>
+    <string name="runtime_long">Runtime &#160;&#160;&#160; %1$d hours %2$d minutes</string>
     <string name="runtime_short">Runtime &#160;&#160;&#160; %d minutes</string>
     <string name="language">Audio &#160;&#160;&#160; %s</string>
     <string name="search_result">Search Results</string>
@@ -33,24 +40,40 @@
 
     <string name="watchlist_empty">No items in watchlist.</string>
     <string name="info_empty">No information available.</string>
+    <string name="first_air_date_empty">First Air Date &#160;&#160;&#160; No information available.</string>
+    <string name="last_air_date_empty">Last Air Date &#160;&#160;&#160; No information available.</string>
+    <string name="status_empty">Status &#160;&#160;&#160; No information available.</string>
+    <string name="season_count_empty">Season Count &#160;&#160;&#160; No information available.</string>
+    <string name="audio_empty">Audio &#160;&#160;&#160; No information available.</string>
+    <string name="episode_runtime_empty">Runtime Per Episode &#160;&#160;&#160; No information available.</string>
     <string name="release_empty">Release Date &#160;&#160;&#160; No information available.</string>
     <string name="runtime_empty">Runtime &#160;&#160;&#160; No information available.</string>
     <string name="language_empty">Audio &#160;&#160;&#160; No information available.</string>
     <string name="search_result_empty">No search results.</string>
+    <string name="episode_empty">No episode information available.</string>
+    <string name="episode_number">Episode %d</string>
+    <string name="episode_air_date_empty">Air Date &#160;&#160;&#160; No information available.</string>
+    <string name="episode_air_date">Air Date &#160;&#160;&#160; %s</string>
+    <string name="episode_runtime_short">Runtime &#160;&#160;&#160; %dm</string>
 
     <string name="des_movie_poster">Movie Poster</string>
     <string name="des_movie_backdrop">Movie Backdrop</string>
-    <string name="des_movie_bookmark">Movie Bookmark</string>
     <string name="des_movie_cast">Movie Cast</string>
+    <string name="des_tv_episode_still">TV Episode Still</string>
     <string name="des_user_avatar">User Avatar</string>
 
-    <string name="movie_section_top_rated">Top Rated</string>
-    <string name="movie_section_upcoming">Upcoming</string>
-    <string name="movie_section_popular">Popular</string>
-    <string name="movie_section_now_playing">Now Playing</string>
-    <string name="movie_section_trending_week">Trending Week</string>
+    <string name="movie_section_top_rated">Top Rated Movie</string>
+    <string name="movie_section_upcoming">Upcoming Movie</string>
+    <string name="movie_section_popular">Popular Movie</string>
+    <string name="movie_section_now_playing">Now Playing Movie</string>
+    <string name="movie_section_trending_week">Trending Week Movie</string>
     <string name="movie_section_trending_day">Trending Day</string>
-    <string name="movie_section_watchlist">Watchlist</string>
+    <string name="movie_section_watchlist">Watchlist Movie</string>
+    <string name="tv_section_popular">Popular TV Series</string>
+    <string name="tv_section_top_rated">Top Rated TV Series</string>
+    <string name="tv_section_trending_week">Trending Week TV Series</string>
+    <string name="tv_section_on_the_air">On The Air TV Series</string>
+    <string name="tv_section_airing_today">Airing Today TV Series</string>
     <string name="movie_section_collection">Collection</string>
     <string name="movie_section_recommendation">Recommendation</string>
     <string name="movie_section_similar">Similar</string>

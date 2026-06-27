@@ -29,6 +29,7 @@ include(":core:network")
 include(":core:datastore:datastore-user")
 include(":core:data:data-user")
 include(":core:data:data-movie")
+include(":core:data:data-tv")
 include(":core:data:data-oauth")
 
 include(":feature:detail")
