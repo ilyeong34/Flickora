@@ -13,6 +13,7 @@ import com.ilyeong.flickora.core.data.tv.model.TopRatedResponse
 import com.ilyeong.flickora.core.data.tv.model.TrendingResponse
 import com.ilyeong.flickora.core.data.tv.model.TvDetailResponse
 import com.ilyeong.flickora.core.data.tv.model.TvResponse
+import com.ilyeong.flickora.core.data.tv.model.TvSeasonDetailResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -57,6 +58,11 @@ class PopularPagingSourceTest {
         private val response: PopularResponse
     ) : TvApiService {
         override suspend fun getTvDetail(tvSeriesId: Int): TvDetailResponse = error("unused")
+
+        override suspend fun getTvSeasonDetail(
+            tvSeriesId: Int,
+            seasonNumber: Int
+        ): TvSeasonDetailResponse = error("unused")
 
         override suspend fun getTvRecommendationList(
             tvSeriesId: Int,

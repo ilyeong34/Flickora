@@ -10,6 +10,7 @@ import com.ilyeong.flickora.core.data.tv.model.SimilarListResponse
 import com.ilyeong.flickora.core.data.tv.model.TopRatedResponse
 import com.ilyeong.flickora.core.data.tv.model.TrendingResponse
 import com.ilyeong.flickora.core.data.tv.model.TvDetailResponse
+import com.ilyeong.flickora.core.data.tv.model.TvSeasonDetailResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -20,6 +21,12 @@ internal interface TvApiService {
     suspend fun getTvDetail(
         @Path("series_id") tvSeriesId: Int
     ): TvDetailResponse
+
+    @GET("tv/{series_id}/season/{season_number}")
+    suspend fun getTvSeasonDetail(
+        @Path("series_id") tvSeriesId: Int,
+        @Path("season_number") seasonNumber: Int
+    ): TvSeasonDetailResponse
 
     @GET("tv/{series_id}/recommendations")
     suspend fun getTvRecommendationList(

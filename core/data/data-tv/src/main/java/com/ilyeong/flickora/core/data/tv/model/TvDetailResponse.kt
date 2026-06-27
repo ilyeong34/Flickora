@@ -23,6 +23,7 @@ internal data class TvDetailResponse(
     @SerialName("overview") val overview: String = "",
     @SerialName("popularity") val popularity: Double = 0.0,
     @SerialName("poster_path") val posterPath: String = "",
+    @SerialName("seasons") val seasonList: List<TvSeasonSummaryResponse> = emptyList(),
     @SerialName("spoken_languages") val spokenLanguageList: List<SpokenLanguageResponse> = emptyList(),
     @SerialName("status") val status: String = "",
     @SerialName("vote_average") val voteAverage: Double = 0.0,

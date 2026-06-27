@@ -134,7 +134,7 @@ class HomeViewModelTest {
     ) : TvRepository {
         override fun getTvDetail(tvSeriesId: Int): Flow<TvSeries> = unusedFlow()
 
-        override fun getTvCastPreview(tvSeriesId: Int): Flow<List<com.ilyeong.flickora.core.model.Cast>> =
+        override fun getTvCast(tvSeriesId: Int): Flow<List<com.ilyeong.flickora.core.model.Cast>> =
             flowOf(emptyList())
 
         override fun getTvRecommendationList(tvSeriesId: Int): Flow<List<TvSeries>> =
@@ -148,6 +148,20 @@ class HomeViewModelTest {
 
         override fun getPopularTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> =
             flowOf(PagingData.from(listOf(tvFixture)))
+
+        override fun getTopRatedTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> =
+            flowOf(PagingData.from(emptyList()))
+
+        override fun getTrendingTvPaging(
+            timeWindow: TimeWindow,
+            maxPage: Int
+        ): Flow<PagingData<TvSeries>> = flowOf(PagingData.from(emptyList()))
+
+        override fun getOnTheAirTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> =
+            flowOf(PagingData.from(emptyList()))
+
+        override fun getAiringTodayTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> =
+            flowOf(PagingData.from(emptyList()))
     }
 
     private class FakeUserRepository : UserRepository {

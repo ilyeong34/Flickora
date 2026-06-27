@@ -22,4 +22,5 @@ data class TvSeries(
     val spokenLanguageList: List<SpokenLanguage> = emptyList(),
     val numberOfEpisodes: Int = 0,
     val inProduction: Boolean = false,
+    val seasonList: List<TvSeason> = emptyList(),
 )

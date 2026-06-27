@@ -15,8 +15,11 @@ import com.ilyeong.flickora.core.model.Cast
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.core.model.TvSeries
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 internal class TvRepositoryImpl @Inject constructor(
@@ -24,8 +27,19 @@ internal class TvRepositoryImpl @Inject constructor(
 ) : TvRepository {
 
     override fun getTvDetail(tvSeriesId: Int) = flow<TvSeries> {
-        val tvDetail = apiService.getTvDetail(tvSeriesId).toDomain()
-        emit(tvDetail)
+        val tvDetailResponse = apiService.getTvDetail(tvSeriesId)
+        val tvDetail = tvDetailResponse.toDomain()
+        val seasonList = coroutineScope {
+            tvDetailResponse.seasonList.map { season ->
+                async {
+                    apiService.getTvSeasonDetail(
+                        tvSeriesId = tvSeriesId,
+                        seasonNumber = season.seasonNumber
+                    ).toDomain(season)
+                }
+            }.awaitAll().sortedBy { it.seasonNumber }
+        }
+        emit(tvDetail.copy(seasonList = seasonList))
     }
 
     override fun getTvCast(tvSeriesId: Int) = flow<List<Cast>> {
