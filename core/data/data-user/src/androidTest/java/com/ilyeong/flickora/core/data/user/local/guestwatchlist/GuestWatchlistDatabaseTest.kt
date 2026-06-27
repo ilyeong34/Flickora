@@ -7,9 +7,11 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.ilyeong.flickora.core.data.user.datasource.UserLocalDataSourceImpl
 import com.ilyeong.flickora.core.data.user.local.GuestWatchlistDatabase
 import com.ilyeong.flickora.core.data.user.model.GuestWatchlistMovieEntity
+import com.ilyeong.flickora.core.data.user.model.GuestWatchlistTvEntity
 import com.ilyeong.flickora.core.model.Genre
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.SpokenLanguage
+import com.ilyeong.flickora.core.model.TvSeries
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -76,6 +78,57 @@ class GuestWatchlistDatabaseTest {
         assertEquals(listOf(3, 1), entities.map { it.id })
         assertEquals(3000L, entities.first().insertedAt)
         assertEquals(1000L, entities.last().insertedAt)
+    }
+
+    @Test
+    fun tvRoundTripPreservesSelectedFieldsAndInsertedAt() = runBlocking {
+        val dao = requireNotNull(database).guestWatchlistDao()
+
+        dao.upsert(
+            GuestWatchlistTvEntity(
+                id = 13,
+                backdropPath = "backdrop-13",
+                firstAirDate = "2020-01-13",
+                name = "Thirteenth",
+                overview = "Thirteenth overview",
+                posterPath = "poster-13",
+                originalLanguage = "en",
+                originalName = "Thirteenth Original",
+                popularity = 13.0,
+                voteAverage = 8.3,
+                voteCount = 1300,
+                insertedAt = 13000L
+            )
+        )
+        dao.upsert(
+            GuestWatchlistTvEntity(
+                id = 11,
+                backdropPath = "backdrop-11",
+                firstAirDate = "2020-01-11",
+                name = "Eleventh",
+                overview = "Eleventh overview",
+                posterPath = "poster-11",
+                originalLanguage = "en",
+                originalName = "Eleventh Original",
+                popularity = 11.0,
+                voteAverage = 8.1,
+                voteCount = 1100,
+                insertedAt = 11000L
+            )
+        )
+
+        val page = dao.getTvWatchlistPagingSource().load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 10,
+                placeholdersEnabled = false
+            )
+        )
+
+        val entities = requireTvPage(page)
+        assertEquals(listOf(13, 11), entities.map { it.id })
+        assertEquals(13000L, entities.first().insertedAt)
+        assertEquals(11000L, entities.last().insertedAt)
     }
 
     @Test
@@ -186,6 +239,73 @@ class GuestWatchlistDatabaseTest {
     }
 
     @Test
+    fun addTvToWatchlistPreservesOriginalInsertedAtForExistingRows() = runBlocking {
+        val dao = requireNotNull(database).guestWatchlistDao()
+        val localDataSource = UserLocalDataSourceImpl(dao)
+
+        localDataSource.addTvToWatchlist(
+            tvSeries(
+                id = 19,
+                name = "Legacy Nineteenth",
+                overview = "Legacy nineteenth overview",
+                voteAverage = 9.9,
+                voteCount = 990
+            ),
+            true
+        ).collect {}
+        Thread.sleep(5)
+
+        localDataSource.addTvToWatchlist(
+            tvSeries(
+                id = 14,
+                name = "Legacy Fourteenth",
+                overview = "Legacy fourteenth overview",
+                voteAverage = 4.4,
+                voteCount = 440
+            ),
+            true
+        ).collect {}
+
+        val page = dao.getTvWatchlistPagingSource().load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 10,
+                placeholdersEnabled = false
+            )
+        )
+
+        val entities = requireTvPage(page)
+        assertEquals(listOf(14, 19), entities.map { it.id })
+        assertTrue(entities.first().insertedAt >= entities.last().insertedAt)
+
+        val originalInsertedAt = entities.single { it.id == 19 }.insertedAt
+
+        localDataSource.addTvToWatchlist(
+            tvSeries(
+                id = 19,
+                name = "Legacy Nineteenth Updated",
+                overview = "Legacy nineteenth overview",
+                voteAverage = 9.9,
+                voteCount = 990
+            ),
+            true
+        ).collect {}
+
+        val reloadedPage = dao.getTvWatchlistPagingSource().load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 10,
+                placeholdersEnabled = false
+            )
+        )
+
+        val reloadedEntities = requireTvPage(reloadedPage)
+        assertEquals(listOf(14, 19), reloadedEntities.map { it.id })
+        assertEquals(originalInsertedAt, reloadedEntities.single { it.id == 19 }.insertedAt)
+        assertEquals("Legacy Nineteenth Updated", reloadedEntities.single { it.id == 19 }.name)
+    }
+
+    @Test
     fun openingLegacyDatabaseUsesDestructiveFallback() = runBlocking {
         createLegacyDatabaseVersionMismatch(
             rows = listOf(
@@ -233,6 +353,13 @@ class GuestWatchlistDatabaseTest {
         return (result as PagingSource.LoadResult.Page).data
     }
 
+    private fun requireTvPage(
+        result: PagingSource.LoadResult<Int, GuestWatchlistTvEntity>
+    ): List<GuestWatchlistTvEntity> {
+        assertTrue(result is PagingSource.LoadResult.Page)
+        return (result as PagingSource.LoadResult.Page).data
+    }
+
     private companion object {
         const val TEST_DB_NAME = "guest_watchlist_test.db"
     }
@@ -262,6 +389,29 @@ class GuestWatchlistDatabaseTest {
         voteAverage = voteAverage,
         voteCount = voteCount,
         isInWatchlist = false,
+    )
+
+    private fun tvSeries(
+        id: Int,
+        name: String,
+        overview: String,
+        voteAverage: Double,
+        voteCount: Int,
+    ): TvSeries = TvSeries(
+        adult = false,
+        backdropPath = "",
+        genreList = emptyList(),
+        id = id,
+        originCountry = emptyList(),
+        originalLanguage = "",
+        originalName = name,
+        overview = overview,
+        popularity = 0.0,
+        posterPath = "poster-$id",
+        firstAirDate = "",
+        name = name,
+        voteAverage = voteAverage,
+        voteCount = voteCount,
     )
 
     private fun createLegacyDatabaseVersionMismatch(rows: List<LegacyRow>) {

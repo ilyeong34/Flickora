@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.ilyeong.flickora.core.data.tv.repository.TvRepository
+import com.ilyeong.flickora.core.data.user.repository.UserRepository
 import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.feature.detail.model.DetailEvent
 import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
@@ -17,12 +18,14 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
 internal class TvDetailViewModel @Inject constructor(
-    private val tvRepository: TvRepository
+    private val tvRepository: TvRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<TvDetailUiState>(TvDetailUiState.Loading)
@@ -42,16 +45,18 @@ internal class TvDetailViewModel @Inject constructor(
         _tvSeriesId.value = tvSeriesId
 
         val detailFlow = tvRepository.getTvDetail(tvSeriesId)
+        val accountStatesFlow = userRepository.getTvAccountStates(tvSeriesId)
         val castFlow = tvRepository.getTvCast(tvSeriesId)
         val recommendationListFlow = tvRepository.getTvRecommendationList(tvSeriesId)
         val similarListFlow = tvRepository.getTvSimilarList(tvSeriesId)
 
         combine(
             detailFlow,
+            accountStatesFlow,
             castFlow,
             recommendationListFlow,
             similarListFlow,
-        ) { tvSeries, cast, recommendationList, similarList ->
+        ) { tvSeries, accountStates, cast, recommendationList, similarList ->
 
             _uiState.value = TvDetailUiState.Success(
                 tvSeries = tvSeries,
@@ -59,6 +64,7 @@ internal class TvDetailViewModel @Inject constructor(
                 recommendationList = recommendationList,
                 similarList = similarList,
                 selectedSeasonNumber = getSelectedSeasonNumber(tvSeries),
+                isInWatchlist = accountStates.watchlist,
             )
         }.onStart {
             if (_uiState.value is TvDetailUiState.Failure) {
@@ -71,6 +77,21 @@ internal class TvDetailViewModel @Inject constructor(
                 _events.emit(DetailEvent.ShowMessage(it))
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun addTvToWatchlist() {
+        val currentState = uiState.value as? TvDetailUiState.Success ?: return
+
+        val watchlist = currentState.isInWatchlist.not()
+
+        userRepository.addTvToWatchlist(currentState.tvSeries, watchlist)
+            .onEach {
+                _uiState.value = currentState.copy(isInWatchlist = watchlist)
+            }
+            .catch {
+                _events.emit(DetailEvent.ShowMessage(it))
+            }
+            .launchIn(viewModelScope)
     }
 
     fun selectSeason(seasonNumber: Int) {

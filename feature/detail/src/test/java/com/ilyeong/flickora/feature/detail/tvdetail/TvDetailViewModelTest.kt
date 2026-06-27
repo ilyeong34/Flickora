@@ -1,6 +1,9 @@
 package com.ilyeong.flickora.feature.detail.tvdetail
 
 import androidx.paging.PagingData
+import com.ilyeong.flickora.core.data.user.repository.UserRepository
+import com.ilyeong.flickora.core.model.Account
+import com.ilyeong.flickora.core.model.AccountStates
 import com.ilyeong.flickora.core.data.tv.repository.TvRepository
 import com.ilyeong.flickora.core.model.Cast
 import com.ilyeong.flickora.core.model.Genre
@@ -21,6 +24,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestWatcher
@@ -42,7 +47,8 @@ class TvDetailViewModelTest {
                         tvSeasonFixture(seasonNumber = 1, name = "Season 1"),
                     )
                 )
-            )
+            ),
+            FakeUserRepository()
         )
 
         viewModel.loadData(tvSeriesId = 1)
@@ -63,7 +69,8 @@ class TvDetailViewModelTest {
                         tvSeasonFixture(seasonNumber = 2, name = "Season 2"),
                     )
                 )
-            )
+            ),
+            FakeUserRepository()
         )
 
         viewModel.loadData(tvSeriesId = 1)
@@ -85,7 +92,8 @@ class TvDetailViewModelTest {
                         tvSeasonFixture(seasonNumber = 1, name = "Season 1")
                     )
                 )
-            )
+            ),
+            FakeUserRepository()
         )
 
         viewModel.loadData(tvSeriesId = 1)
@@ -95,6 +103,32 @@ class TvDetailViewModelTest {
         viewModel.selectSeason(seasonNumber = 1)
 
         assertEquals(before, viewModel.uiState.value)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun addTvToWatchlist_togglesWatchlistState() = runTest {
+        val userRepository = FakeUserRepository(initialWatchlist = false)
+        val viewModel = TvDetailViewModel(
+            FakeTvRepository(
+                tvSeries = tvSeriesFixture(
+                    seasonList = listOf(tvSeasonFixture(seasonNumber = 1, name = "Season 1"))
+                )
+            ),
+            userRepository
+        )
+
+        viewModel.loadData(tvSeriesId = 1)
+        advanceUntilIdle()
+
+        val before = viewModel.uiState.value as TvDetailUiState.Success
+        assertFalse(before.isInWatchlist)
+
+        viewModel.addTvToWatchlist()
+        advanceUntilIdle()
+
+        val after = viewModel.uiState.value as TvDetailUiState.Success
+        assertTrue(after.isInWatchlist)
     }
 
     private class FakeTvRepository(
@@ -129,6 +163,37 @@ class TvDetailViewModelTest {
 
         override fun getAiringTodayTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> =
             flowOf(PagingData.from(emptyList()))
+    }
+
+    private class FakeUserRepository(
+        private val initialWatchlist: Boolean = false
+    ) : UserRepository {
+        override fun getAccount(): Flow<Account> = unusedFlow()
+
+        override fun getWatchlistMoviePaging(): Flow<PagingData<com.ilyeong.flickora.core.model.Movie>> =
+            flowOf(PagingData.from(emptyList()))
+
+        override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> =
+            flowOf(PagingData.from(emptyList()))
+
+        override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = unusedFlow()
+
+        override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> = flowOf(
+            AccountStates(
+                id = tvSeriesId,
+                favorite = false,
+                rated = null,
+                watchlist = initialWatchlist
+            )
+        )
+
+        override fun addMovieToWatchlist(
+            movie: com.ilyeong.flickora.core.model.Movie,
+            watchlist: Boolean
+        ): Flow<Unit> = unusedFlow()
+
+        override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> =
+            flowOf(Unit)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -192,4 +257,3 @@ private fun tvSeasonFixture(
         )
     ),
 )
-

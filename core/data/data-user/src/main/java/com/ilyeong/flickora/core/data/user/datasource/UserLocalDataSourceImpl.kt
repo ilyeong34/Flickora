@@ -7,9 +7,11 @@ import androidx.paging.map
 import com.ilyeong.flickora.core.data.user.local.GuestWatchlistDao
 import com.ilyeong.flickora.core.data.user.model.toDomain
 import com.ilyeong.flickora.core.data.user.model.toGuestWatchlistEntity
+import com.ilyeong.flickora.core.data.user.model.toGuestWatchlistTvEntity
 import com.ilyeong.flickora.core.model.Account
 import com.ilyeong.flickora.core.model.AccountStates
 import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.TvSeries
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -35,6 +37,17 @@ internal class UserLocalDataSourceImpl @Inject constructor(
             pagingData.map { entity -> entity.toDomain() }
         }
 
+    override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { guestWatchlistDao.getTvWatchlistPagingSource() }
+        ).flow.map { pagingData ->
+            pagingData.map { entity -> entity.toDomain() }
+        }
+
     override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = flow {
         emit(
             AccountStates(
@@ -42,6 +55,17 @@ internal class UserLocalDataSourceImpl @Inject constructor(
                 favorite = false,
                 rated = null,
                 watchlist = guestWatchlistDao.isInWatchlist(movieId)
+            )
+        )
+    }
+
+    override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> = flow {
+        emit(
+            AccountStates(
+                id = tvSeriesId,
+                favorite = false,
+                rated = null,
+                watchlist = guestWatchlistDao.isTvInWatchlist(tvSeriesId)
             )
         )
     }
@@ -57,6 +81,23 @@ internal class UserLocalDataSourceImpl @Inject constructor(
 
         val insertedAt = guestWatchlistDao.getInsertedAt(movie.id) ?: System.currentTimeMillis()
         val entity = movie.toGuestWatchlistEntity(insertedAt = insertedAt)
+        val insertedRowId = guestWatchlistDao.upsert(entity)
+
+        if (insertedRowId == -1L) {
+            guestWatchlistDao.update(entity)
+        }
+        emit(Unit)
+    }
+
+    override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> = flow {
+        if (!watchlist) {
+            guestWatchlistDao.deleteTv(tvSeries.id)
+            emit(Unit)
+            return@flow
+        }
+
+        val insertedAt = guestWatchlistDao.getTvInsertedAt(tvSeries.id) ?: System.currentTimeMillis()
+        val entity = tvSeries.toGuestWatchlistTvEntity(insertedAt = insertedAt)
         val insertedRowId = guestWatchlistDao.upsert(entity)
 
         if (insertedRowId == -1L) {

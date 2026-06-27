@@ -168,9 +168,14 @@ class HomeViewModelTest {
         override fun getAccount(): Flow<Account> = unusedFlow()
         override fun getWatchlistMoviePaging(): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
+        override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> =
+            flowOf(PagingData.from(emptyList()))
 
         override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = unusedFlow()
+        override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> = unusedFlow()
         override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = unusedFlow()
+        override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> =
+            unusedFlow()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
