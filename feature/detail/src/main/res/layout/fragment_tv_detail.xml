@@ -81,6 +81,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/poster_default"
             app:tabIndicatorColor="@color/white"
+            app:tabRippleColor="@color/transparent"
             app:tabTextColor="@color/tab_menu_selector">
 
         </com.google.android.material.tabs.TabLayout>
