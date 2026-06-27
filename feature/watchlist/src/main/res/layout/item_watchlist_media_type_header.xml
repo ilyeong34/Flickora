@@ -12,14 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/flickora_padding_medium"
-        android:checkable="true"
-        android:checked="true"
+        android:clickable="true"
+        android:focusable="true"
         android:textColor="@color/watchlist_media_type_chip_text_selector"
         app:chipBackgroundColor="@color/watchlist_media_type_chip_background_selector"
         app:chipStrokeColor="@color/watchlist_media_type_chip_stroke_selector"
         app:chipStrokeWidth="1dp"
         app:chipIconVisible="false"
-        app:checkedIconVisible="false"
         tools:text="@string/watchlist_movie_chip" />
 
     <com.google.android.material.chip.Chip
@@ -27,13 +26,13 @@
         style="@style/Widget.Material3.Chip.Assist.Elevated"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
         android:textColor="@color/watchlist_media_type_chip_text_selector"
         app:chipBackgroundColor="@color/watchlist_media_type_chip_background_selector"
         app:chipStrokeColor="@color/watchlist_media_type_chip_stroke_selector"
         app:chipStrokeWidth="1dp"
         app:chipIconVisible="false"
-        app:checkedIconVisible="false"
         tools:text="@string/watchlist_tv_series_chip" />
 
 </LinearLayout>

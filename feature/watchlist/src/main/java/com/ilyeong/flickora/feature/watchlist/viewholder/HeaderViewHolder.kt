@@ -19,8 +19,8 @@ internal class HeaderViewHolder private constructor(
         binding.chipTvSeries.text =
             binding.root.context.getString(WatchlistMediaType.TV_SERIES.labelRes)
 
-        binding.chipMovie.isChecked = selectedMediaType == WatchlistMediaType.MOVIE
-        binding.chipTvSeries.isChecked = selectedMediaType == WatchlistMediaType.TV_SERIES
+        binding.chipMovie.isSelected = selectedMediaType == WatchlistMediaType.MOVIE
+        binding.chipTvSeries.isSelected = selectedMediaType == WatchlistMediaType.TV_SERIES
 
         binding.chipMovie.setOnClickListener {
             itemClickListener.onItemClick(WatchlistMediaType.MOVIE.value)
