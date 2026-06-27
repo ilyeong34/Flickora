@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/til_season"
     style="@style/Theme.Flickora.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -14,6 +15,7 @@
         android:inputType="none"
         android:textColor="@color/white"
         android:textColorHint="@color/gray"
+        app:dropDownBackgroundTint="@color/dark_black"
         tools:text="Season 1" />
 
 </com.google.android.material.textfield.TextInputLayout>
