@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.ilyeong.flickora.core.data.tv.repository.TvRepository
+import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.feature.detail.model.DetailEvent
 import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,6 +58,7 @@ internal class TvDetailViewModel @Inject constructor(
                 cast = cast,
                 recommendationList = recommendationList,
                 similarList = similarList,
+                selectedSeasonNumber = getSelectedSeasonNumber(tvSeries),
             )
         }.onStart {
             if (_uiState.value is TvDetailUiState.Failure) {
@@ -69,5 +71,29 @@ internal class TvDetailViewModel @Inject constructor(
                 _events.emit(DetailEvent.ShowMessage(it))
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun selectSeason(seasonNumber: Int) {
+        val state = _uiState.value as? TvDetailUiState.Success ?: return
+
+        if (state.selectedSeasonNumber == seasonNumber) return
+        if (state.tvSeries.seasonList.none { it.seasonNumber == seasonNumber }) return
+
+        _uiState.value = state.copy(selectedSeasonNumber = seasonNumber)
+    }
+
+    private fun getSelectedSeasonNumber(tvSeries: TvSeries): Int? {
+        val previousState = _uiState.value as? TvDetailUiState.Success
+        val previousSelection = previousState?.selectedSeasonNumber
+
+        if (
+            previousState?.tvSeries?.id == tvSeries.id &&
+            tvSeries.seasonList.any { it.seasonNumber == previousSelection }
+        ) {
+            return previousSelection
+        }
+
+        return tvSeries.seasonList.firstOrNull { it.seasonNumber > 0 }?.seasonNumber
+            ?: tvSeries.seasonList.firstOrNull()?.seasonNumber
     }
 }

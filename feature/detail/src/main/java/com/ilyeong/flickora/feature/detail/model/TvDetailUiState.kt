@@ -11,6 +11,7 @@ internal sealed interface TvDetailUiState {
         val cast: List<Cast>,
         val recommendationList: List<TvSeries>,
         val similarList: List<TvSeries>,
+        val selectedSeasonNumber: Int?,
     ) : TvDetailUiState
 
     data object Failure : TvDetailUiState
