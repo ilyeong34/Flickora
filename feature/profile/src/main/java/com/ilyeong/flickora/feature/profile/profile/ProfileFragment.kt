@@ -64,7 +64,7 @@ internal class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.tvLogout.setOnClickListener {
             MaterialAlertDialogBuilder(
                 requireContext(),
-                R.style.Theme_Movieserse_AlertDialog
+                R.style.Theme_Flickora_AlertDialog
             ).apply {
                 setMessage(getString(R.string.logout_message))
                 setPositiveButton(getString(R.string.dialog_yes)) { _, _ ->

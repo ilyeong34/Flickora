@@ -10,6 +10,7 @@
 
     <string name="information">Information</string>
     <string name="episode">Episode</string>
+    <string name="season">Season</string>
     <string name="recommended">Recommended Content</string>
     <string name="review">Review</string>
     <string name="overview">Overview</string>
@@ -49,10 +50,16 @@
     <string name="runtime_empty">Runtime &#160;&#160;&#160; No information available.</string>
     <string name="language_empty">Audio &#160;&#160;&#160; No information available.</string>
     <string name="search_result_empty">No search results.</string>
+    <string name="episode_empty">No episode information available.</string>
+    <string name="episode_number">Episode %d</string>
+    <string name="episode_air_date_empty">Air Date &#160;&#160;&#160; No information available.</string>
+    <string name="episode_air_date">Air Date &#160;&#160;&#160; %s</string>
+    <string name="episode_runtime_short">Runtime &#160;&#160;&#160; %dm</string>
 
     <string name="des_movie_poster">Movie Poster</string>
     <string name="des_movie_backdrop">Movie Backdrop</string>
     <string name="des_movie_cast">Movie Cast</string>
+    <string name="des_tv_episode_still">TV Episode Still</string>
     <string name="des_user_avatar">User Avatar</string>
 
     <string name="movie_section_top_rated">Top Rated Movie</string>
