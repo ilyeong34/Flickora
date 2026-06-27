@@ -10,10 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.ConcatAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.watchlist.adapter.PosterDescriptionPagingAdapter
+import com.ilyeong.flickora.feature.watchlist.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.watchlist.databinding.FragmentWatchlistBinding
+import com.ilyeong.flickora.feature.watchlist.model.WatchlistMediaType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -25,9 +29,33 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
 
     private val viewModel: WatchlistViewModel by viewModels()
 
-    private val watchlistAdapter = PosterDescriptionPagingAdapter { movieId ->
+    private val mediaTypeClickListener = ItemClickListener { mediaTypeId ->
+        viewModel.setSelectedMediaType(WatchlistMediaType.fromValue(mediaTypeId))
+    }
+
+    private val watchlistItemClickListener = ItemClickListener { itemId ->
+        when (viewModel.selectedMediaType.value) {
+            WatchlistMediaType.MOVIE -> navigateToMovieDetail(itemId)
+            WatchlistMediaType.TV_SERIES -> navigateToTvDetail(itemId)
+        }
+    }
+
+    private val headerAdapter = HeaderAdapter(mediaTypeClickListener)
+    private val watchlistAdapter = PosterDescriptionPagingAdapter(watchlistItemClickListener)
+
+    private val watchlistAdapterWithHeader = ConcatAdapter(headerAdapter, watchlistAdapter)
+
+    private fun navigateToMovieDetail(movieId: Int) {
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.flickora/detail_fragment?movieId=${movieId}".toUri())
+            .build()
+
+        findNavController().navigate(request)
+    }
+
+    private fun navigateToTvDetail(tvSeriesId: Int) {
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
             .build()
 
         findNavController().navigate(request)
@@ -47,7 +75,7 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
     }
 
     private fun setWatchlist() {
-        binding.rvWatchlist.adapter = watchlistAdapter
+        binding.rvWatchlist.adapter = watchlistAdapterWithHeader
         binding.rvWatchlist.addItemDecoration(PosterDescriptionItemDecoration)
     }
 
@@ -58,6 +86,12 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
     }
 
     private fun observeWatchlist() {
+        repeatOnViewStarted {
+            viewModel.selectedMediaType.collectLatest { selectedMediaType ->
+                headerAdapter.updateSelectedMediaType(selectedMediaType)
+            }
+        }
+
         repeatOnViewStarted {
             viewModel.watchlistPaging.collectLatest {
                 watchlistAdapter.submitData(it)
