@@ -1,38 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip_movie"
-        style="@style/Widget.Material3.Chip.Assist.Elevated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/flickora_padding_medium"
-        android:clickable="true"
-        android:focusable="true"
-        android:textColor="@color/watchlist_media_type_chip_text_selector"
-        app:chipBackgroundColor="@color/watchlist_media_type_chip_background_selector"
-        app:chipStrokeColor="@color/watchlist_media_type_chip_stroke_selector"
-        app:chipStrokeWidth="1dp"
-        app:chipIconVisible="false"
-        tools:text="@string/watchlist_movie_chip" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip_tv_series"
-        style="@style/Widget.Material3.Chip.Assist.Elevated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:textColor="@color/watchlist_media_type_chip_text_selector"
-        app:chipBackgroundColor="@color/watchlist_media_type_chip_background_selector"
-        app:chipStrokeColor="@color/watchlist_media_type_chip_stroke_selector"
-        app:chipStrokeWidth="1dp"
-        app:chipIconVisible="false"
-        tools:text="@string/watchlist_tv_series_chip" />
-
-</LinearLayout>
+    android:orientation="horizontal" />

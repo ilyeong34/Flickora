@@ -16,7 +16,6 @@ import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.watchlist.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.watchlist.adapter.PosterDescriptionPagingAdapter
 import com.ilyeong.flickora.feature.watchlist.databinding.FragmentWatchlistBinding
@@ -32,10 +31,6 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
 
     private val viewModel: WatchlistViewModel by viewModels()
 
-    private val mediaTypeClickListener = ItemClickListener { mediaTypeId ->
-        viewModel.setSelectedMediaType(WatchlistMediaType.fromValue(mediaTypeId))
-    }
-
     private val watchlistItemClickListener: (Media) -> Unit = { media ->
         when (media) {
             is Movie -> navigateToMovieDetail(media.id)
@@ -43,7 +38,9 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
         }
     }
 
-    private val headerAdapter = HeaderAdapter(mediaTypeClickListener)
+    private val headerAdapter = HeaderAdapter { mediaType ->
+        viewModel.setSelectedMediaType(mediaType)
+    }
     private val watchlistAdapter = PosterDescriptionPagingAdapter(watchlistItemClickListener)
 
     private val watchlistAdapterWithHeader = ConcatAdapter(headerAdapter, watchlistAdapter)

@@ -2,13 +2,13 @@ package com.ilyeong.flickora.feature.watchlist.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.watchlist.model.WatchlistMediaType
 import com.ilyeong.flickora.feature.watchlist.viewholder.HeaderViewHolder
 
 internal class HeaderAdapter(
-    private val itemClickListener: ItemClickListener
+    private val onMediaTypeClick: (WatchlistMediaType) -> Unit
 ) : Adapter<HeaderViewHolder>() {
+    private val mediaTypeList = WatchlistMediaType.entries.toList()
     private var selectedMediaType = WatchlistMediaType.MOVIE
 
     override fun onCreateViewHolder(
@@ -20,7 +20,7 @@ internal class HeaderAdapter(
         holder: HeaderViewHolder,
         position: Int
     ) {
-        holder.bind(selectedMediaType, itemClickListener)
+        holder.bind(mediaTypeList, selectedMediaType, onMediaTypeClick)
     }
 
     override fun getItemCount() = 1
