@@ -10,12 +10,12 @@ import com.ilyeong.flickora.core.model.Account
 import com.ilyeong.flickora.core.model.AccountStates
 import com.ilyeong.flickora.core.model.Credit
 import com.ilyeong.flickora.core.model.Genre
+import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.core.model.TvSeries
-import com.ilyeong.flickora.core.ui.common.diffutil.PosterUiModelDiffUtil
-import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
+import com.ilyeong.flickora.core.ui.common.diffutil.MediaDiffUtil
 import com.ilyeong.flickora.feature.home.model.HomeUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,7 +43,7 @@ class HomeViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun loadData_emitsSuccess_andPopularTvPagingEmitsPosterUiModel() = runTest {
+    fun loadData_emitsSuccess_andPopularTvPagingEmitsMedia() = runTest {
         val tvFixture = tvSeriesFixture()
         val viewModel = HomeViewModel(
             movieRepository = FakeMovieRepository(),
@@ -56,7 +56,7 @@ class HomeViewModelTest {
         assertTrue(viewModel.uiState.value is HomeUiState.Success)
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = PosterUiModelDiffUtil,
+            diffCallback = MediaDiffUtil,
             updateCallback = NoopListUpdateCallback,
             mainDispatcher = Dispatchers.Main,
             workerDispatcher = UnconfinedTestDispatcher(testScheduler)
@@ -65,7 +65,7 @@ class HomeViewModelTest {
         differ.submitData(viewModel.popularTvPaging.first())
         advanceUntilIdle()
 
-        assertEquals(tvFixture.toPosterUiModel(), differ.snapshot().items.single())
+        assertEquals(tvFixture as Media, differ.snapshot().items.single())
     }
 
     private class FakeMovieRepository : MovieRepository {

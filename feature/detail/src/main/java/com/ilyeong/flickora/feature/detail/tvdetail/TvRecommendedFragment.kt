@@ -9,11 +9,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
+import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
-import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.detail.adapter.PosterFixedAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentTvRecommendedBinding
 import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
@@ -26,7 +25,8 @@ internal class TvRecommendedFragment : BaseFragment<FragmentTvRecommendedBinding
 
     private val viewModel: TvDetailViewModel by viewModels({ requireParentFragment() })
 
-    private val itemClickListener = ItemClickListener { tvSeriesId ->
+    private val itemClickListener: (Media) -> Unit = { media ->
+        val tvSeriesId = media.id
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
             .build()
@@ -64,14 +64,14 @@ internal class TvRecommendedFragment : BaseFragment<FragmentTvRecommendedBinding
                     is TvDetailUiState.Success -> {
                         val recommendationPreviewList = state.recommendationList
                         recommendationAdapter.submitList(
-                            recommendationPreviewList.map { it.toPosterUiModel() }
+                            recommendationPreviewList.map { it as Media }
                         )
                         binding.tvRecommendationSection.isVisible =
                             recommendationPreviewList.isNotEmpty()
                         binding.rvRecommendation.isVisible = recommendationPreviewList.isNotEmpty()
 
                         val similarPreviewList = state.similarList
-                        similarAdapter.submitList(similarPreviewList.map { it.toPosterUiModel() })
+                        similarAdapter.submitList(similarPreviewList.map { it as Media })
                         binding.tvSimilarSection.isVisible = similarPreviewList.isNotEmpty()
                         binding.rvSimilar.isVisible = similarPreviewList.isNotEmpty()
 

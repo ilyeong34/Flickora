@@ -5,18 +5,26 @@ data class Movie(
     val collection: Collection?,
     val backdropPath: String,
     val genreList: List<Genre>,
-    val id: Int,
+    override val id: Int,
     val originalLanguage: String,
     val originalTitle: String,
-    val overview: String,
+    override val overview: String,
     val popularity: Double,
-    val posterPath: String,
+    override val posterPath: String,
     val releaseDate: String,
     val runtime: Int,
     val spokenLanguageList: List<SpokenLanguage>,
-    val title: String,
+    override val title: String,
     val video: Boolean,
-    val voteAverage: Double,
-    val voteCount: Int,
-    val isInWatchlist: Boolean
+    override val voteAverage: Double,
+    override val voteCount: Int,
+    override val isInWatchlist: Boolean
+) : Media(
+    id = id,
+    title = title,
+    posterPath = posterPath,
+    overview = overview,
+    voteAverage = voteAverage,
+    voteCount = voteCount,
+    isInWatchlist = isInWatchlist
 )

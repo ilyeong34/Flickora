@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.adapter.PosterRatioPagingAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecoration
@@ -22,7 +23,6 @@ import com.ilyeong.flickora.core.ui.common.extension.calculateSpanCount
 import com.ilyeong.flickora.core.ui.common.extension.getQueryFlow
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
-import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.search.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.search.adapter.PosterDescriptionAdapter
 import com.ilyeong.flickora.feature.search.databinding.FragmentSearchBinding
@@ -49,8 +49,12 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         findNavController().navigate(request)
     }
 
+    private val posterDescriptionClickListener: (Media) -> Unit = { media ->
+        itemClickListener.onItemClick(media.id)
+    }
+
     private val trendHeaderAdapter = HeaderAdapter()
-    private val posterDescriptionAdapter = PosterDescriptionAdapter(itemClickListener)
+    private val posterDescriptionAdapter = PosterDescriptionAdapter(posterDescriptionClickListener)
 
     private val searchHeaderAdapter = HeaderAdapter()
     private val searchAdapter = PosterRatioPagingAdapter(itemClickListener)
@@ -198,7 +202,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                             getString(R.string.movie_section_trending_day)
                         )
                         posterDescriptionAdapter.submitList(
-                            uiState.trendState.movieList.map { it.toPosterUiModel() }
+                            uiState.trendState.movieList.map { it as Media }
                         )
                     }
                 }

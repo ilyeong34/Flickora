@@ -125,13 +125,13 @@ class TvDetailViewModelTest {
         advanceUntilIdle()
 
         val before = viewModel.uiState.value as TvDetailUiState.Success
-        assertFalse(before.isInWatchlist)
+        assertFalse(before.tvSeries.isInWatchlist)
 
         viewModel.addTvToWatchlist()
         advanceUntilIdle()
 
         val after = viewModel.uiState.value as TvDetailUiState.Success
-        assertTrue(after.isInWatchlist)
+        assertTrue(after.tvSeries.isInWatchlist)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -163,7 +163,7 @@ class TvDetailViewModelTest {
 
         val after = viewModel.uiState.value as TvDetailUiState.Success
         assertEquals(2, after.selectedSeasonNumber)
-        assertTrue(after.isInWatchlist)
+        assertTrue(after.tvSeries.isInWatchlist)
     }
 
     private class FakeTvRepository(

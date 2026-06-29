@@ -110,7 +110,7 @@ class TvDetailFragment : BaseFragment<FragmentTvDetailBinding>() {
                             }
 
                             binding.tvTvTitle.text = this.name.ifBlank { this.originalName }
-                            binding.ivWatchlist.isSelected = state.isInWatchlist
+                            binding.ivWatchlist.isSelected = this.isInWatchlist
                             binding.rrv.rating = this.voteAverage
                             binding.rrv.ratingCount = this.voteCount
                         }

@@ -2,13 +2,13 @@ package com.ilyeong.flickora.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.map
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.ilyeong.flickora.core.data.movie.repository.MovieRepository
 import com.ilyeong.flickora.core.data.tv.repository.TvRepository
 import com.ilyeong.flickora.core.data.user.repository.UserRepository
+import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.model.TimeWindow
-import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.home.model.HomeUiState
 import com.ilyeong.flickora.feature.home.model.HomeUiState.Loading
 import com.ilyeong.flickora.feature.home.model.HomeUiState.Success
@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.map as flowMap
 import javax.inject.Inject
+import kotlinx.coroutines.flow.map as flowMap
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
@@ -35,43 +35,43 @@ internal class HomeViewModel @Inject constructor(
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     val watchlistPaging = userRepository.getWatchlistMoviePaging()
-        .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+        .flowMap { pagingData -> pagingData.map { it as Media } }
         .cachedIn(viewModelScope)
     val upcomingMoviePaging =
         movieRepository.getUpcomingMoviePaging(maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+            .flowMap { pagingData -> pagingData.map { it as Media } }
             .cachedIn(viewModelScope)
     val popularMoviePaging =
         movieRepository.getPopularMoviePaging(maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+            .flowMap { pagingData -> pagingData.map { it as Media } }
             .cachedIn(viewModelScope)
     val nowPlayingMoviePaging =
         movieRepository.getNowPlayingMoviePaging(maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+            .flowMap { pagingData -> pagingData.map { it as Media } }
             .cachedIn(viewModelScope)
     val trendingWeekMoviePaging =
         movieRepository.getTrendingMoviePaging(timeWindow = TimeWindow.WEEK, maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+            .flowMap { pagingData -> pagingData.map { it as Media } }
             .cachedIn(viewModelScope)
     val topRatedMoviePaging =
         movieRepository.getTopRatedMoviePaging(maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+            .flowMap { pagingData -> pagingData.map { it as Media } }
             .cachedIn(viewModelScope)
     val popularTvPaging = tvRepository.getPopularTvPaging(maxPage = 3)
-        .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+        .flowMap { pagingData -> pagingData.map { it as Media } }
         .cachedIn(viewModelScope)
     val topRatedTvPaging = tvRepository.getTopRatedTvPaging(maxPage = 3)
-        .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+        .flowMap { pagingData -> pagingData.map { it as Media } }
         .cachedIn(viewModelScope)
     val trendingWeekTvPaging =
         tvRepository.getTrendingTvPaging(timeWindow = TimeWindow.WEEK, maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+            .flowMap { pagingData -> pagingData.map { it as Media } }
             .cachedIn(viewModelScope)
     val onTheAirTvPaging = tvRepository.getOnTheAirTvPaging(maxPage = 3)
-        .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+        .flowMap { pagingData -> pagingData.map { it as Media } }
         .cachedIn(viewModelScope)
     val airingTodayTvPaging = tvRepository.getAiringTodayTvPaging(maxPage = 3)
-        .flowMap { pagingData -> pagingData.map { it.toPosterUiModel() } }
+        .flowMap { pagingData -> pagingData.map { it as Media } }
         .cachedIn(viewModelScope)
 
     init {

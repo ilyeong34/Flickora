@@ -11,11 +11,14 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
+import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
-import com.ilyeong.flickora.feature.watchlist.adapter.PosterDescriptionPagingAdapter
 import com.ilyeong.flickora.feature.watchlist.adapter.HeaderAdapter
+import com.ilyeong.flickora.feature.watchlist.adapter.PosterDescriptionPagingAdapter
 import com.ilyeong.flickora.feature.watchlist.databinding.FragmentWatchlistBinding
 import com.ilyeong.flickora.feature.watchlist.model.WatchlistMediaType
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,10 +36,10 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
         viewModel.setSelectedMediaType(WatchlistMediaType.fromValue(mediaTypeId))
     }
 
-    private val watchlistItemClickListener = ItemClickListener { itemId ->
-        when (viewModel.selectedMediaType.value) {
-            WatchlistMediaType.MOVIE -> navigateToMovieDetail(itemId)
-            WatchlistMediaType.TV_SERIES -> navigateToTvDetail(itemId)
+    private val watchlistItemClickListener: (Media) -> Unit = { media ->
+        when (media) {
+            is Movie -> navigateToMovieDetail(media.id)
+            is TvSeries -> navigateToTvDetail(media.id)
         }
     }
 
