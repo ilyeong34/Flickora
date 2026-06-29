@@ -23,4 +23,5 @@ data class TvSeries(
     val numberOfEpisodes: Int = 0,
     val inProduction: Boolean = false,
     val seasonList: List<TvSeason> = emptyList(),
+    val isInWatchlist: Boolean
 )

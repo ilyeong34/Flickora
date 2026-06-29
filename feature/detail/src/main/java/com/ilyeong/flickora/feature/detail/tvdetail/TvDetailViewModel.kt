@@ -59,12 +59,11 @@ internal class TvDetailViewModel @Inject constructor(
         ) { tvSeries, accountStates, cast, recommendationList, similarList ->
 
             _uiState.value = TvDetailUiState.Success(
-                tvSeries = tvSeries,
+                tvSeries = tvSeries.copy(isInWatchlist = accountStates.watchlist),
                 cast = cast,
                 recommendationList = recommendationList,
                 similarList = similarList,
                 selectedSeasonNumber = getSelectedSeasonNumber(tvSeries),
-                isInWatchlist = accountStates.watchlist,
             )
         }.onStart {
             if (_uiState.value is TvDetailUiState.Failure) {
@@ -82,12 +81,12 @@ internal class TvDetailViewModel @Inject constructor(
     fun addTvToWatchlist() {
         val currentState = uiState.value as? TvDetailUiState.Success ?: return
 
-        val watchlist = currentState.isInWatchlist.not()
+        val watchlist = currentState.tvSeries.isInWatchlist.not()
 
         userRepository.addTvToWatchlist(currentState.tvSeries, watchlist)
             .onEach {
-                val latestState = uiState.value as? TvDetailUiState.Success ?: return@onEach
-                _uiState.value = latestState.copy(isInWatchlist = watchlist)
+                _uiState.value =
+                    currentState.copy(tvSeries = currentState.tvSeries.copy(isInWatchlist = watchlist))
             }
             .catch {
                 _events.emit(DetailEvent.ShowMessage(it))
