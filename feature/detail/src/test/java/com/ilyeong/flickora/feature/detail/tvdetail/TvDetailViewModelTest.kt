@@ -16,10 +16,13 @@ import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -131,6 +134,38 @@ class TvDetailViewModelTest {
         assertTrue(after.isInWatchlist)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun addTvToWatchlist_preservesLatestSeasonSelection_whenRequestCompletes() = runTest {
+        val userRepository = FakeUserRepository(
+            initialWatchlist = false,
+            watchlistUpdateDelayMillis = 1_000
+        )
+        val viewModel = TvDetailViewModel(
+            FakeTvRepository(
+                tvSeries = tvSeriesFixture(
+                    seasonList = listOf(
+                        tvSeasonFixture(seasonNumber = 1, name = "Season 1"),
+                        tvSeasonFixture(seasonNumber = 2, name = "Season 2"),
+                    )
+                )
+            ),
+            userRepository
+        )
+
+        viewModel.loadData(tvSeriesId = 1)
+        advanceUntilIdle()
+
+        viewModel.addTvToWatchlist()
+        viewModel.selectSeason(seasonNumber = 2)
+        advanceTimeBy(1_000)
+        advanceUntilIdle()
+
+        val after = viewModel.uiState.value as TvDetailUiState.Success
+        assertEquals(2, after.selectedSeasonNumber)
+        assertTrue(after.isInWatchlist)
+    }
+
     private class FakeTvRepository(
         private val tvSeries: TvSeries
     ) : TvRepository {
@@ -166,7 +201,8 @@ class TvDetailViewModelTest {
     }
 
     private class FakeUserRepository(
-        private val initialWatchlist: Boolean = false
+        private val initialWatchlist: Boolean = false,
+        private val watchlistUpdateDelayMillis: Long = 0L
     ) : UserRepository {
         override fun getAccount(): Flow<Account> = unusedFlow()
 
@@ -193,7 +229,12 @@ class TvDetailViewModelTest {
         ): Flow<Unit> = unusedFlow()
 
         override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> =
-            flowOf(Unit)
+            kotlinx.coroutines.flow.flow {
+                if (watchlistUpdateDelayMillis > 0) {
+                    delay(watchlistUpdateDelayMillis)
+                }
+                emit(Unit)
+            }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -257,3 +298,5 @@ private fun tvSeasonFixture(
         )
     ),
 )
+
+private fun <T> unusedFlow(): Flow<T> = emptyFlow()

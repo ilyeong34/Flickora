@@ -86,7 +86,8 @@ internal class TvDetailViewModel @Inject constructor(
 
         userRepository.addTvToWatchlist(currentState.tvSeries, watchlist)
             .onEach {
-                _uiState.value = currentState.copy(isInWatchlist = watchlist)
+                val latestState = uiState.value as? TvDetailUiState.Success ?: return@onEach
+                _uiState.value = latestState.copy(isInWatchlist = watchlist)
             }
             .catch {
                 _events.emit(DetailEvent.ShowMessage(it))
