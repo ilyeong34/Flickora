@@ -23,7 +23,6 @@ import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecor
 import com.ilyeong.flickora.core.ui.common.extension.calculateSpanCount
 import com.ilyeong.flickora.core.ui.common.extension.getQueryFlow
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.search.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.search.adapter.PosterDescriptionAdapter
 import com.ilyeong.flickora.feature.search.adapter.PosterRatioPagingAdapter
@@ -43,14 +42,6 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private val viewModel: SearchViewModel by viewModels()
 
-    private val itemClickListener = ItemClickListener { movieId ->
-        val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?movieId=${movieId}".toUri())
-            .build()
-
-        findNavController().navigate(request)
-    }
-
     private val mediaClickListener: (Media) -> Unit = { media ->
         val uri = when (media) {
             is Movie -> "android-app://com.ilyeong.flickora/detail_fragment?movieId=${media.id}"
@@ -65,7 +56,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     }
 
     private val posterDescriptionClickListener: (Media) -> Unit = { media ->
-        itemClickListener.onItemClick(media.id)
+        mediaClickListener(media)
     }
 
     private val trendHeaderAdapter = HeaderAdapter()
@@ -103,6 +94,9 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                     viewModel.setQuery(it)
                 }
         }
+
+        binding.sv.findViewById<View>(androidx.appcompat.R.id.search_plate).background = null
+        binding.sv.findViewById<View>(androidx.appcompat.R.id.submit_area).background = null
     }
 
     private fun setTrend() {
@@ -216,9 +210,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                         trendHeaderAdapter.updateHeaderTitle(
                             getString(R.string.movie_section_trending_day)
                         )
-                        posterDescriptionAdapter.submitList(
-                            uiState.trendState.movieList.map { it as Media }
-                        )
+                        posterDescriptionAdapter.submitList(uiState.trendState.mediaList)
                     }
                 }
             }

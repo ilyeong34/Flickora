@@ -46,6 +46,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:data:data-oauth"))
     implementation(project(":core:data:data-user"))
+    implementation(project(":core:data:data-media"))
     implementation(project(":core:data:data-movie"))
     implementation(project(":core:data:data-tv"))
 

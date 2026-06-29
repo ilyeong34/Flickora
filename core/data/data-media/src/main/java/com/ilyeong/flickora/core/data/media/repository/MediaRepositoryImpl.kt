@@ -4,8 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ilyeong.flickora.core.data.media.api.MediaApiService
+import com.ilyeong.flickora.core.data.media.model.toDomain
 import com.ilyeong.flickora.core.data.media.paging.MediaSearchPagingSource
 import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.model.TimeWindow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -21,5 +24,12 @@ internal class MediaRepositoryImpl @Inject constructor(
             ),
             pagingSourceFactory = { MediaSearchPagingSource(apiService, query) }
         ).flow
+    }
+
+    override fun getTrendingMediaList(timeWindow: TimeWindow): Flow<List<Media>> = flow {
+        val trendingMediaList = apiService.getTrendingMediaList(timeWindow.name.lowercase())
+            .resultList
+            .mapNotNull { it.toDomain() }
+        emit(trendingMediaList)
     }
 }

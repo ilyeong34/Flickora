@@ -70,7 +70,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         findNavController().navigate(request)
     }
 
-    private val posterFullAdapter = PosterFullAdapter(movieClickListener)
+    private val posterFullAdapter = PosterFullAdapter(mediaClickListener)
     private val genreAdapter = GenreAdapter(genreClickListener)
     private val watchlistAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val topRatedAdapter = PosterFixedPagingAdapter(mediaClickListener)
@@ -344,7 +344,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         binding.content.isVisible = true
                         binding.ldf.root.isVisible = false
 
-                        posterFullAdapter.submitList(uiState.bannerMovieList)
+                        posterFullAdapter.submitList(uiState.bannerMediaList)
                         genreAdapter.submitList(uiState.genreList)
 
                         binding.tvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)

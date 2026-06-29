@@ -3,6 +3,7 @@ package com.ilyeong.flickora.feature.home
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ListUpdateCallback
+import com.ilyeong.flickora.core.data.media.repository.MediaRepository
 import com.ilyeong.flickora.core.data.movie.repository.MovieRepository
 import com.ilyeong.flickora.core.data.tv.repository.TvRepository
 import com.ilyeong.flickora.core.data.user.repository.UserRepository
@@ -44,8 +45,10 @@ class HomeViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun loadData_emitsSuccess_andPopularTvPagingEmitsMedia() = runTest {
+        val movieFixture = movieFixture()
         val tvFixture = tvSeriesFixture()
         val viewModel = HomeViewModel(
+            mediaRepository = FakeMediaRepository(movieFixture, tvFixture),
             movieRepository = FakeMovieRepository(),
             tvRepository = FakeTvRepository(tvFixture),
             userRepository = FakeUserRepository()
@@ -54,6 +57,10 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         assertTrue(viewModel.uiState.value is HomeUiState.Success)
+        val success = viewModel.uiState.value as HomeUiState.Success
+        assertEquals(2, success.bannerMediaList.size)
+        assertEquals(movieFixture as Media, success.bannerMediaList.first())
+        assertEquals(tvFixture as Media, success.bannerMediaList.last())
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = MediaDiffUtil,
@@ -66,6 +73,17 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         assertEquals(tvFixture as Media, differ.snapshot().items.single())
+    }
+
+    private class FakeMediaRepository(
+        private val movieFixture: Movie,
+        private val tvFixture: TvSeries
+    ) : MediaRepository {
+        override fun searchMediaPaging(query: String): Flow<PagingData<Media>> =
+            flowOf(PagingData.from(emptyList()))
+
+        override fun getTrendingMediaList(timeWindow: TimeWindow): Flow<List<Media>> =
+            flowOf(listOf(movieFixture, tvFixture))
     }
 
     private class FakeMovieRepository : MovieRepository {
@@ -212,6 +230,27 @@ private fun tvSeriesFixture() = TvSeries(
     name = "Breaking Bad",
     voteAverage = 9.0,
     voteCount = 1000
+)
+
+private fun movieFixture() = Movie(
+    adult = false,
+    collection = null,
+    backdropPath = "",
+    genreList = listOf(Genre(1, "Drama")),
+    id = 11,
+    originalLanguage = "en",
+    originalTitle = "Trending Movie",
+    overview = "Overview",
+    popularity = 100.0,
+    posterPath = "https://image.tmdb.org/t/p/original//poster.png",
+    releaseDate = "2024-01-01",
+    runtime = 120,
+    spokenLanguageList = emptyList(),
+    title = "Trending Movie",
+    video = false,
+    voteAverage = 8.5,
+    voteCount = 1234,
+    isInWatchlist = false
 )
 
 private fun <T> unusedFlow(): Flow<T> = flow {

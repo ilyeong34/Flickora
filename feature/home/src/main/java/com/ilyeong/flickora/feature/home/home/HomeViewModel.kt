@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.ilyeong.flickora.core.data.media.repository.MediaRepository
 import com.ilyeong.flickora.core.data.movie.repository.MovieRepository
 import com.ilyeong.flickora.core.data.tv.repository.TvRepository
 import com.ilyeong.flickora.core.data.user.repository.UserRepository
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.map as flowMap
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
+    private val mediaRepository: MediaRepository,
     private val movieRepository: MovieRepository,
     tvRepository: TvRepository,
     userRepository: UserRepository,
@@ -81,7 +83,7 @@ internal class HomeViewModel @Inject constructor(
     fun loadData() {
         if (_uiState.value is Success) return
 
-        val trendingDayFlow = movieRepository.getTrendingMovieList(TimeWindow.DAY)
+        val trendingDayFlow = mediaRepository.getTrendingMediaList(TimeWindow.DAY)
         val genreFlow = movieRepository.getMovieGenreList()
 
         combine(trendingDayFlow, genreFlow, ::Pair)

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.ilyeong.flickora.core.data.media.repository.MediaRepository
-import com.ilyeong.flickora.core.data.movie.repository.MovieRepository
 import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.feature.search.model.SearchUiState
 import com.ilyeong.flickora.feature.search.model.TrendState
@@ -25,7 +24,6 @@ import javax.inject.Inject
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
     private val mediaRepository: MediaRepository,
-    private val movieRepository: MovieRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())
@@ -39,19 +37,19 @@ internal class SearchViewModel @Inject constructor(
         .cachedIn(viewModelScope)
 
     init {
-        movieRepository.getTrendingMovieList(TimeWindow.DAY)
+        mediaRepository.getTrendingMediaList(TimeWindow.DAY)
             .onStart {
                 _uiState.update { it.copy(trendState = TrendState.Loading) }
                 // delay(1000L)    // Loading Test
             }
-            .onEach { trendMovieList ->
-                when (trendMovieList.isEmpty()) {
+            .onEach { trendMediaList ->
+                when (trendMediaList.isEmpty()) {
                     true -> {
                         _uiState.update { it.copy(trendState = TrendState.Failure) }
                     }
 
                     false -> {
-                        _uiState.update { it.copy(trendState = TrendState.Success(trendMovieList)) }
+                        _uiState.update { it.copy(trendState = TrendState.Success(trendMediaList)) }
                     }
                 }
             }
