@@ -69,6 +69,7 @@
     <string name="movie_section_trending_week">Trending Week Movie</string>
     <string name="movie_section_trending_day">Trending Day</string>
     <string name="movie_section_watchlist">Watchlist Movie</string>
+    <string name="home_section_top_10">Top 10 This Week</string>
     <string name="watchlist_movie_chip">Movie</string>
     <string name="watchlist_tv_series_chip">TV Series</string>
     <string name="tv_section_popular">Popular TV Series</string>

@@ -8,6 +8,7 @@ internal sealed interface HomeUiState {
 
     data class Success(
         val bannerMediaList: List<Media>,
+        val rankingMediaList: List<Media>,
         val genreList: List<Genre>,
     ) : HomeUiState
 

@@ -44,13 +44,17 @@ class HomeViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun loadData_emitsSuccess_andPopularTvPagingEmitsMedia() = runTest {
-        val movieFixture = movieFixture()
-        val tvFixture = tvSeriesFixture()
+    fun loadData_emitsSuccess_withRankingListLimitedTo10() = runTest {
+        val bannerMovie = movieFixture()
+        val bannerTv = tvSeriesFixture()
+        val rankingFixtures = rankingFixtures()
         val viewModel = HomeViewModel(
-            mediaRepository = FakeMediaRepository(movieFixture, tvFixture),
+            mediaRepository = FakeMediaRepository(
+                dayList = listOf(bannerMovie, bannerTv),
+                weekList = rankingFixtures
+            ),
             movieRepository = FakeMovieRepository(),
-            tvRepository = FakeTvRepository(tvFixture),
+            tvRepository = FakeTvRepository(bannerTv),
             userRepository = FakeUserRepository()
         )
 
@@ -59,8 +63,10 @@ class HomeViewModelTest {
         assertTrue(viewModel.uiState.value is HomeUiState.Success)
         val success = viewModel.uiState.value as HomeUiState.Success
         assertEquals(2, success.bannerMediaList.size)
-        assertEquals(movieFixture as Media, success.bannerMediaList.first())
-        assertEquals(tvFixture as Media, success.bannerMediaList.last())
+        assertEquals(bannerMovie as Media, success.bannerMediaList.first())
+        assertEquals(bannerTv as Media, success.bannerMediaList.last())
+        assertEquals(10, success.rankingMediaList.size)
+        assertEquals(rankingFixtures.take(10), success.rankingMediaList)
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = MediaDiffUtil,
@@ -72,18 +78,45 @@ class HomeViewModelTest {
         differ.submitData(viewModel.popularTvPaging.first())
         advanceUntilIdle()
 
-        assertEquals(tvFixture as Media, differ.snapshot().items.single())
+        assertEquals(bannerTv as Media, differ.snapshot().items.single())
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun loadData_keepsSuccess_whenRankingListIsEmpty() = runTest {
+        val bannerMovie = movieFixture()
+        val bannerTv = tvSeriesFixture()
+        val viewModel = HomeViewModel(
+            mediaRepository = FakeMediaRepository(
+                dayList = listOf(bannerMovie, bannerTv),
+                weekList = emptyList()
+            ),
+            movieRepository = FakeMovieRepository(),
+            tvRepository = FakeTvRepository(bannerTv),
+            userRepository = FakeUserRepository()
+        )
+
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value is HomeUiState.Success)
+        val success = viewModel.uiState.value as HomeUiState.Success
+        assertTrue(success.rankingMediaList.isEmpty())
     }
 
     private class FakeMediaRepository(
-        private val movieFixture: Movie,
-        private val tvFixture: TvSeries
+        private val dayList: List<Media>,
+        private val weekList: List<Media>
     ) : MediaRepository {
         override fun searchMediaPaging(query: String): Flow<PagingData<Media>> =
             flowOf(PagingData.from(emptyList()))
 
         override fun getTrendingMediaList(timeWindow: TimeWindow): Flow<List<Media>> =
-            flowOf(listOf(movieFixture, tvFixture))
+            flowOf(
+                when (timeWindow) {
+                    TimeWindow.DAY -> dayList
+                    TimeWindow.WEEK -> weekList
+                }
+            )
     }
 
     private class FakeMovieRepository : MovieRepository {
@@ -231,6 +264,81 @@ private fun tvSeriesFixture() = TvSeries(
     voteAverage = 9.0,
     voteCount = 1000
 )
+
+private fun rankingFixtures(): List<Media> = buildList {
+    add(movieFixture())
+    add(tvSeriesFixture())
+    add(
+        movieFixture().copy(
+            id = 12,
+            originalTitle = "Ranking Movie 2",
+            title = "Ranking Movie 2"
+        )
+    )
+    add(
+        tvSeriesFixture().copy(
+            id = 13,
+            originalName = "Ranking TV 2",
+            name = "Ranking TV 2"
+        )
+    )
+    add(
+        movieFixture().copy(
+            id = 14,
+            originalTitle = "Ranking Movie 3",
+            title = "Ranking Movie 3"
+        )
+    )
+    add(
+        tvSeriesFixture().copy(
+            id = 15,
+            originalName = "Ranking TV 3",
+            name = "Ranking TV 3"
+        )
+    )
+    add(
+        movieFixture().copy(
+            id = 16,
+            originalTitle = "Ranking Movie 4",
+            title = "Ranking Movie 4"
+        )
+    )
+    add(
+        tvSeriesFixture().copy(
+            id = 17,
+            originalName = "Ranking TV 4",
+            name = "Ranking TV 4"
+        )
+    )
+    add(
+        movieFixture().copy(
+            id = 18,
+            originalTitle = "Ranking Movie 5",
+            title = "Ranking Movie 5"
+        )
+    )
+    add(
+        tvSeriesFixture().copy(
+            id = 19,
+            originalName = "Ranking TV 5",
+            name = "Ranking TV 5"
+        )
+    )
+    add(
+        movieFixture().copy(
+            id = 20,
+            originalTitle = "Ranking Movie 6",
+            title = "Ranking Movie 6"
+        )
+    )
+    add(
+        tvSeriesFixture().copy(
+            id = 21,
+            originalName = "Ranking TV 6",
+            name = "Ranking TV 6"
+        )
+    )
+}
 
 private fun movieFixture() = Movie(
     adult = false,

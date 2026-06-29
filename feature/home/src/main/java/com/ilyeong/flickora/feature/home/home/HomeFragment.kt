@@ -13,16 +13,17 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.TvSeries
+import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.adapter.GenreAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.home.adapter.PosterFixedPagingAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterFullAdapter
+import com.ilyeong.flickora.feature.home.adapter.RankingPosterAdapter
 import com.ilyeong.flickora.feature.home.databinding.FragmentHomeBinding
 import com.ilyeong.flickora.feature.home.model.HomeUiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,6 +73,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val posterFullAdapter = PosterFullAdapter(mediaClickListener)
     private val genreAdapter = GenreAdapter(genreClickListener)
+    private val rankingAdapter = RankingPosterAdapter(mediaClickListener)
     private val watchlistAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val topRatedAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val upcomingAdapter = PosterFixedPagingAdapter(mediaClickListener)
@@ -136,6 +138,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setMovieSection() {
+        binding.tvMovieRanking.text = getString(R.string.home_section_top_10)
         binding.tvMovieSection1.text = getString(R.string.movie_section_watchlist)
         binding.tvMovieSection2.text = getString(R.string.movie_section_upcoming)
         binding.tvMovieSection3.text = getString(R.string.movie_section_popular)
@@ -148,6 +151,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.tvTvSectionOnTheAir.text = getString(R.string.tv_section_on_the_air)
         binding.tvTvSectionAiringToday.text = getString(R.string.tv_section_airing_today)
 
+        binding.rvMovieRanking.adapter = rankingAdapter
         binding.rvMovieSection1.adapter = watchlistAdapter
         binding.rvMovieSection2.adapter = upcomingAdapter
         binding.rvMovieSection3.adapter = popularAdapter
@@ -160,6 +164,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.rvTvSectionOnTheAir.adapter = onTheAirTvAdapter
         binding.rvTvSectionAiringToday.adapter = airingTodayTvAdapter
 
+        binding.rvMovieRanking.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection1.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection2.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection3.addItemDecoration(PosterFixedItemDecoration)
@@ -344,11 +349,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         binding.content.isVisible = true
                         binding.ldf.root.isVisible = false
 
-                        posterFullAdapter.submitList(uiState.bannerMediaList)
-                        genreAdapter.submitList(uiState.genreList)
+                        val successState = uiState
+                        posterFullAdapter.submitList(successState.bannerMediaList)
+                        rankingAdapter.submitList(successState.rankingMediaList)
+                        genreAdapter.submitList(successState.genreList)
 
                         binding.tvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)
                         binding.rvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)
+                        binding.tvMovieRanking.isVisible =
+                            successState.rankingMediaList.isNotEmpty()
+                        binding.rvMovieRanking.isVisible =
+                            successState.rankingMediaList.isNotEmpty()
                     }
 
                     isFirstLoadingFailure -> {

@@ -43,6 +43,29 @@
                 tools:listitem="@layout/item_movie_genre_chip" />
 
             <TextView
+                android:id="@+id/tv_movie_ranking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_movie_section3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/home_section_top_10" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_movie_ranking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_ranking"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_ranking_poster" />
+
+            <TextView
                 android:id="@+id/tv_movie_section1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,7 +235,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_movie_section3"
+                app:layout_constraintTop_toBottomOf="@id/rv_movie_ranking"
                 tools:text="@string/tv_section_top_rated" />
 
             <androidx.recyclerview.widget.RecyclerView

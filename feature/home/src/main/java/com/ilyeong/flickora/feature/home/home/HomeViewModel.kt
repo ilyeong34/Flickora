@@ -84,14 +84,21 @@ internal class HomeViewModel @Inject constructor(
         if (_uiState.value is Success) return
 
         val trendingDayFlow = mediaRepository.getTrendingMediaList(TimeWindow.DAY)
+        val trendingWeekFlow = mediaRepository.getTrendingMediaList(TimeWindow.WEEK)
         val genreFlow = movieRepository.getMovieGenreList()
 
-        combine(trendingDayFlow, genreFlow, ::Pair)
+        combine(trendingDayFlow, trendingWeekFlow, genreFlow) { dayList, weekList, genreList ->
+            Success(
+                bannerMediaList = dayList.shuffled().take(5),
+                rankingMediaList = weekList.take(10),
+                genreList = genreList
+            )
+        }
             .onStart {
                 _uiState.value = Loading
                 // delay(2000L)
             }
-            .onEach { _uiState.value = Success(it.first, it.second) }
+            .onEach { _uiState.value = it }
             .catch { _uiState.value = HomeUiState.Failure }
             .launchIn(viewModelScope)
     }
