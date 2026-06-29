@@ -3,6 +3,7 @@ package com.ilyeong.flickora.feature.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.ilyeong.flickora.core.data.media.repository.MediaRepository
 import com.ilyeong.flickora.core.data.movie.repository.MovieRepository
 import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.feature.search.model.SearchUiState
@@ -23,6 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
+    private val mediaRepository: MediaRepository,
     private val movieRepository: MovieRepository
 ) : ViewModel() {
 
@@ -30,10 +32,10 @@ internal class SearchViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val searchMoviePaging = _uiState
+    val searchMediaPaging = _uiState
         .map { it.query }
         .distinctUntilChanged()
-        .flatMapLatest { movieRepository.searchMoviePaging(it) }
+        .flatMapLatest { mediaRepository.searchMediaPaging(it) }
         .cachedIn(viewModelScope)
 
     init {

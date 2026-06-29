@@ -79,9 +79,6 @@ class HomeViewModelTest {
         override fun getMovieListByGenrePaging(genreId: Int): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
 
-        override fun searchMoviePaging(query: String): Flow<PagingData<Movie>> =
-            flowOf(PagingData.from(emptyList()))
-
         override fun getTopRatedMoviePaging(maxPage: Int): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
 

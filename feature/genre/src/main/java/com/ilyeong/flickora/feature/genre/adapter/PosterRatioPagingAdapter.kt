@@ -1,4 +1,4 @@
-package com.ilyeong.flickora.core.ui.common.adapter
+package com.ilyeong.flickora.feature.genre.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -7,7 +7,7 @@ import com.ilyeong.flickora.core.ui.common.diffutil.MovieDiffUtil
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.core.ui.common.viewholder.PosterRatioViewHolder
 
-class PosterRatioPagingAdapter(
+internal class PosterRatioPagingAdapter(
     private val itemClickListener: ItemClickListener
 ) : PagingDataAdapter<Movie, PosterRatioViewHolder>(MovieDiffUtil) {
     override fun onCreateViewHolder(
@@ -20,6 +20,8 @@ class PosterRatioPagingAdapter(
         position: Int
     ) {
         val item = getItem(position) ?: return
-        holder.bind(item, itemClickListener)
+        holder.bind(item) { media ->
+            itemClickListener.onItemClick(media.id)
+        }
     }
 }

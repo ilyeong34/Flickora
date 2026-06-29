@@ -16,8 +16,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.core.ui.R
-import com.ilyeong.flickora.core.ui.common.adapter.PosterRatioPagingAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecoration
 import com.ilyeong.flickora.core.ui.common.extension.calculateSpanCount
 import com.ilyeong.flickora.core.ui.common.extension.getQueryFlow
@@ -25,6 +26,7 @@ import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.search.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.search.adapter.PosterDescriptionAdapter
+import com.ilyeong.flickora.feature.search.adapter.PosterRatioPagingAdapter
 import com.ilyeong.flickora.feature.search.databinding.FragmentSearchBinding
 import com.ilyeong.flickora.feature.search.model.TrendState
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,9 +43,22 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private val viewModel: SearchViewModel by viewModels()
 
-    val itemClickListener = ItemClickListener { movieId ->
+    private val itemClickListener = ItemClickListener { movieId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.flickora/detail_fragment?movieId=${movieId}".toUri())
+            .build()
+
+        findNavController().navigate(request)
+    }
+
+    private val mediaClickListener: (Media) -> Unit = { media ->
+        val uri = when (media) {
+            is Movie -> "android-app://com.ilyeong.flickora/detail_fragment?movieId=${media.id}"
+            is TvSeries -> "android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${media.id}"
+        }
+
+        val request = NavDeepLinkRequest.Builder
+            .fromUri(uri.toUri())
             .build()
 
         findNavController().navigate(request)
@@ -57,7 +72,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     private val posterDescriptionAdapter = PosterDescriptionAdapter(posterDescriptionClickListener)
 
     private val searchHeaderAdapter = HeaderAdapter()
-    private val searchAdapter = PosterRatioPagingAdapter(itemClickListener)
+    private val searchAdapter = PosterRatioPagingAdapter(mediaClickListener)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -212,7 +227,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private fun observePagingData() {
         repeatOnViewStarted {
-            viewModel.searchMoviePaging.collectLatest {
+            viewModel.searchMediaPaging.collectLatest {
                 searchAdapter.submitData(it)
             }
         }
