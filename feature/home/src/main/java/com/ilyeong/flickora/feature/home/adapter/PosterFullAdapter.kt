@@ -2,13 +2,12 @@ package com.ilyeong.flickora.feature.home.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.ilyeong.flickora.core.model.Movie
-import com.ilyeong.flickora.core.ui.common.diffutil.MovieDiffUtil
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
+import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.ui.common.diffutil.MediaDiffUtil
 import com.ilyeong.flickora.feature.home.viewholder.PosterFullViewHolder
 
-internal class PosterFullAdapter(private val itemClickListener: ItemClickListener) :
-    ListAdapter<Movie, PosterFullViewHolder>(MovieDiffUtil) {
+internal class PosterFullAdapter(private val itemClickListener: (Media) -> Unit) :
+    ListAdapter<Media, PosterFullViewHolder>(MediaDiffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -18,6 +17,7 @@ internal class PosterFullAdapter(private val itemClickListener: ItemClickListene
         holder: PosterFullViewHolder,
         position: Int
     ) {
-        holder.bind(getItem(position), itemClickListener)
+        val item = getItem(position) ?: return
+        holder.bind(item, itemClickListener)
     }
 }

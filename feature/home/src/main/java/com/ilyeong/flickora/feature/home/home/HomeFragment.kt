@@ -14,6 +14,9 @@ import androidx.paging.LoadState
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.ilyeong.flickora.core.ui.R
+import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.core.ui.common.adapter.GenreAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
@@ -52,6 +55,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         findNavController().navigate(request)
     }
 
+    private val mediaClickListener: (Media) -> Unit = { media ->
+        when (media) {
+            is Movie -> movieClickListener.onItemClick(media.id)
+            is TvSeries -> tvSeriesClickListener.onItemClick(media.id)
+        }
+    }
+
     private val genreClickListener = ItemClickListener { genreId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.flickora/genre_fragment?genreId=${genreId}".toUri())
@@ -60,19 +70,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         findNavController().navigate(request)
     }
 
-    private val posterFullAdapter = PosterFullAdapter(movieClickListener)
+    private val posterFullAdapter = PosterFullAdapter(mediaClickListener)
     private val genreAdapter = GenreAdapter(genreClickListener)
-    private val watchlistAdapter = PosterFixedPagingAdapter(movieClickListener)
-    private val topRatedAdapter = PosterFixedPagingAdapter(movieClickListener)
-    private val upcomingAdapter = PosterFixedPagingAdapter(movieClickListener)
-    private val popularAdapter = PosterFixedPagingAdapter(movieClickListener)
-    private val nowPlayingAdapter = PosterFixedPagingAdapter(movieClickListener)
-    private val trendingAdapter = PosterFixedPagingAdapter(movieClickListener)
-    private val popularTvAdapter = PosterFixedPagingAdapter(tvSeriesClickListener)
-    private val topRatedTvAdapter = PosterFixedPagingAdapter(tvSeriesClickListener)
-    private val trendingTvAdapter = PosterFixedPagingAdapter(tvSeriesClickListener)
-    private val onTheAirTvAdapter = PosterFixedPagingAdapter(tvSeriesClickListener)
-    private val airingTodayTvAdapter = PosterFixedPagingAdapter(tvSeriesClickListener)
+    private val watchlistAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val topRatedAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val upcomingAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val popularAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val nowPlayingAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val trendingAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val popularTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val topRatedTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val trendingTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val onTheAirTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val airingTodayTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -334,7 +344,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         binding.content.isVisible = true
                         binding.ldf.root.isVisible = false
 
-                        posterFullAdapter.submitList(uiState.bannerMovieList)
+                        posterFullAdapter.submitList(uiState.bannerMediaList)
                         genreAdapter.submitList(uiState.genreList)
 
                         binding.tvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)

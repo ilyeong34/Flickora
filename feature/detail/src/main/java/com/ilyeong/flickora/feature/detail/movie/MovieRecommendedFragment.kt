@@ -7,16 +7,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
-import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.detail.adapter.PosterFixedAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentRecommendedBinding
+import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
 import com.ilyeong.flickora.feature.detail.movie.MovieDetailFragmentDirections
 import com.ilyeong.flickora.feature.detail.movie.MovieDetailViewModel
-import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
 
 internal class MovieRecommendedFragment : BaseFragment<FragmentRecommendedBinding>() {
 
@@ -25,7 +24,8 @@ internal class MovieRecommendedFragment : BaseFragment<FragmentRecommendedBindin
 
     private val viewModel: MovieDetailViewModel by viewModels({ requireParentFragment() })
 
-    private val itemClickListener = ItemClickListener { movieId ->
+    private val itemClickListener: (Media) -> Unit = { media ->
+        val movieId = media.id
         val action = MovieDetailFragmentDirections.actionDetailFragmentToDetailFragment(movieId)
         findNavController().navigate(action)
     }
@@ -73,22 +73,18 @@ internal class MovieRecommendedFragment : BaseFragment<FragmentRecommendedBindin
                     is MovieDetailUiState.Success -> {
                         // Collection movies
                         collectionAdapter.submitList(
-                            it.collectionMovieList.map { movie -> movie.toPosterUiModel() }
+                            it.collectionMovieList.map { movie -> movie as Media }
                         )
                         binding.tvMovieSection1.isVisible = it.collectionMovieList.isNotEmpty()
                         binding.rvMovieSection1.isVisible = it.collectionMovieList.isNotEmpty()
 
                         // Recommended movies
-                        recommendationAdapter.submitList(
-                            it.movieRecommendationList.map { movie -> movie.toPosterUiModel() }
-                        )
+                        recommendationAdapter.submitList(it.movieRecommendationList)
                         binding.tvMovieSection2.isVisible = it.movieRecommendationList.isNotEmpty()
                         binding.rvMovieSection2.isVisible = it.movieRecommendationList.isNotEmpty()
 
                         // Similar movies
-                        similarAdapter.submitList(
-                            it.movieSimilarList.map { movie -> movie.toPosterUiModel() }
-                        )
+                        similarAdapter.submitList(it.movieSimilarList)
                         binding.tvMovieSection3.isVisible = it.movieSimilarList.isNotEmpty()
                         binding.rvMovieSection3.isVisible = it.movieSimilarList.isNotEmpty()
 

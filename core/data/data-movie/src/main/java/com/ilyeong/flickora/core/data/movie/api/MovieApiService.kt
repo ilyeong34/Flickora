@@ -9,7 +9,6 @@ import com.ilyeong.flickora.core.data.movie.model.NowPlayingResponse
 import com.ilyeong.flickora.core.data.movie.model.PopularResponse
 import com.ilyeong.flickora.core.data.movie.model.RecommendationListResponse
 import com.ilyeong.flickora.core.data.movie.model.ReviewListResponse
-import com.ilyeong.flickora.core.data.movie.model.SearchMovieListResponse
 import com.ilyeong.flickora.core.data.movie.model.SimilarListResponse
 import com.ilyeong.flickora.core.data.movie.model.TopRatedResponse
 import com.ilyeong.flickora.core.data.movie.model.TrendingResponse
@@ -40,12 +39,6 @@ internal interface MovieApiService {
         @Query("with_genres") genreId: Int,
         @Query("page") page: Int
     ): DiscoverResponse
-
-    @GET("search/movie")
-    suspend fun searchMovieList(
-        @Query("query") query: String,
-        @Query("page") page: Int = 1,
-    ): SearchMovieListResponse
 
     @GET("movie/{movie_id}/reviews")
     suspend fun getMovieReviewList(

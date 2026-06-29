@@ -15,16 +15,17 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.core.ui.R
-import com.ilyeong.flickora.core.ui.common.adapter.PosterRatioPagingAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecoration
 import com.ilyeong.flickora.core.ui.common.extension.calculateSpanCount
 import com.ilyeong.flickora.core.ui.common.extension.getQueryFlow
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
-import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
 import com.ilyeong.flickora.feature.search.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.search.adapter.PosterDescriptionAdapter
+import com.ilyeong.flickora.feature.search.adapter.PosterRatioPagingAdapter
 import com.ilyeong.flickora.feature.search.databinding.FragmentSearchBinding
 import com.ilyeong.flickora.feature.search.model.TrendState
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,19 +42,28 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private val viewModel: SearchViewModel by viewModels()
 
-    val itemClickListener = ItemClickListener { movieId ->
+    private val mediaClickListener: (Media) -> Unit = { media ->
+        val uri = when (media) {
+            is Movie -> "android-app://com.ilyeong.flickora/detail_fragment?movieId=${media.id}"
+            is TvSeries -> "android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${media.id}"
+        }
+
         val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?movieId=${movieId}".toUri())
+            .fromUri(uri.toUri())
             .build()
 
         findNavController().navigate(request)
     }
 
+    private val posterDescriptionClickListener: (Media) -> Unit = { media ->
+        mediaClickListener(media)
+    }
+
     private val trendHeaderAdapter = HeaderAdapter()
-    private val posterDescriptionAdapter = PosterDescriptionAdapter(itemClickListener)
+    private val posterDescriptionAdapter = PosterDescriptionAdapter(posterDescriptionClickListener)
 
     private val searchHeaderAdapter = HeaderAdapter()
-    private val searchAdapter = PosterRatioPagingAdapter(itemClickListener)
+    private val searchAdapter = PosterRatioPagingAdapter(mediaClickListener)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,6 +94,9 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                     viewModel.setQuery(it)
                 }
         }
+
+        binding.sv.findViewById<View>(androidx.appcompat.R.id.search_plate).background = null
+        binding.sv.findViewById<View>(androidx.appcompat.R.id.submit_area).background = null
     }
 
     private fun setTrend() {
@@ -197,9 +210,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                         trendHeaderAdapter.updateHeaderTitle(
                             getString(R.string.movie_section_trending_day)
                         )
-                        posterDescriptionAdapter.submitList(
-                            uiState.trendState.movieList.map { it.toPosterUiModel() }
-                        )
+                        posterDescriptionAdapter.submitList(uiState.trendState.mediaList)
                     }
                 }
             }
@@ -208,7 +219,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private fun observePagingData() {
         repeatOnViewStarted {
-            viewModel.searchMoviePaging.collectLatest {
+            viewModel.searchMediaPaging.collectLatest {
                 searchAdapter.submitData(it)
             }
         }

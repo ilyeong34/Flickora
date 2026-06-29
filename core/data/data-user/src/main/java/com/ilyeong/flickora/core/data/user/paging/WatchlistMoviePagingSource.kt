@@ -6,7 +6,7 @@ import com.ilyeong.flickora.core.data.user.api.UserApiService
 import com.ilyeong.flickora.core.data.user.model.toDomain
 import com.ilyeong.flickora.core.model.Movie
 
-internal class WatchlistPagingSource(
+internal class WatchlistMoviePagingSource(
     private val apiService: UserApiService
 ) : PagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
@@ -20,7 +20,7 @@ internal class WatchlistPagingSource(
         val page = params.key ?: 1
 
         return try {
-            val response = apiService.getWatchlist(page)
+            val response = apiService.getMovieWatchlist(page)
             val prevPage = if (page == 1) null else page - 1
             val nextPage =
                 if (response.resultList.isEmpty() || response.totalPage == page) null else page + 1

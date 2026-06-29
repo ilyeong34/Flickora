@@ -1,6 +1,6 @@
 package com.ilyeong.flickora.feature.search.model
 
-import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.Media
 
 internal data class SearchUiState(
     val trendState: TrendState = TrendState.Loading,
@@ -9,6 +9,6 @@ internal data class SearchUiState(
 
 internal sealed interface TrendState {
     object Loading : TrendState
-    data class Success(val movieList: List<Movie>) : TrendState
+    data class Success(val mediaList: List<Media>) : TrendState
     object Failure : TrendState
 }

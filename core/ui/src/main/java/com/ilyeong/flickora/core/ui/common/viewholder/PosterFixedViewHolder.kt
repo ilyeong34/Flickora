@@ -5,24 +5,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
-import com.ilyeong.flickora.core.ui.common.model.PosterUiModel
+import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.databinding.ItemMoviePosterFixedSizeBinding
 
 class PosterFixedViewHolder private constructor(
     private val binding: ItemMoviePosterFixedSizeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(poster: PosterUiModel, itemClickListener: ItemClickListener) {
-        binding.ivPoster.load(poster.posterPath) {
+    fun bind(media: Media, onItemClick: (Media) -> Unit) {
+        binding.ivPoster.load(media.posterPath) {
             crossfade(true)
             listener(
                 onStart = { _ -> binding.tvPosterTitle.text = null },
-                onError = { _, _ -> binding.tvPosterTitle.text = poster.title }
+                onError = { _, _ -> binding.tvPosterTitle.text = media.title }
             )
         }
         binding.root.setOnClickListener {
-            itemClickListener.onItemClick(poster.id)
+            onItemClick(media)
         }
     }
 

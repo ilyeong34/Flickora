@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.ilyeong.flickora.core.ui.R
-import com.ilyeong.flickora.core.ui.common.adapter.PosterRatioPagingAdapter
 import com.ilyeong.flickora.core.ui.common.extension.calculateSpanCount
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
+import com.ilyeong.flickora.feature.genre.adapter.PosterRatioPagingAdapter
 import com.ilyeong.flickora.feature.genre.adapter.ShimmerPosterRatioAdapter
 import com.ilyeong.flickora.feature.genre.databinding.FragmentGenreBinding
 import dagger.hilt.android.AndroidEntryPoint

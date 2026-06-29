@@ -9,6 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/flickora_padding_large" />
 
+    <include layout="@layout/shimmer_item_watchlist_media_type_header" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/flickora_padding_large" />
+
     <include layout="@layout/shimmer_item_movie_poster_description" />
 
     <Space

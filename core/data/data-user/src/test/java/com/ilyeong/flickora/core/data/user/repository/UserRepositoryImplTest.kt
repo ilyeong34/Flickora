@@ -8,6 +8,7 @@ import com.ilyeong.flickora.core.datastore.user.UserPreferenceDataSource
 import com.ilyeong.flickora.core.model.Account
 import com.ilyeong.flickora.core.model.AccountStates
 import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.TvSeries
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -38,6 +39,26 @@ class UserRepositoryImplTest {
         assertTrue(local.isInWatchlist(2))
         assertEquals(listOf(5, 2), local.watchlistIds())
         assertEquals("first-updated", local.movie(5)?.title)
+    }
+
+    @Test
+    fun guest_addTvToWatchlist_updatesLocalStore_andPreservesInsertOrder() = runBlocking {
+        val prefs = FakeUserPreferenceDataSource(isGuest = true)
+        val local = FakeUserLocalDataSource()
+        val remote = FakeUserRemoteDataSource()
+        val repository = UserRepositoryImpl(prefs, local, remote)
+
+        val firstAdded = tvSeries(5, "first", "first overview")
+        val secondAdded = tvSeries(2, "second", "second overview")
+
+        repository.addTvToWatchlist(firstAdded, true).first()
+        repository.addTvToWatchlist(secondAdded, true).first()
+        repository.addTvToWatchlist(firstAdded.copy(name = "first-updated"), true).first()
+
+        assertTrue(local.isTvInWatchlist(5))
+        assertTrue(local.isTvInWatchlist(2))
+        assertEquals(listOf(5, 2), local.tvWatchlistIds())
+        assertEquals("first-updated", local.tvSeries(5)?.name)
     }
 
     @Test
@@ -170,12 +191,24 @@ class UserRepositoryImplTest {
         override fun getWatchlistMoviePaging(): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(items.values.toList()))
 
+        override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> =
+            flowOf(PagingData.from(tvItems.values.toList()))
+
         override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = flowOf(
             AccountStates(
                 id = movieId,
                 favorite = false,
                 rated = null,
                 watchlist = items.containsKey(movieId)
+            )
+        )
+
+        override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> = flowOf(
+            AccountStates(
+                id = tvSeriesId,
+                favorite = false,
+                rated = null,
+                watchlist = tvItems.containsKey(tvSeriesId)
             )
         )
 
@@ -188,13 +221,28 @@ class UserRepositoryImplTest {
             emit(Unit)
         }
 
+        override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> = flow {
+            if (watchlist) {
+                tvItems[tvSeries.id] = tvSeries
+            } else {
+                tvItems.remove(tvSeries.id)
+            }
+            emit(Unit)
+        }
+
         fun watchlistIds(): List<Int> = items.keys.toList()
         fun movie(movieId: Int): Movie? = items[movieId]
         fun isInWatchlist(movieId: Int): Boolean = items.containsKey(movieId)
+        fun tvWatchlistIds(): List<Int> = tvItems.keys.toList()
+        fun tvSeries(tvSeriesId: Int): TvSeries? = tvItems[tvSeriesId]
+        fun isTvInWatchlist(tvSeriesId: Int): Boolean = tvItems.containsKey(tvSeriesId)
+
+        private val tvItems = linkedMapOf<Int, TvSeries>()
     }
 
     private class FakeUserRemoteDataSource : UserRemoteDataSource {
         val addMovieCalls = mutableListOf<WatchlistPostRequest>()
+        val addTvCalls = mutableListOf<WatchlistPostRequest>()
         var getAccountCalls = 0
 
         override fun getAccount(): Flow<Account> = flow {
@@ -205,8 +253,14 @@ class UserRepositoryImplTest {
         override fun getWatchlistMoviePaging(): Flow<PagingData<Movie>> =
             flowOf(PagingData.empty())
 
+        override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> =
+            flowOf(PagingData.empty())
+
         override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> =
             flowOf(AccountStates(id = movieId, favorite = true, rated = null, watchlist = true))
+
+        override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> =
+            flowOf(AccountStates(id = tvSeriesId, favorite = true, rated = null, watchlist = true))
 
         override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = flow {
             addMovieCalls += WatchlistPostRequest(
@@ -216,5 +270,31 @@ class UserRepositoryImplTest {
             )
             emit(Unit)
         }
+
+        override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> = flow {
+            addTvCalls += WatchlistPostRequest(
+                mediaType = "tv",
+                mediaId = tvSeries.id,
+                watchlist = watchlist
+            )
+            emit(Unit)
+        }
     }
+
+    private fun tvSeries(id: Int, name: String, overview: String): TvSeries = TvSeries(
+        adult = false,
+        backdropPath = "",
+        genreList = emptyList(),
+        id = id,
+        originCountry = emptyList(),
+        originalLanguage = "",
+        originalName = name,
+        overview = overview,
+        popularity = 0.0,
+        posterPath = "poster-$id",
+        firstAirDate = "",
+        name = name,
+        voteAverage = 0.0,
+        voteCount = 0,
+    )
 }

@@ -9,7 +9,6 @@ import com.ilyeong.flickora.core.data.movie.paging.GenreMoviePagingSource
 import com.ilyeong.flickora.core.data.movie.paging.NowPlayingPagingSource
 import com.ilyeong.flickora.core.data.movie.paging.PopularPagingSource
 import com.ilyeong.flickora.core.data.movie.paging.ReviewPagingSource
-import com.ilyeong.flickora.core.data.movie.paging.SearchPagingSource
 import com.ilyeong.flickora.core.data.movie.paging.TopRatedPagingSource
 import com.ilyeong.flickora.core.data.movie.paging.TrendingPagingSource
 import com.ilyeong.flickora.core.data.movie.paging.UpcomingPagingSource
@@ -75,16 +74,6 @@ internal class MovieRepositoryImpl @Inject constructor(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { GenreMoviePagingSource(apiService, genreId) }
-        ).flow
-    }
-
-    override fun searchMoviePaging(query: String): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = { SearchPagingSource(apiService, query) }
         ).flow
     }
 

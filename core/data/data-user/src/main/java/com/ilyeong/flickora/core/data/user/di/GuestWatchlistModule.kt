@@ -25,7 +25,8 @@ internal object GuestWatchlistModule {
         context,
         GuestWatchlistDatabase::class.java,
         DATABASE_NAME
-    ).build()
+    ).addMigrations(GuestWatchlistDatabase.MIGRATION_1_2)
+        .build()
 
     @Provides
     @Singleton

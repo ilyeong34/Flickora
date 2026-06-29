@@ -3,6 +3,7 @@ package com.ilyeong.flickora.feature.home
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ListUpdateCallback
+import com.ilyeong.flickora.core.data.media.repository.MediaRepository
 import com.ilyeong.flickora.core.data.movie.repository.MovieRepository
 import com.ilyeong.flickora.core.data.tv.repository.TvRepository
 import com.ilyeong.flickora.core.data.user.repository.UserRepository
@@ -10,12 +11,12 @@ import com.ilyeong.flickora.core.model.Account
 import com.ilyeong.flickora.core.model.AccountStates
 import com.ilyeong.flickora.core.model.Credit
 import com.ilyeong.flickora.core.model.Genre
+import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.core.model.TvSeries
-import com.ilyeong.flickora.core.ui.common.diffutil.PosterUiModelDiffUtil
-import com.ilyeong.flickora.core.ui.common.model.toPosterUiModel
+import com.ilyeong.flickora.core.ui.common.diffutil.MediaDiffUtil
 import com.ilyeong.flickora.feature.home.model.HomeUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,9 +44,11 @@ class HomeViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun loadData_emitsSuccess_andPopularTvPagingEmitsPosterUiModel() = runTest {
+    fun loadData_emitsSuccess_andPopularTvPagingEmitsMedia() = runTest {
+        val movieFixture = movieFixture()
         val tvFixture = tvSeriesFixture()
         val viewModel = HomeViewModel(
+            mediaRepository = FakeMediaRepository(movieFixture, tvFixture),
             movieRepository = FakeMovieRepository(),
             tvRepository = FakeTvRepository(tvFixture),
             userRepository = FakeUserRepository()
@@ -54,9 +57,13 @@ class HomeViewModelTest {
         advanceUntilIdle()
 
         assertTrue(viewModel.uiState.value is HomeUiState.Success)
+        val success = viewModel.uiState.value as HomeUiState.Success
+        assertEquals(2, success.bannerMediaList.size)
+        assertEquals(movieFixture as Media, success.bannerMediaList.first())
+        assertEquals(tvFixture as Media, success.bannerMediaList.last())
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = PosterUiModelDiffUtil,
+            diffCallback = MediaDiffUtil,
             updateCallback = NoopListUpdateCallback,
             mainDispatcher = Dispatchers.Main,
             workerDispatcher = UnconfinedTestDispatcher(testScheduler)
@@ -65,7 +72,18 @@ class HomeViewModelTest {
         differ.submitData(viewModel.popularTvPaging.first())
         advanceUntilIdle()
 
-        assertEquals(tvFixture.toPosterUiModel(), differ.snapshot().items.single())
+        assertEquals(tvFixture as Media, differ.snapshot().items.single())
+    }
+
+    private class FakeMediaRepository(
+        private val movieFixture: Movie,
+        private val tvFixture: TvSeries
+    ) : MediaRepository {
+        override fun searchMediaPaging(query: String): Flow<PagingData<Media>> =
+            flowOf(PagingData.from(emptyList()))
+
+        override fun getTrendingMediaList(timeWindow: TimeWindow): Flow<List<Media>> =
+            flowOf(listOf(movieFixture, tvFixture))
     }
 
     private class FakeMovieRepository : MovieRepository {
@@ -77,9 +95,6 @@ class HomeViewModelTest {
             flowOf(PagingData.from(emptyList()))
 
         override fun getMovieListByGenrePaging(genreId: Int): Flow<PagingData<Movie>> =
-            flowOf(PagingData.from(emptyList()))
-
-        override fun searchMoviePaging(query: String): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
 
         override fun getTopRatedMoviePaging(maxPage: Int): Flow<PagingData<Movie>> =
@@ -168,9 +183,14 @@ class HomeViewModelTest {
         override fun getAccount(): Flow<Account> = unusedFlow()
         override fun getWatchlistMoviePaging(): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
+        override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> =
+            flowOf(PagingData.from(emptyList()))
 
         override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = unusedFlow()
+        override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> = unusedFlow()
         override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = unusedFlow()
+        override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> =
+            unusedFlow()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -210,6 +230,27 @@ private fun tvSeriesFixture() = TvSeries(
     name = "Breaking Bad",
     voteAverage = 9.0,
     voteCount = 1000
+)
+
+private fun movieFixture() = Movie(
+    adult = false,
+    collection = null,
+    backdropPath = "",
+    genreList = listOf(Genre(1, "Drama")),
+    id = 11,
+    originalLanguage = "en",
+    originalTitle = "Trending Movie",
+    overview = "Overview",
+    popularity = 100.0,
+    posterPath = "https://image.tmdb.org/t/p/original//poster.png",
+    releaseDate = "2024-01-01",
+    runtime = 120,
+    spokenLanguageList = emptyList(),
+    title = "Trending Movie",
+    video = false,
+    voteAverage = 8.5,
+    voteCount = 1234,
+    isInWatchlist = false
 )
 
 private fun <T> unusedFlow(): Flow<T> = flow {

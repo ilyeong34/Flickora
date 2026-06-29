@@ -17,8 +17,6 @@ interface MovieRepository {
     fun getMovieReviewPaging(movieId: Int): Flow<PagingData<Review>>
     fun getMovieListByGenrePaging(genreId: Int): Flow<PagingData<Movie>>
 
-    fun searchMoviePaging(query: String): Flow<PagingData<Movie>>
-
     fun getTopRatedMoviePaging(maxPage: Int = Int.MAX_VALUE): Flow<PagingData<Movie>>
     fun getUpcomingMoviePaging(maxPage: Int = Int.MAX_VALUE): Flow<PagingData<Movie>>
     fun getPopularMoviePaging(maxPage: Int = Int.MAX_VALUE): Flow<PagingData<Movie>>

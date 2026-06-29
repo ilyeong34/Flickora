@@ -37,6 +37,7 @@ class TvDetailFragment : BaseFragment<FragmentTvDetailBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         setToolBarNavigationIcon()
+        setTvWatchlistIcon()
         setTabs()
         setRetryBtn()
 
@@ -46,6 +47,12 @@ class TvDetailFragment : BaseFragment<FragmentTvDetailBinding>() {
     private fun setToolBarNavigationIcon() {
         binding.tb.setNavigationOnClickListener {
             findNavController().navigateUp()
+        }
+    }
+
+    private fun setTvWatchlistIcon() {
+        binding.ivWatchlist.setOnClickListener {
+            viewModel.addTvToWatchlist()
         }
     }
 
@@ -103,6 +110,7 @@ class TvDetailFragment : BaseFragment<FragmentTvDetailBinding>() {
                             }
 
                             binding.tvTvTitle.text = this.name.ifBlank { this.originalName }
+                            binding.ivWatchlist.isSelected = this.isInWatchlist
                             binding.rrv.rating = this.voteAverage
                             binding.rrv.ratingCount = this.voteCount
                         }

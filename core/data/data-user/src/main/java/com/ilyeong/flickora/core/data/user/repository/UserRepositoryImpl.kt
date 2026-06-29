@@ -7,6 +7,7 @@ import com.ilyeong.flickora.core.datastore.user.UserPreferenceDataSource
 import com.ilyeong.flickora.core.model.Account
 import com.ilyeong.flickora.core.model.AccountStates
 import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.TvSeries
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -34,6 +35,14 @@ internal class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> = flow {
+        if (userPreferenceDataSource.isGuestMode()) {
+            emitAll(userLocalDataSource.getWatchlistTvPaging())
+        } else {
+            emitAll(userRemoteDataSource.getWatchlistTvPaging())
+        }
+    }
+
     override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = flow {
         if (userPreferenceDataSource.isGuestMode()) {
             emitAll(userLocalDataSource.getMovieAccountStates(movieId))
@@ -42,11 +51,27 @@ internal class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> = flow {
+        if (userPreferenceDataSource.isGuestMode()) {
+            emitAll(userLocalDataSource.getTvAccountStates(tvSeriesId))
+        } else {
+            emitAll(userRemoteDataSource.getTvAccountStates(tvSeriesId))
+        }
+    }
+
     override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = flow {
         if (userPreferenceDataSource.isGuestMode()) {
             emitAll(userLocalDataSource.addMovieToWatchlist(movie, watchlist))
         } else {
             emitAll(userRemoteDataSource.addMovieToWatchlist(movie, watchlist))
+        }
+    }
+
+    override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> = flow {
+        if (userPreferenceDataSource.isGuestMode()) {
+            emitAll(userLocalDataSource.addTvToWatchlist(tvSeries, watchlist))
+        } else {
+            emitAll(userRemoteDataSource.addTvToWatchlist(tvSeries, watchlist))
         }
     }
 }
