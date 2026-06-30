@@ -18,7 +18,6 @@ import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.model.Movie
-import com.ilyeong.flickora.core.model.MovieVideo
 import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.core.ui.common.adapter.GenreAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
@@ -411,7 +410,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         cardBinding: ItemMovieTrailerBackdropBinding,
         playerContainer: FrameLayout
     ) {
-        val video = movie.videos.pickPlayableTrailer()
+        val video = movie.videos.firstOrNull()
 
         if (video == null) {
             showMessage(getString(CoreR.string.trailer_video_unavailable_message))
@@ -533,17 +532,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onDestroyView()
     }
 
-    private fun List<MovieVideo>.pickPlayableTrailer(): MovieVideo? {
-        return firstOrNull { it.site == YOUTUBE_SITE && it.type == TRAILER_TYPE && it.official }
-            ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TRAILER_TYPE }
-            ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TEASER_TYPE && it.official }
-            ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TEASER_TYPE }
-    }
-
     private companion object {
         const val MAX_TRAILER_COUNT = 5
-        const val YOUTUBE_SITE = "YouTube"
-        const val TRAILER_TYPE = "Trailer"
-        const val TEASER_TYPE = "Teaser"
     }
 }

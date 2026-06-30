@@ -142,16 +142,16 @@ internal class MovieRepositoryImpl @Inject constructor(
                                 .filter { it.site == YOUTUBE_SITE }
                         }.getOrElse { emptyList() }
 
-                        movie.copy(videos = videoList)
+                        videoList.pickPlayableTrailer()?.let { playableVideo ->
+                            movie.copy(videos = listOf(playableVideo))
+                        }
                     }
                 }.awaitAll()
             }
 
             candidateListWithVideos
-                .filter { movie -> movie.videos.pickPlayableTrailer() != null }
-                .let { playableMovies ->
-                    playableMovies.take(limit - movieListWithVideos.size)
-                }
+                .filterNotNull()
+                .take(limit - movieListWithVideos.size)
                 .also { movieListWithVideos += it }
         }
 
