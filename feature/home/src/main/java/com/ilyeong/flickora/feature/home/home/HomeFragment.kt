@@ -23,7 +23,7 @@ import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.home.adapter.PosterFixedPagingAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterFullAdapter
-import com.ilyeong.flickora.feature.home.adapter.RankingPosterAdapter
+import com.ilyeong.flickora.feature.home.adapter.PosterRankingAdapter
 import com.ilyeong.flickora.feature.home.databinding.FragmentHomeBinding
 import com.ilyeong.flickora.feature.home.model.HomeUiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,16 +73,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val posterFullAdapter = PosterFullAdapter(mediaClickListener)
     private val genreAdapter = GenreAdapter(genreClickListener)
-    private val rankingAdapter = RankingPosterAdapter(mediaClickListener)
+    private val movieRankingAdapter = PosterRankingAdapter(mediaClickListener)
+    private val tvRankingAdapter = PosterRankingAdapter(mediaClickListener)
     private val watchlistAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val topRatedAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val upcomingAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val popularAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val nowPlayingAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val trendingAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val popularTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val topRatedTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val trendingTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val onTheAirTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val airingTodayTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
 
@@ -138,42 +137,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setMovieSection() {
-        binding.tvMovieRanking.text = getString(R.string.home_section_top_10)
+        binding.tvMovieRanking.text = getString(R.string.home_section_movie_trending_top_10)
         binding.tvMovieSection1.text = getString(R.string.movie_section_watchlist)
         binding.tvMovieSection2.text = getString(R.string.movie_section_upcoming)
         binding.tvMovieSection3.text = getString(R.string.movie_section_popular)
         binding.tvMovieSection4.text = getString(R.string.movie_section_now_playing)
-        binding.tvMovieSection5.text = getString(R.string.movie_section_trending_week)
         binding.tvMovieSection6.text = getString(R.string.movie_section_top_rated)
+        binding.tvTvRanking.text = getString(R.string.home_section_tv_trending_top_10)
         binding.tvTvSectionPopular.text = getString(R.string.tv_section_popular)
         binding.tvTvSectionTopRated.text = getString(R.string.tv_section_top_rated)
-        binding.tvTvSectionTrendingWeek.text = getString(R.string.tv_section_trending_week)
         binding.tvTvSectionOnTheAir.text = getString(R.string.tv_section_on_the_air)
         binding.tvTvSectionAiringToday.text = getString(R.string.tv_section_airing_today)
 
-        binding.rvMovieRanking.adapter = rankingAdapter
+        binding.rvMovieRanking.adapter = movieRankingAdapter
+        binding.rvTvRanking.adapter = tvRankingAdapter
         binding.rvMovieSection1.adapter = watchlistAdapter
         binding.rvMovieSection2.adapter = upcomingAdapter
         binding.rvMovieSection3.adapter = popularAdapter
         binding.rvMovieSection4.adapter = nowPlayingAdapter
-        binding.rvMovieSection5.adapter = trendingAdapter
         binding.rvMovieSection6.adapter = topRatedAdapter
         binding.rvTvSectionPopular.adapter = popularTvAdapter
         binding.rvTvSectionTopRated.adapter = topRatedTvAdapter
-        binding.rvTvSectionTrendingWeek.adapter = trendingTvAdapter
         binding.rvTvSectionOnTheAir.adapter = onTheAirTvAdapter
         binding.rvTvSectionAiringToday.adapter = airingTodayTvAdapter
 
         binding.rvMovieRanking.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvTvRanking.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection1.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection2.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection3.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection4.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvMovieSection5.addItemDecoration(PosterFixedItemDecoration)
         binding.rvMovieSection6.addItemDecoration(PosterFixedItemDecoration)
         binding.rvTvSectionPopular.addItemDecoration(PosterFixedItemDecoration)
         binding.rvTvSectionTopRated.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvTvSectionTrendingWeek.addItemDecoration(PosterFixedItemDecoration)
         binding.rvTvSectionOnTheAir.addItemDecoration(PosterFixedItemDecoration)
         binding.rvTvSectionAiringToday.addItemDecoration(PosterFixedItemDecoration)
     }
@@ -185,11 +181,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             upcomingAdapter.retry()
             popularAdapter.retry()
             nowPlayingAdapter.retry()
-            trendingAdapter.retry()
             topRatedAdapter.retry()
             popularTvAdapter.retry()
             topRatedTvAdapter.retry()
-            trendingTvAdapter.retry()
             onTheAirTvAdapter.retry()
             airingTodayTvAdapter.retry()
         }
@@ -221,12 +215,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         repeatOnViewStarted {
-            viewModel.trendingWeekMoviePaging.collectLatest {
-                trendingAdapter.submitData(it)
-            }
-        }
-
-        repeatOnViewStarted {
             viewModel.topRatedMoviePaging.collectLatest {
                 topRatedAdapter.submitData(it)
             }
@@ -241,12 +229,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         repeatOnViewStarted {
             viewModel.topRatedTvPaging.collectLatest {
                 topRatedTvAdapter.submitData(it)
-            }
-        }
-
-        repeatOnViewStarted {
-            viewModel.trendingWeekTvPaging.collectLatest {
-                trendingTvAdapter.submitData(it)
             }
         }
 
@@ -272,11 +254,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 upcomingAdapter.loadStateFlow,
                 popularAdapter.loadStateFlow,
                 nowPlayingAdapter.loadStateFlow,
-                trendingAdapter.loadStateFlow,
                 topRatedAdapter.loadStateFlow,
                 popularTvAdapter.loadStateFlow,
                 topRatedTvAdapter.loadStateFlow,
-                trendingTvAdapter.loadStateFlow,
                 onTheAirTvAdapter.loadStateFlow,
                 airingTodayTvAdapter.loadStateFlow
             ) {
@@ -285,13 +265,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 val upcomingState = it[2] as CombinedLoadStates
                 val popularState = it[3] as CombinedLoadStates
                 val nowPlayingState = it[4] as CombinedLoadStates
-                val trendingState = it[5] as CombinedLoadStates
-                val topRatedState = it[6] as CombinedLoadStates
-                val popularTvState = it[7] as CombinedLoadStates
-                val topRatedTvState = it[8] as CombinedLoadStates
-                val trendingTvState = it[9] as CombinedLoadStates
-                val onTheAirTvState = it[10] as CombinedLoadStates
-                val airingTodayTvState = it[11] as CombinedLoadStates
+                val topRatedState = it[5] as CombinedLoadStates
+                val popularTvState = it[6] as CombinedLoadStates
+                val topRatedTvState = it[7] as CombinedLoadStates
+                val onTheAirTvState = it[8] as CombinedLoadStates
+                val airingTodayTvState = it[9] as CombinedLoadStates
 
                 val isFirstLoading =
                     uiState is HomeUiState.Loading
@@ -299,11 +277,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             || (upcomingState.refresh is LoadState.Loading && upcomingAdapter.itemCount == 0)
                             || (popularState.refresh is LoadState.Loading && popularAdapter.itemCount == 0)
                             || (nowPlayingState.refresh is LoadState.Loading && nowPlayingAdapter.itemCount == 0)
-                            || (trendingState.refresh is LoadState.Loading && trendingAdapter.itemCount == 0)
                             || (topRatedState.refresh is LoadState.Loading && topRatedAdapter.itemCount == 0)
                             || (popularTvState.refresh is LoadState.Loading && popularTvAdapter.itemCount == 0)
                             || (topRatedTvState.refresh is LoadState.Loading && topRatedTvAdapter.itemCount == 0)
-                            || (trendingTvState.refresh is LoadState.Loading && trendingTvAdapter.itemCount == 0)
                             || (onTheAirTvState.refresh is LoadState.Loading && onTheAirTvAdapter.itemCount == 0)
                             || (airingTodayTvState.refresh is LoadState.Loading && airingTodayTvAdapter.itemCount == 0)
 
@@ -313,11 +289,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             && upcomingState.refresh is LoadState.NotLoading
                             && popularState.refresh is LoadState.NotLoading
                             && nowPlayingState.refresh is LoadState.NotLoading
-                            && trendingState.refresh is LoadState.NotLoading
                             && topRatedState.refresh is LoadState.NotLoading
                             && popularTvState.refresh is LoadState.NotLoading
                             && topRatedTvState.refresh is LoadState.NotLoading
-                            && trendingTvState.refresh is LoadState.NotLoading
                             && onTheAirTvState.refresh is LoadState.NotLoading
                             && airingTodayTvState.refresh is LoadState.NotLoading
 
@@ -327,11 +301,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             || (upcomingState.refresh is LoadState.Error && upcomingAdapter.itemCount == 0)
                             || (popularState.refresh is LoadState.Error && popularAdapter.itemCount == 0)
                             || (nowPlayingState.refresh is LoadState.Error && nowPlayingAdapter.itemCount == 0)
-                            || (trendingState.refresh is LoadState.Error && trendingAdapter.itemCount == 0)
                             || (topRatedState.refresh is LoadState.Error && topRatedAdapter.itemCount == 0)
                             || (popularTvState.refresh is LoadState.Error && popularTvAdapter.itemCount == 0)
                             || (topRatedTvState.refresh is LoadState.Error && topRatedTvAdapter.itemCount == 0)
-                            || (trendingTvState.refresh is LoadState.Error && trendingTvAdapter.itemCount == 0)
                             || (onTheAirTvState.refresh is LoadState.Error && onTheAirTvAdapter.itemCount == 0)
                             || (airingTodayTvState.refresh is LoadState.Error && airingTodayTvAdapter.itemCount == 0)
 
@@ -351,15 +323,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                         val successState = uiState
                         posterFullAdapter.submitList(successState.bannerMediaList)
-                        rankingAdapter.submitList(successState.rankingMediaList)
+                        movieRankingAdapter.submitList(successState.rankingMovieList)
+                        tvRankingAdapter.submitList(successState.rankingTvList)
                         genreAdapter.submitList(successState.genreList)
 
                         binding.tvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)
                         binding.rvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)
                         binding.tvMovieRanking.isVisible =
-                            successState.rankingMediaList.isNotEmpty()
+                            successState.rankingMovieList.isNotEmpty()
                         binding.rvMovieRanking.isVisible =
-                            successState.rankingMediaList.isNotEmpty()
+                            successState.rankingMovieList.isNotEmpty()
+                        binding.tvTvRanking.isVisible =
+                            successState.rankingTvList.isNotEmpty()
+                        binding.rvTvRanking.isVisible =
+                            successState.rankingTvList.isNotEmpty()
                     }
 
                     isFirstLoadingFailure -> {
@@ -374,11 +351,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             || upcomingState.refresh is LoadState.Error
                             || popularState.refresh is LoadState.Error
                             || nowPlayingState.refresh is LoadState.Error
-                            || trendingState.refresh is LoadState.Error
                             || topRatedState.refresh is LoadState.Error
                             || popularTvState.refresh is LoadState.Error
                             || topRatedTvState.refresh is LoadState.Error
-                            || trendingTvState.refresh is LoadState.Error
                             || onTheAirTvState.refresh is LoadState.Error
                             || airingTodayTvState.refresh is LoadState.Error
                         ) {

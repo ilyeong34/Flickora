@@ -8,7 +8,7 @@ import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.feature.home.databinding.ItemMovieRankingPosterBinding
 
-internal class RankingPosterViewHolder private constructor(
+internal class PosterRankingViewHolder private constructor(
     private val binding: ItemMovieRankingPosterBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -32,13 +32,13 @@ internal class RankingPosterViewHolder private constructor(
     }
 
     companion object {
-        fun create(parent: ViewGroup): RankingPosterViewHolder {
+        fun create(parent: ViewGroup): PosterRankingViewHolder {
             val binding = ItemMovieRankingPosterBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-            return RankingPosterViewHolder(binding)
+            return PosterRankingViewHolder(binding)
         }
     }
 }

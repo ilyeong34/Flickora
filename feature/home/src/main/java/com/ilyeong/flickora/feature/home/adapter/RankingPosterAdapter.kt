@@ -4,19 +4,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.common.diffutil.MediaDiffUtil
-import com.ilyeong.flickora.feature.home.viewholder.RankingPosterViewHolder
+import com.ilyeong.flickora.feature.home.viewholder.PosterRankingViewHolder
 
-internal class RankingPosterAdapter(
+internal class PosterRankingAdapter(
     private val itemClickListener: (Media) -> Unit
-) : ListAdapter<Media, RankingPosterViewHolder>(MediaDiffUtil) {
+) : ListAdapter<Media, PosterRankingViewHolder>(MediaDiffUtil) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = RankingPosterViewHolder.create(parent)
+    ) = PosterRankingViewHolder.create(parent)
 
     override fun onBindViewHolder(
-        holder: RankingPosterViewHolder,
+        holder: PosterRankingViewHolder,
         position: Int
     ) {
         val item = getItem(position) ?: return
