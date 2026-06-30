@@ -21,6 +21,7 @@ interface MovieRepository {
     fun getUpcomingMoviePaging(maxPage: Int = Int.MAX_VALUE): Flow<PagingData<Movie>>
     fun getPopularMoviePaging(maxPage: Int = Int.MAX_VALUE): Flow<PagingData<Movie>>
     fun getNowPlayingMoviePaging(maxPage: Int = Int.MAX_VALUE): Flow<PagingData<Movie>>
+    fun getNowPlayingMovieListWithVideos(limit: Int = 5): Flow<List<Movie>>
     fun getTrendingMovieList(timeWindow: TimeWindow): Flow<List<Movie>>
     fun getTrendingMoviePaging(
         timeWindow: TimeWindow,

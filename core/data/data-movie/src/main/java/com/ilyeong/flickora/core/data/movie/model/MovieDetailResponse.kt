@@ -51,6 +51,7 @@ internal fun MovieDetailResponse.toDomain() = Movie(
     spokenLanguageList = spokenLanguageList.map { it.toDomain() },
     title = title,
     video = video,
+    videos = emptyList(),
     voteAverage = voteAverage,
     voteCount = voteCount,
     isInWatchlist = false

@@ -65,6 +65,7 @@ private fun MultiSearchItemResponse.toMovie() = Movie(
     voteAverage = voteAverage,
     voteCount = voteCount,
     isInWatchlist = false,
+    videos = emptyList(),
 )
 
 private fun MultiSearchItemResponse.toTvSeries() = TvSeries(

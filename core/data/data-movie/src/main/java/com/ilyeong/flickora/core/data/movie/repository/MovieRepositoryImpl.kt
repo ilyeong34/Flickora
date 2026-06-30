@@ -15,8 +15,12 @@ import com.ilyeong.flickora.core.data.movie.paging.UpcomingPagingSource
 import com.ilyeong.flickora.core.model.Credit
 import com.ilyeong.flickora.core.model.Genre
 import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.core.model.MovieVideo
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -117,6 +121,43 @@ internal class MovieRepositoryImpl @Inject constructor(
         ).flow
     }
 
+    override fun getNowPlayingMovieListWithVideos(limit: Int) = flow<List<Movie>> {
+        val movieListWithVideos = mutableListOf<Movie>()
+
+        for (page in 1..MAX_TRAILER_SEARCH_PAGE) {
+            if (movieListWithVideos.size >= limit) break
+
+            val candidateList = apiService.getNowPlayingMovieList(page)
+                .resultList
+                .map { it.toDomain() }
+                .filter { it.backdropPath.isNotBlank() && !it.backdropPath.endsWith("/") }
+
+            val candidateListWithVideos = coroutineScope {
+                candidateList.map { movie ->
+                    async {
+                        val videoList = runCatching {
+                            apiService.getMovieVideoList(movie.id)
+                                .results
+                                .map { it.toDomain() }
+                                .filter { it.site == YOUTUBE_SITE }
+                        }.getOrElse { emptyList() }
+
+                        movie.copy(videos = videoList)
+                    }
+                }.awaitAll()
+            }
+
+            candidateListWithVideos
+                .filter { movie -> movie.videos.pickPlayableTrailer() != null }
+                .let { playableMovies ->
+                    playableMovies.take(limit - movieListWithVideos.size)
+                }
+                .also { movieListWithVideos += it }
+        }
+
+        emit(movieListWithVideos.toList())
+    }
+
     override fun getTrendingMovieList(timeWindow: TimeWindow) = flow<List<Movie>> {
         val trendingMovieList =
             apiService.getTrendingMovieList(timeWindow.name.lowercase()).resultList.map { it.toDomain() }
@@ -146,4 +187,19 @@ internal class MovieRepositoryImpl @Inject constructor(
         val genreList = apiService.getMovieGenreList().genreList.map { it.toDomain() }
         emit(genreList)
     }
+
+    private companion object {
+        const val MAX_TRAILER_SEARCH_PAGE = 3
+    }
 }
+
+private fun List<MovieVideo>.pickPlayableTrailer(): MovieVideo? {
+    return firstOrNull { it.site == YOUTUBE_SITE && it.type == TRAILER_TYPE && it.official }
+        ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TRAILER_TYPE }
+        ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TEASER_TYPE && it.official }
+        ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TEASER_TYPE }
+}
+
+private const val YOUTUBE_SITE = "YouTube"
+private const val TRAILER_TYPE = "Trailer"
+private const val TEASER_TYPE = "Teaser"
