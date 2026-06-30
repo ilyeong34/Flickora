@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="169dp"
+    android:layout_marginStart="@dimen/flickora_padding_large"
+    android:layout_marginTop="@dimen/flickora_padding_small"
+    android:layout_marginEnd="@dimen/flickora_padding_small"
+    android:layout_marginBottom="@dimen/flickora_padding_small"
+    app:cardBackgroundColor="@color/dark_gray"
+    app:cardCornerRadius="@dimen/flickora_padding_medium"
+    app:strokeColor="@color/transparent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/player_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_gray"
+            android:contentDescription="@string/des_movie_backdrop"
+            android:scaleType="centerCrop" />
+
+        <View
+            android:id="@+id/v_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_trailer_card_gradient" />
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/movie_section_now_playing_trailer"
+            android:src="@drawable/ic_play_circle_48" />
+
+        <com.ilyeong.flickora.core.ui.common.view.LoadingProgressBar
+            android:id="@+id/lpb_loading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/flickora_padding_medium"
+            android:paddingBottom="@dimen/flickora_padding_medium"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            tools:text="Now Playing Movie" />
+
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -47,10 +47,6 @@ internal class HomeViewModel @Inject constructor(
         movieRepository.getPopularMoviePaging(maxPage = 3)
             .flowMap { pagingData -> pagingData.map { it as Media } }
             .cachedIn(viewModelScope)
-    val nowPlayingMoviePaging =
-        movieRepository.getNowPlayingMoviePaging(maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it as Media } }
-            .cachedIn(viewModelScope)
     val topRatedMoviePaging =
         movieRepository.getTopRatedMoviePaging(maxPage = 3)
             .flowMap { pagingData -> pagingData.map { it as Media } }
@@ -79,18 +75,21 @@ internal class HomeViewModel @Inject constructor(
         val trendingMovieWeekFlow = movieRepository.getTrendingMovieList(TimeWindow.WEEK)
         val trendingTvWeekFlow = tvRepository.getTrendingTvList(TimeWindow.WEEK)
         val genreFlow = movieRepository.getMovieGenreList()
+        val nowPlayingTrailerFlow = movieRepository.getNowPlayingMovieListWithVideos()
 
         combine(
             trendingDayFlow,
             trendingMovieWeekFlow,
             trendingTvWeekFlow,
-            genreFlow
-        ) { dayList, movieWeekList, tvWeekList, genreList ->
+            genreFlow,
+            nowPlayingTrailerFlow
+        ) { dayList, movieWeekList, tvWeekList, genreList, nowPlayingTrailerList ->
             Success(
-                bannerMediaList = dayList.shuffled().take(5),
+                bannerMediaList = dayList.take(5),
                 rankingMovieList = movieWeekList.take(10),
                 rankingTvList = tvWeekList.take(10),
-                genreList = genreList
+                genreList = genreList,
+                nowPlayingTrailerList = nowPlayingTrailerList
             )
         }
             .onStart {

@@ -238,16 +238,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="@string/movie_section_now_playing" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_movie_section4"
+            <HorizontalScrollView
+                android:id="@+id/hsv_now_playing_trailer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:overScrollMode="never"
+                android:scrollbars="none"
                 app:layout_constraintTop_toBottomOf="@id/tv_movie_section4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/ll_now_playing_trailer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+
+            </HorizontalScrollView>
 
             <TextView
                 android:id="@+id/tv_tv_section_airing_today"
@@ -256,7 +263,7 @@
                 android:layout_marginHorizontal="@dimen/flickora_padding_large"
                 android:paddingTop="@dimen/flickora_padding_large"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/rv_movie_section4"
+                app:layout_constraintTop_toBottomOf="@id/hsv_now_playing_trailer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="@string/tv_section_airing_today" />
