@@ -1,6 +1,6 @@
 package com.ilyeong.flickora.core.model
 
-data class MovieVideo(
+data class MediaVideo(
     val id: String,
     val key: String,
     val name: String,

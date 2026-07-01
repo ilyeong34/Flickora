@@ -12,8 +12,8 @@ import com.ilyeong.flickora.core.model.AccountStates
 import com.ilyeong.flickora.core.model.Credit
 import com.ilyeong.flickora.core.model.Genre
 import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.model.MediaVideo
 import com.ilyeong.flickora.core.model.Movie
-import com.ilyeong.flickora.core.model.MovieVideo
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.core.model.TvSeries
@@ -22,15 +22,15 @@ import com.ilyeong.flickora.feature.home.model.HomeUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -166,7 +166,9 @@ class HomeViewModelTest {
     ) : MovieRepository {
         override fun getMovieDetail(movieId: Int): Flow<Movie> = unusedFlow()
         override fun getMovieCredit(movieId: Int): Flow<Credit> = unusedFlow()
-        override fun getMovieRecommendationList(movieId: Int): Flow<List<Movie>> = flowOf(emptyList())
+        override fun getMovieRecommendationList(movieId: Int): Flow<List<Movie>> =
+            flowOf(emptyList())
+
         override fun getMovieSimilarList(movieId: Int): Flow<List<Movie>> = flowOf(emptyList())
         override fun getMovieReviewPaging(movieId: Int): Flow<PagingData<Review>> =
             flowOf(PagingData.from(emptyList()))
@@ -247,12 +249,15 @@ class HomeViewModelTest {
         override fun getAccount(): Flow<Account> = unusedFlow()
         override fun getWatchlistMoviePaging(): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
+
         override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> =
             flowOf(PagingData.from(emptyList()))
 
         override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = unusedFlow()
         override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> = unusedFlow()
-        override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = unusedFlow()
+        override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> =
+            unusedFlow()
+
         override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> =
             unusedFlow()
     }
@@ -344,7 +349,7 @@ private fun movieFixture() = Movie(
     isInWatchlist = false
 )
 
-private fun movieVideoFixture() = MovieVideo(
+private fun movieVideoFixture() = MediaVideo(
     id = "video-id",
     key = "youtube-key",
     name = "Official Trailer",

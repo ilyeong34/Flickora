@@ -7,5 +7,6 @@ sealed class Media(
     open val overview: String,
     open val voteAverage: Double,
     open val voteCount: Int,
-    open val isInWatchlist: Boolean
+    open val isInWatchlist: Boolean,
+    open val videos: List<MediaVideo>
 )

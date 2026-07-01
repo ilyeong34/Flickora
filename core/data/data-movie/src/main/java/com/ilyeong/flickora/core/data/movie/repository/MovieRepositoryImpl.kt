@@ -14,8 +14,8 @@ import com.ilyeong.flickora.core.data.movie.paging.TrendingPagingSource
 import com.ilyeong.flickora.core.data.movie.paging.UpcomingPagingSource
 import com.ilyeong.flickora.core.model.Credit
 import com.ilyeong.flickora.core.model.Genre
+import com.ilyeong.flickora.core.model.MediaVideo
 import com.ilyeong.flickora.core.model.Movie
-import com.ilyeong.flickora.core.model.MovieVideo
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
 import kotlinx.coroutines.async
@@ -178,7 +178,7 @@ internal class MovieRepositoryImpl @Inject constructor(
     }
 }
 
-private fun List<MovieVideo>.pickPlayableTrailer(): MovieVideo? {
+private fun List<MediaVideo>.pickPlayableTrailer(): MediaVideo? {
     return firstOrNull { it.site == YOUTUBE_SITE && it.type == TRAILER_TYPE && it.official }
         ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TRAILER_TYPE }
         ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TEASER_TYPE && it.official }
