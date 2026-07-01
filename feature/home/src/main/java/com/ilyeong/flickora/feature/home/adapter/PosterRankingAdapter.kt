@@ -27,7 +27,5 @@ internal class PosterRankingAdapter(
         )
     }
 
-    internal companion object {
-        fun rankText(position: Int): String = (position + 1).toString()
-    }
+    private fun rankText(position: Int): String = (position + 1).toString()
 }
