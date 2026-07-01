@@ -14,8 +14,6 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import coil3.load
-import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.TvSeries
@@ -30,9 +28,6 @@ import com.ilyeong.flickora.feature.home.adapter.PosterRankingAdapter
 import com.ilyeong.flickora.feature.home.databinding.FragmentHomeBinding
 import com.ilyeong.flickora.feature.home.databinding.ItemMovieTrailerBackdropBinding
 import com.ilyeong.flickora.feature.home.model.HomeUiState
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -84,14 +79,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val genreAdapter = GenreAdapter(genreClickListener)
     private val movieRankingAdapter = PosterRankingAdapter(mediaClickListener)
     private val tvRankingAdapter = PosterRankingAdapter(mediaClickListener)
-    private val watchlistAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val topRatedAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val upcomingAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val popularAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val popularTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val topRatedTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val onTheAirTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
-    private val airingTodayTvAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val mediaWatchlistAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val movieTopRatedAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val movieUpcomingAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val tvPopularAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val moviePopularAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val tvTopRatedAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val tvOnTheAirAdapter = PosterFixedPagingAdapter(mediaClickListener)
+    private val tvAiringTodayAdapter = PosterFixedPagingAdapter(mediaClickListener)
 
     private var trailerMovieList: List<Movie> = emptyList()
     private var activeYouTubePlayerView: YouTubePlayerView? = null
@@ -145,123 +140,125 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setMovieGenre() {
-        binding.rvMovieGenre.adapter = genreAdapter
-        binding.rvMovieGenre.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvGenre.adapter = genreAdapter
+        binding.rvGenre.addItemDecoration(PosterFixedItemDecoration)
     }
 
     private fun setMovieSection() {
-        binding.tvMovieRanking.text = getString(CoreR.string.home_section_movie_trending_top_10)
-        binding.tvMovieSection1.text = getString(CoreR.string.movie_section_watchlist)
-        binding.tvMovieSection2.text = getString(CoreR.string.movie_section_upcoming)
-        binding.tvMovieSection3.text = getString(CoreR.string.movie_section_popular)
-        binding.tvMovieSection4.text = getString(CoreR.string.movie_section_now_playing_trailer)
-        binding.tvMovieSection6.text = getString(CoreR.string.movie_section_top_rated)
-        binding.tvTvRanking.text = getString(CoreR.string.home_section_tv_trending_top_10)
-        binding.tvTvSectionPopular.text = getString(CoreR.string.tv_section_popular)
-        binding.tvTvSectionTopRated.text = getString(CoreR.string.tv_section_top_rated)
-        binding.tvTvSectionOnTheAir.text = getString(CoreR.string.tv_section_on_the_air)
-        binding.tvTvSectionAiringToday.text = getString(CoreR.string.tv_section_airing_today)
+        binding.tvSection1.text = getString(CoreR.string.media_section_watchlist)
+        binding.tvSection2.text = getString(CoreR.string.movie_section_upcoming)
+        binding.tvSection3.text = getString(CoreR.string.tv_section_on_the_air)
+        binding.tvSection4.text = getString(CoreR.string.movie_section_trending_top_10)
+        binding.tvSection5.text = getString(CoreR.string.movie_section_popular)
+        binding.tvSection6.text = getString(CoreR.string.tv_section_airing_today)
+        binding.tvSection7.text = getString(CoreR.string.movie_section_top_rated)
+        binding.tvSection8.text = getString(CoreR.string.tv_section_trending_top_10)
+        binding.tvSection9.text = getString(CoreR.string.tv_section_popular)
+        binding.tvSection10.text = getString(CoreR.string.movie_section_now_playing_trailer)
+        binding.tvSection11.text = getString(CoreR.string.tv_section_top_rated)
 
-        binding.rvMovieRanking.adapter = movieRankingAdapter
-        binding.rvTvRanking.adapter = tvRankingAdapter
-        binding.rvMovieSection1.adapter = watchlistAdapter
-        binding.rvMovieSection2.adapter = upcomingAdapter
-        binding.rvMovieSection3.adapter = popularAdapter
-        binding.rvMovieSection6.adapter = topRatedAdapter
-        binding.rvTvSectionPopular.adapter = popularTvAdapter
-        binding.rvTvSectionTopRated.adapter = topRatedTvAdapter
-        binding.rvTvSectionOnTheAir.adapter = onTheAirTvAdapter
-        binding.rvTvSectionAiringToday.adapter = airingTodayTvAdapter
+        binding.rvSection1.adapter = mediaWatchlistAdapter
+        binding.rvSection2.adapter = movieUpcomingAdapter
+        binding.rvSection3.adapter = tvOnTheAirAdapter
+        binding.rvSection4.adapter = movieRankingAdapter
+        binding.rvSection5.adapter = moviePopularAdapter
+        binding.rvSection6.adapter = tvAiringTodayAdapter
+        binding.rvSection7.adapter = movieTopRatedAdapter
+        binding.rvSection8.adapter = tvRankingAdapter
+        binding.rvSection9.adapter = tvPopularAdapter
+        // 트레일러
+        binding.rvSection11.adapter = tvTopRatedAdapter
 
-        binding.rvMovieRanking.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvTvRanking.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvMovieSection1.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvMovieSection2.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvMovieSection3.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvMovieSection6.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvTvSectionPopular.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvTvSectionTopRated.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvTvSectionOnTheAir.addItemDecoration(PosterFixedItemDecoration)
-        binding.rvTvSectionAiringToday.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection1.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection2.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection3.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection4.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection5.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection6.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection7.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection8.addItemDecoration(PosterFixedItemDecoration)
+        binding.rvSection9.addItemDecoration(PosterFixedItemDecoration)
+        // 트레일러
+        binding.rvSection11.addItemDecoration(PosterFixedItemDecoration)
     }
 
     private fun setRetryBtn() {
         binding.ldf.btnRetry.setOnClickListener {
             viewModel.loadData()
-            watchlistAdapter.retry()
-            upcomingAdapter.retry()
-            popularAdapter.retry()
-            topRatedAdapter.retry()
-            popularTvAdapter.retry()
-            topRatedTvAdapter.retry()
-            onTheAirTvAdapter.retry()
-            airingTodayTvAdapter.retry()
+            mediaWatchlistAdapter.retry()
+            movieUpcomingAdapter.retry()
+            tvPopularAdapter.retry()
+            movieTopRatedAdapter.retry()
+            moviePopularAdapter.retry()
+            tvTopRatedAdapter.retry()
+            tvOnTheAirAdapter.retry()
+            tvAiringTodayAdapter.retry()
         }
     }
 
     private fun observeUiState() {
         repeatOnViewStarted {
             viewModel.watchlistPaging.collectLatest {
-                watchlistAdapter.submitData(it)
+                mediaWatchlistAdapter.submitData(it)
             }
         }
 
         repeatOnViewStarted {
             viewModel.upcomingMoviePaging.collectLatest {
-                upcomingAdapter.submitData(it)
+                movieUpcomingAdapter.submitData(it)
             }
         }
 
         repeatOnViewStarted {
             viewModel.popularMoviePaging.collectLatest {
-                popularAdapter.submitData(it)
+                tvPopularAdapter.submitData(it)
             }
         }
 
         repeatOnViewStarted {
             viewModel.topRatedMoviePaging.collectLatest {
-                topRatedAdapter.submitData(it)
+                movieTopRatedAdapter.submitData(it)
             }
         }
 
         repeatOnViewStarted {
             viewModel.popularTvPaging.collectLatest {
-                popularTvAdapter.submitData(it)
+                moviePopularAdapter.submitData(it)
             }
         }
 
         repeatOnViewStarted {
             viewModel.topRatedTvPaging.collectLatest {
-                topRatedTvAdapter.submitData(it)
+                tvTopRatedAdapter.submitData(it)
             }
         }
 
         repeatOnViewStarted {
             viewModel.onTheAirTvPaging.collectLatest {
-                onTheAirTvAdapter.submitData(it)
+                tvOnTheAirAdapter.submitData(it)
             }
         }
 
         repeatOnViewStarted {
             viewModel.airingTodayTvPaging.collectLatest {
-                airingTodayTvAdapter.submitData(it)
+                tvAiringTodayAdapter.submitData(it)
             }
         }
 
-        binding.tvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)
-        binding.rvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)
+        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
+        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
 
         repeatOnViewStarted {
             combine(
                 viewModel.uiState,
-                watchlistAdapter.loadStateFlow,
-                upcomingAdapter.loadStateFlow,
-                popularAdapter.loadStateFlow,
-                topRatedAdapter.loadStateFlow,
-                popularTvAdapter.loadStateFlow,
-                topRatedTvAdapter.loadStateFlow,
-                onTheAirTvAdapter.loadStateFlow,
-                airingTodayTvAdapter.loadStateFlow
+                mediaWatchlistAdapter.loadStateFlow,
+                movieUpcomingAdapter.loadStateFlow,
+                tvPopularAdapter.loadStateFlow,
+                movieTopRatedAdapter.loadStateFlow,
+                moviePopularAdapter.loadStateFlow,
+                tvTopRatedAdapter.loadStateFlow,
+                tvOnTheAirAdapter.loadStateFlow,
+                tvAiringTodayAdapter.loadStateFlow
             ) {
                 val uiState = it[0] as HomeUiState
                 val watchlistState = it[1] as CombinedLoadStates
@@ -275,14 +272,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                 val isFirstLoading =
                     uiState is HomeUiState.Loading
-                            || (watchlistState.refresh is LoadState.Loading && watchlistAdapter.itemCount == 0 && binding.rvMovieSection1.isVisible == true)
-                            || (upcomingState.refresh is LoadState.Loading && upcomingAdapter.itemCount == 0)
-                            || (popularState.refresh is LoadState.Loading && popularAdapter.itemCount == 0)
-                            || (topRatedState.refresh is LoadState.Loading && topRatedAdapter.itemCount == 0)
-                            || (popularTvState.refresh is LoadState.Loading && popularTvAdapter.itemCount == 0)
-                            || (topRatedTvState.refresh is LoadState.Loading && topRatedTvAdapter.itemCount == 0)
-                            || (onTheAirTvState.refresh is LoadState.Loading && onTheAirTvAdapter.itemCount == 0)
-                            || (airingTodayTvState.refresh is LoadState.Loading && airingTodayTvAdapter.itemCount == 0)
+                            || (watchlistState.refresh is LoadState.Loading && mediaWatchlistAdapter.itemCount == 0 && binding.rvSection1.isVisible == true)
+                            || (upcomingState.refresh is LoadState.Loading && movieUpcomingAdapter.itemCount == 0)
+                            || (popularState.refresh is LoadState.Loading && tvPopularAdapter.itemCount == 0)
+                            || (topRatedState.refresh is LoadState.Loading && movieTopRatedAdapter.itemCount == 0)
+                            || (popularTvState.refresh is LoadState.Loading && moviePopularAdapter.itemCount == 0)
+                            || (topRatedTvState.refresh is LoadState.Loading && tvTopRatedAdapter.itemCount == 0)
+                            || (onTheAirTvState.refresh is LoadState.Loading && tvOnTheAirAdapter.itemCount == 0)
+                            || (airingTodayTvState.refresh is LoadState.Loading && tvAiringTodayAdapter.itemCount == 0)
 
                 val isFirstLoadingSuccess =
                     uiState is HomeUiState.Success
@@ -297,14 +294,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                 val isFirstLoadingFailure =
                     uiState is HomeUiState.Failure
-                            || (watchlistState.refresh is LoadState.Error && watchlistAdapter.itemCount == 0 && binding.rvMovieSection1.isVisible == false)
-                            || (upcomingState.refresh is LoadState.Error && upcomingAdapter.itemCount == 0)
-                            || (popularState.refresh is LoadState.Error && popularAdapter.itemCount == 0)
-                            || (topRatedState.refresh is LoadState.Error && topRatedAdapter.itemCount == 0)
-                            || (popularTvState.refresh is LoadState.Error && popularTvAdapter.itemCount == 0)
-                            || (topRatedTvState.refresh is LoadState.Error && topRatedTvAdapter.itemCount == 0)
-                            || (onTheAirTvState.refresh is LoadState.Error && onTheAirTvAdapter.itemCount == 0)
-                            || (airingTodayTvState.refresh is LoadState.Error && airingTodayTvAdapter.itemCount == 0)
+                            || (watchlistState.refresh is LoadState.Error && mediaWatchlistAdapter.itemCount == 0 && binding.rvSection1.isVisible == false)
+                            || (upcomingState.refresh is LoadState.Error && movieUpcomingAdapter.itemCount == 0)
+                            || (popularState.refresh is LoadState.Error && tvPopularAdapter.itemCount == 0)
+                            || (topRatedState.refresh is LoadState.Error && movieTopRatedAdapter.itemCount == 0)
+                            || (popularTvState.refresh is LoadState.Error && moviePopularAdapter.itemCount == 0)
+                            || (topRatedTvState.refresh is LoadState.Error && tvTopRatedAdapter.itemCount == 0)
+                            || (onTheAirTvState.refresh is LoadState.Error && tvOnTheAirAdapter.itemCount == 0)
+                            || (airingTodayTvState.refresh is LoadState.Error && tvAiringTodayAdapter.itemCount == 0)
 
                 when {
                     isFirstLoading -> {
@@ -325,18 +322,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         movieRankingAdapter.submitList(successState.rankingMovieList)
                         tvRankingAdapter.submitList(successState.rankingTvList)
                         genreAdapter.submitList(successState.genreList)
-                        bindTrailerSection(successState.nowPlayingTrailerList)
+//                        bindTrailerSection(successState.nowPlayingTrailerList)
 
-                        binding.tvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)
-                        binding.rvMovieSection1.isVisible = (watchlistAdapter.itemCount > 0)
-                        binding.tvMovieRanking.isVisible =
-                            successState.rankingMovieList.isNotEmpty()
-                        binding.rvMovieRanking.isVisible =
-                            successState.rankingMovieList.isNotEmpty()
-                        binding.tvTvRanking.isVisible =
-                            successState.rankingTvList.isNotEmpty()
-                        binding.rvTvRanking.isVisible =
-                            successState.rankingTvList.isNotEmpty()
+                        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
+                        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
                     }
 
                     isFirstLoadingFailure -> {
@@ -365,174 +354,174 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun refreshData() {
-        watchlistAdapter.refresh()
+        mediaWatchlistAdapter.refresh()
     }
-
-    private fun bindTrailerSection(movieList: List<Movie>) {
-        if (trailerMovieList == movieList &&
-            binding.llNowPlayingTrailer.childCount == movieList.take(MAX_TRAILER_COUNT).size &&
-            binding.hsvNowPlayingTrailer.isVisible == movieList.isNotEmpty()
-        ) {
-            return
-        }
-
-        releaseActiveTrailerPlayer()
-        trailerMovieList = movieList
-        binding.tvMovieSection4.isVisible = movieList.isNotEmpty()
-        binding.hsvNowPlayingTrailer.isVisible = movieList.isNotEmpty()
-        binding.llNowPlayingTrailer.removeAllViews()
-
-        movieList.take(MAX_TRAILER_COUNT).forEach { movie ->
-            val trailerBinding = ItemMovieTrailerBackdropBinding.inflate(
-                layoutInflater,
-                binding.llNowPlayingTrailer,
-                false
-            )
-
-            trailerBinding.ivBackdrop.load(movie.backdropPath) {
-                crossfade(true)
-            }
-            trailerBinding.tvTitle.text = movie.title
-            trailerBinding.root.setOnClickListener {
-                onTrailerCardClick(
-                    movie = movie,
-                    cardBinding = trailerBinding,
-                    playerContainer = trailerBinding.playerContainer
-                )
-            }
-
-            binding.llNowPlayingTrailer.addView(trailerBinding.root)
-        }
-    }
-
-    private fun onTrailerCardClick(
-        movie: Movie,
-        cardBinding: ItemMovieTrailerBackdropBinding,
-        playerContainer: FrameLayout
-    ) {
-        val video = movie.videos.firstOrNull()
-
-        if (video == null) {
-            showMessage(getString(CoreR.string.trailer_video_unavailable_message))
-            return
-        }
-
-        playTrailerInline(
-            videoKey = video.key,
-            cardBinding = cardBinding,
-            playerContainer = playerContainer
-        )
-    }
-
-    private fun playTrailerInline(
-        videoKey: String,
-        cardBinding: ItemMovieTrailerBackdropBinding,
-        playerContainer: FrameLayout
-    ) {
-        releaseActiveTrailerPlayer()
-        showTrailerLoading(cardBinding)
-
-        val playerView = YouTubePlayerView(requireContext()).apply {
-            enableAutomaticInitialization = false
-            alpha = 0f
-            layoutParams = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-
-        playerContainer.addView(playerView)
-        viewLifecycleOwner.lifecycle.addObserver(playerView)
-        playerView.initialize(
-            object : AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    youTubePlayer.loadVideo(videoKey, 0f)
-                }
-
-                override fun onStateChange(
-                    youTubePlayer: YouTubePlayer,
-                    state: PlayerConstants.PlayerState
-                ) {
-                    if (state == PlayerConstants.PlayerState.PLAYING) {
-                        playerView.alpha = 1f
-                        hideTrailerThumbnail(cardBinding)
-                        hideTrailerLoading(cardBinding)
-                    } else if (state == PlayerConstants.PlayerState.ENDED) {
-                        playerView.alpha = 0f
-                        showTrailerThumbnail(cardBinding)
-                        hideTrailerLoading(cardBinding)
-                    }
-                }
-
-                override fun onError(
-                    youTubePlayer: YouTubePlayer,
-                    error: PlayerConstants.PlayerError
-                ) {
-                    playerView.alpha = 0f
-                    showTrailerThumbnail(cardBinding)
-                    hideTrailerLoading(cardBinding)
-                }
-            }
-        )
-
-        activeYouTubePlayerView = playerView
-        activePlayerContainer = playerContainer
-        activeTrailerCardBinding = cardBinding
-    }
-
-    private fun hideTrailerThumbnail(cardBinding: ItemMovieTrailerBackdropBinding) {
-        cardBinding.ivBackdrop.isVisible = false
-        cardBinding.vGradient.isVisible = false
-        cardBinding.ivPlay.isVisible = false
-        cardBinding.tvTitle.isVisible = false
-    }
-
-    private fun showTrailerThumbnail(cardBinding: ItemMovieTrailerBackdropBinding) {
-        cardBinding.ivBackdrop.isVisible = true
-        cardBinding.vGradient.isVisible = true
-        cardBinding.ivPlay.isVisible = true
-        cardBinding.tvTitle.isVisible = true
-    }
-
-    private fun showTrailerLoading(cardBinding: ItemMovieTrailerBackdropBinding) {
-        cardBinding.ivPlay.isVisible = false
-        cardBinding.lpbLoading.isVisible = true
-    }
-
-    private fun hideTrailerLoading(cardBinding: ItemMovieTrailerBackdropBinding) {
-        cardBinding.lpbLoading.isVisible = false
-    }
-
-    private fun releaseActiveTrailerPlayer() {
-        activeYouTubePlayerView?.let { playerView ->
-            viewLifecycleOwner.lifecycle.removeObserver(playerView)
-            playerView.release()
-        }
-        activePlayerContainer?.removeAllViews()
-        restoreActiveTrailerCardImageState()
-        activeYouTubePlayerView = null
-        activePlayerContainer = null
-        activeTrailerCardBinding = null
-    }
-
-    private fun restoreActiveTrailerCardImageState() {
-        activeTrailerCardBinding?.run {
-            showTrailerThumbnail(this)
-            hideTrailerLoading(this)
-        }
-    }
-
-    override fun onStop() {
-        releaseActiveTrailerPlayer()
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        releaseActiveTrailerPlayer()
-        super.onDestroyView()
-    }
-
-    private companion object {
-        const val MAX_TRAILER_COUNT = 5
-    }
+//
+//    private fun bindTrailerSection(movieList: List<Movie>) {
+//        if (trailerMovieList == movieList &&
+//            binding.llNowPlayingTrailer.childCount == movieList.take(MAX_TRAILER_COUNT).size &&
+//            binding.hsvNowPlayingTrailer.isVisible == movieList.isNotEmpty()
+//        ) {
+//            return
+//        }
+//
+//        releaseActiveTrailerPlayer()
+//        trailerMovieList = movieList
+//        binding.tvMovieSection4.isVisible = movieList.isNotEmpty()
+//        binding.hsvNowPlayingTrailer.isVisible = movieList.isNotEmpty()
+//        binding.llNowPlayingTrailer.removeAllViews()
+//
+//        movieList.take(MAX_TRAILER_COUNT).forEach { movie ->
+//            val trailerBinding = ItemMovieTrailerBackdropBinding.inflate(
+//                layoutInflater,
+//                binding.llNowPlayingTrailer,
+//                false
+//            )
+//
+//            trailerBinding.ivBackdrop.load(movie.backdropPath) {
+//                crossfade(true)
+//            }
+//            trailerBinding.tvTitle.text = movie.title
+//            trailerBinding.root.setOnClickListener {
+//                onTrailerCardClick(
+//                    movie = movie,
+//                    cardBinding = trailerBinding,
+//                    playerContainer = trailerBinding.playerContainer
+//                )
+//            }
+//
+//            binding.llNowPlayingTrailer.addView(trailerBinding.root)
+//        }
+//    }
+//
+//    private fun onTrailerCardClick(
+//        movie: Movie,
+//        cardBinding: ItemMovieTrailerBackdropBinding,
+//        playerContainer: FrameLayout
+//    ) {
+//        val video = movie.videos.firstOrNull()
+//
+//        if (video == null) {
+//            showMessage(getString(CoreR.string.trailer_video_unavailable_message))
+//            return
+//        }
+//
+//        playTrailerInline(
+//            videoKey = video.key,
+//            cardBinding = cardBinding,
+//            playerContainer = playerContainer
+//        )
+//    }
+//
+//    private fun playTrailerInline(
+//        videoKey: String,
+//        cardBinding: ItemMovieTrailerBackdropBinding,
+//        playerContainer: FrameLayout
+//    ) {
+//        releaseActiveTrailerPlayer()
+//        showTrailerLoading(cardBinding)
+//
+//        val playerView = YouTubePlayerView(requireContext()).apply {
+//            enableAutomaticInitialization = false
+//            alpha = 0f
+//            layoutParams = FrameLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.MATCH_PARENT
+//            )
+//        }
+//
+//        playerContainer.addView(playerView)
+//        viewLifecycleOwner.lifecycle.addObserver(playerView)
+//        playerView.initialize(
+//            object : AbstractYouTubePlayerListener() {
+//                override fun onReady(youTubePlayer: YouTubePlayer) {
+//                    youTubePlayer.loadVideo(videoKey, 0f)
+//                }
+//
+//                override fun onStateChange(
+//                    youTubePlayer: YouTubePlayer,
+//                    state: PlayerConstants.PlayerState
+//                ) {
+//                    if (state == PlayerConstants.PlayerState.PLAYING) {
+//                        playerView.alpha = 1f
+//                        hideTrailerThumbnail(cardBinding)
+//                        hideTrailerLoading(cardBinding)
+//                    } else if (state == PlayerConstants.PlayerState.ENDED) {
+//                        playerView.alpha = 0f
+//                        showTrailerThumbnail(cardBinding)
+//                        hideTrailerLoading(cardBinding)
+//                    }
+//                }
+//
+//                override fun onError(
+//                    youTubePlayer: YouTubePlayer,
+//                    error: PlayerConstants.PlayerError
+//                ) {
+//                    playerView.alpha = 0f
+//                    showTrailerThumbnail(cardBinding)
+//                    hideTrailerLoading(cardBinding)
+//                }
+//            }
+//        )
+//
+//        activeYouTubePlayerView = playerView
+//        activePlayerContainer = playerContainer
+//        activeTrailerCardBinding = cardBinding
+//    }
+//
+//    private fun hideTrailerThumbnail(cardBinding: ItemMovieTrailerBackdropBinding) {
+//        cardBinding.ivBackdrop.isVisible = false
+//        cardBinding.vGradient.isVisible = false
+//        cardBinding.ivPlay.isVisible = false
+//        cardBinding.tvTitle.isVisible = false
+//    }
+//
+//    private fun showTrailerThumbnail(cardBinding: ItemMovieTrailerBackdropBinding) {
+//        cardBinding.ivBackdrop.isVisible = true
+//        cardBinding.vGradient.isVisible = true
+//        cardBinding.ivPlay.isVisible = true
+//        cardBinding.tvTitle.isVisible = true
+//    }
+//
+//    private fun showTrailerLoading(cardBinding: ItemMovieTrailerBackdropBinding) {
+//        cardBinding.ivPlay.isVisible = false
+//        cardBinding.lpbLoading.isVisible = true
+//    }
+//
+//    private fun hideTrailerLoading(cardBinding: ItemMovieTrailerBackdropBinding) {
+//        cardBinding.lpbLoading.isVisible = false
+//    }
+//
+//    private fun releaseActiveTrailerPlayer() {
+//        activeYouTubePlayerView?.let { playerView ->
+//            viewLifecycleOwner.lifecycle.removeObserver(playerView)
+//            playerView.release()
+//        }
+//        activePlayerContainer?.removeAllViews()
+//        restoreActiveTrailerCardImageState()
+//        activeYouTubePlayerView = null
+//        activePlayerContainer = null
+//        activeTrailerCardBinding = null
+//    }
+//
+//    private fun restoreActiveTrailerCardImageState() {
+//        activeTrailerCardBinding?.run {
+//            showTrailerThumbnail(this)
+//            hideTrailerLoading(this)
+//        }
+//    }
+//
+//    override fun onStop() {
+//        releaseActiveTrailerPlayer()
+//        super.onStop()
+//    }
+//
+//    override fun onDestroyView() {
+//        releaseActiveTrailerPlayer()
+//        super.onDestroyView()
+//    }
+//
+//    private companion object {
+//        const val MAX_TRAILER_COUNT = 5
+//    }
 }
