@@ -188,8 +188,8 @@ class HomeViewModelTest {
         override fun getNowPlayingMoviePaging(maxPage: Int): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
 
-        override fun getNowPlayingMovieListWithVideos(limit: Int): Flow<List<Movie>> = flow {
-            nowPlayingTrailerEmissions.forEach { emit(it.take(limit)) }
+        override fun getNowPlayingMovieListWithVideos(): Flow<List<Movie>> = flow {
+            nowPlayingTrailerEmissions.forEach { emit(it) }
         }
 
         override fun getTrendingMovieList(timeWindow: TimeWindow): Flow<List<Movie>> = flowOf(

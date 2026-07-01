@@ -261,16 +261,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="@string/tv_section_airing_today" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_section10"
+            <com.ilyeong.flickora.feature.home.view.PosterTrailerStripView
+                android:id="@+id/poster_trailer_strip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/tv_section10"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/tv_section11"
@@ -279,7 +276,7 @@
                 android:layout_marginHorizontal="@dimen/flickora_padding_large"
                 android:paddingTop="@dimen/flickora_padding_large"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/rv_section10"
+                app:layout_constraintTop_toBottomOf="@id/poster_trailer_strip"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="@string/movie_section_top_rated" />
