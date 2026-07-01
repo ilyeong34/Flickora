@@ -12,9 +12,11 @@ import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.feature.home.databinding.ItemMovieTrailerBackdropBinding
+import com.ilyeong.flickora.feature.home.model.TrailerPlaybackState
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class PosterTrailerStripView @JvmOverloads constructor(
@@ -34,9 +36,13 @@ class PosterTrailerStripView @JvmOverloads constructor(
     }
     private val inflater = LayoutInflater.from(context)
     private var lifecycle: Lifecycle? = null
+    private var currentTrailerList: List<Movie> = emptyList()
     private var activeTrailerId: Int? = null
+    private var activeVideoKey: String? = null
     private var activeBinding: ItemMovieTrailerBackdropBinding? = null
     private var playerView: YouTubePlayerView? = null
+    private var youTubePlayer: YouTubePlayer? = null
+    private var playerTracker: YouTubePlayerTracker? = null
 
     init {
         isHorizontalScrollBarEnabled = false
@@ -50,6 +56,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     fun submitList(trailerList: List<Movie>) {
         val visibleTrailerList = trailerList.take(MAX_TRAILER_COUNT)
+        currentTrailerList = visibleTrailerList
         val visibleTrailerIdList = visibleTrailerList.map { it.id }
 
         if (activeTrailerId != null && activeTrailerId !in visibleTrailerIdList) {
@@ -69,13 +76,54 @@ class PosterTrailerStripView @JvmOverloads constructor(
     fun releasePlayer() {
         activeBinding?.let { showIdle(it) }
         (playerView?.parent as? ViewGroup)?.removeView(playerView)
+        playerTracker?.let { tracker -> youTubePlayer?.removeListener(tracker) }
         playerView?.let { view ->
             lifecycle?.removeObserver(view)
             view.release()
         }
         playerView = null
+        youTubePlayer = null
+        playerTracker = null
         activeTrailerId = null
+        activeVideoKey = null
         activeBinding = null
+    }
+
+    internal fun capturePlaybackState(): TrailerPlaybackState? {
+        val movieId = activeTrailerId ?: return null
+        val videoKey = activeVideoKey ?: return null
+        val currentSecond = playerTracker?.currentSecond ?: return null
+
+        return TrailerPlaybackState(
+            movieId = movieId,
+            videoKey = videoKey,
+            currentSecond = currentSecond
+        )
+    }
+
+    internal fun restorePlaybackState(state: TrailerPlaybackState?) {
+        state ?: return
+
+        if (activeTrailerId == state.movieId && activeVideoKey == state.videoKey) {
+            return
+        }
+
+        val trailerIndex = currentTrailerList.indexOfFirst { it.id == state.movieId }
+        if (trailerIndex == -1) {
+            return
+        }
+
+        val trailer = currentTrailerList[trailerIndex]
+        val videoKey = trailer.videos.firstOrNull { it.key == state.videoKey }?.key ?: return
+        val binding = getOrCreateTrailerCardBinding(trailerIndex)
+
+        playTrailer(
+            trailer = trailer,
+            binding = binding,
+            videoKey = videoKey,
+            startSeconds = state.currentSecond.coerceAtLeast(0f),
+            autoPlay = false
+        )
     }
 
     private fun getOrCreateTrailerCardBinding(index: Int): ItemMovieTrailerBackdropBinding {
@@ -109,7 +157,8 @@ class PosterTrailerStripView @JvmOverloads constructor(
         binding.ivPlay.setOnClickListener {
             playTrailer(
                 trailer = trailer,
-                binding = binding
+                binding = binding,
+                videoKey = trailer.videos.firstOrNull()?.key
             )
         }
 
@@ -118,15 +167,19 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     private fun playTrailer(
         trailer: Movie,
-        binding: ItemMovieTrailerBackdropBinding
+        binding: ItemMovieTrailerBackdropBinding,
+        videoKey: String?,
+        startSeconds: Float = 0f,
+        autoPlay: Boolean = true
     ) {
-        val videoKey = trailer.videos.firstOrNull()?.key ?: run {
+        if (videoKey == null) {
             onTrailerUnavailable?.invoke()
             return
         }
 
         releasePlayer()
         activeTrailerId = trailer.id
+        activeVideoKey = videoKey
         activeBinding = binding
         showLoading(binding)
 
@@ -147,7 +200,16 @@ class PosterTrailerStripView @JvmOverloads constructor(
         view.initialize(
             object : AbstractYouTubePlayerListener() {
                 override fun onReady(youTubePlayer: YouTubePlayer) {
-                    youTubePlayer.loadVideo(videoKey, 0f)
+                    val tracker = YouTubePlayerTracker()
+                    this@PosterTrailerStripView.youTubePlayer = youTubePlayer
+                    playerTracker = tracker
+                    youTubePlayer.addListener(tracker)
+
+                    if (autoPlay) {
+                        youTubePlayer.loadVideo(videoKey, startSeconds)
+                    } else {
+                        youTubePlayer.cueVideo(videoKey, startSeconds)
+                    }
                 }
 
                 override fun onStateChange(
@@ -160,9 +222,13 @@ class PosterTrailerStripView @JvmOverloads constructor(
                             showPlaying(binding)
                         }
 
-                        PlayerConstants.PlayerState.BUFFERING,
-                        PlayerConstants.PlayerState.VIDEO_CUED -> {
+                        PlayerConstants.PlayerState.BUFFERING -> {
                             showLoading(binding)
+                        }
+
+                        PlayerConstants.PlayerState.VIDEO_CUED -> {
+                            view.alpha = 1f
+                            showPlaying(binding)
                         }
 
                         PlayerConstants.PlayerState.ENDED -> {
