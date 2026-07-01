@@ -3,19 +3,25 @@ package com.ilyeong.flickora.feature.home.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.feature.home.R
 import com.ilyeong.flickora.feature.home.databinding.ItemMovieTrailerBackdropBinding
 import com.ilyeong.flickora.feature.home.model.TrailerPlaybackState
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
@@ -183,7 +189,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
         activeBinding = binding
         showLoading(binding)
 
-        val view = YouTubePlayerView(context).apply {
+        val youtubePlayerView = YouTubePlayerView(context).apply {
             enableAutomaticInitialization = false
             alpha = 0f
             layoutParams = LayoutParams(
@@ -192,61 +198,134 @@ class PosterTrailerStripView @JvmOverloads constructor(
             )
         }
 
+        val customControls =
+            youtubePlayerView.inflateCustomPlayerUi(R.layout.view_youtube_trailer_controls)
+        val progressSeekBar = customControls.findViewById<SeekBar>(R.id.sb_progress)
+        progressSeekBar.progressTintList = context.getColorStateList(android.R.color.holo_red_light)
+        progressSeekBar.thumbTintList = context.getColorStateList(android.R.color.holo_red_light)
+        progressSeekBar.progressBackgroundTintList =
+            context.getColorStateList(android.R.color.darker_gray)
+        var videoDuration = 0f
+        var isSeeking = false
+
         binding.playerContainer.removeAllViews()
-        binding.playerContainer.addView(view)
-        lifecycle?.addObserver(view)
-        playerView = view
+        binding.playerContainer.addView(youtubePlayerView)
+        lifecycle?.addObserver(youtubePlayerView)
+        playerView = youtubePlayerView
 
-        view.initialize(
-            object : AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    val tracker = YouTubePlayerTracker()
-                    this@PosterTrailerStripView.youTubePlayer = youTubePlayer
-                    playerTracker = tracker
-                    youTubePlayer.addListener(tracker)
+        val youtubePlayerListener = object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                val tracker = YouTubePlayerTracker()
+                this@PosterTrailerStripView.youTubePlayer = youTubePlayer
+                playerTracker = tracker
+                youTubePlayer.addListener(tracker)
 
-                    if (autoPlay) {
-                        youTubePlayer.loadVideo(videoKey, startSeconds)
-                    } else {
-                        youTubePlayer.cueVideo(videoKey, startSeconds)
-                    }
+                progressSeekBar.setOnTouchListener { touchedView, event ->
+                    touchedView.requestParentsDisallowIntercept(
+                        event.actionMasked != MotionEvent.ACTION_UP &&
+                                event.actionMasked != MotionEvent.ACTION_CANCEL
+                    )
+                    false
                 }
+                progressSeekBar.setOnSeekBarChangeListener(
+                    object : SeekBar.OnSeekBarChangeListener {
+                        override fun onProgressChanged(
+                            seekBar: SeekBar,
+                            progress: Int,
+                            fromUser: Boolean
+                        ) = Unit
 
-                override fun onStateChange(
-                    youTubePlayer: YouTubePlayer,
-                    state: PlayerConstants.PlayerState
-                ) {
-                    when (state) {
-                        PlayerConstants.PlayerState.PLAYING -> {
-                            view.alpha = 1f
-                            showPlaying(binding)
+                        override fun onStartTrackingTouch(seekBar: SeekBar) {
+                            isSeeking = true
+                            seekBar.requestParentsDisallowIntercept(true)
                         }
 
-                        PlayerConstants.PlayerState.BUFFERING -> {
-                            showLoading(binding)
+                        override fun onStopTrackingTouch(seekBar: SeekBar) {
+                            if (videoDuration > 0f) {
+                                youTubePlayer.seekTo(
+                                    videoDuration * seekBar.progress / seekBar.max
+                                )
+                            }
+                            isSeeking = false
+                            seekBar.requestParentsDisallowIntercept(false)
                         }
-
-                        PlayerConstants.PlayerState.VIDEO_CUED -> {
-                            view.alpha = 1f
-                            showPlaying(binding)
-                        }
-
-                        PlayerConstants.PlayerState.ENDED -> {
-                            releasePlayer()
-                        }
-
-                        else -> Unit
                     }
-                }
+                )
 
-                override fun onError(
-                    youTubePlayer: YouTubePlayer,
-                    error: PlayerConstants.PlayerError
-                ) {
-                    releasePlayer()
+                if (autoPlay) {
+                    youTubePlayer.loadVideo(videoKey, startSeconds)
+                } else {
+                    youTubePlayer.cueVideo(videoKey, startSeconds)
                 }
             }
-        )
+
+            override fun onStateChange(
+                youTubePlayer: YouTubePlayer,
+                state: PlayerConstants.PlayerState
+            ) {
+                when (state) {
+                    PlayerConstants.PlayerState.PLAYING -> {
+                        youtubePlayerView.alpha = 1f
+                        showPlaying(binding)
+                    }
+
+                    PlayerConstants.PlayerState.BUFFERING -> {
+                        if (youtubePlayerView.alpha == 1f) {
+                            showPlaying(binding)
+                        } else {
+                            showLoading(binding)
+                        }
+                    }
+
+                    PlayerConstants.PlayerState.VIDEO_CUED -> {
+                        youtubePlayerView.alpha = 1f
+                        showPlaying(binding)
+                    }
+
+                    PlayerConstants.PlayerState.ENDED -> {
+                        releasePlayer()
+                    }
+
+                    else -> Unit
+                }
+            }
+
+            override fun onError(
+                youTubePlayer: YouTubePlayer,
+                error: PlayerConstants.PlayerError
+            ) {
+                releasePlayer()
+            }
+
+            override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                if (videoDuration <= 0f || isSeeking) {
+                    return
+                }
+
+                progressSeekBar.progress = (
+                        progressSeekBar.max * second / videoDuration
+                        ).toInt().coerceIn(0, progressSeekBar.max)
+            }
+
+            override fun onVideoDuration(youTubePlayer: YouTubePlayer, duration: Float) {
+                videoDuration = duration
+            }
+        }
+
+        val options = IFramePlayerOptions.Builder(context)
+            .controls(0)
+            .build()
+
+        youtubePlayerView.initialize(youtubePlayerListener, options)
+    }
+
+
+    private fun View.requestParentsDisallowIntercept(disallow: Boolean) {
+        var currentParent: ViewParent? = parent
+        while (currentParent != null) {
+            currentParent.requestDisallowInterceptTouchEvent(disallow)
+            currentParent = currentParent.parent
+        }
     }
 
     private fun showIdle(binding: ItemMovieTrailerBackdropBinding) {
