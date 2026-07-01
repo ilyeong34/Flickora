@@ -121,41 +121,26 @@ internal class MovieRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override fun getNowPlayingMovieListWithVideos(limit: Int) = flow<List<Movie>> {
-        val movieListWithVideos = mutableListOf<Movie>()
+    override fun getNowPlayingMovieListWithVideos() = flow<List<Movie>> {
+        val candidateList = apiService.getNowPlayingMovieList()
+            .resultList
+            .map { it.toDomain() }
+            .filter { it.backdropPath.isNotBlank() && !it.backdropPath.endsWith("/") }
 
-        for (page in 1..MAX_TRAILER_SEARCH_PAGE) {
-            if (movieListWithVideos.size >= limit) break
-
-            val candidateList = apiService.getNowPlayingMovieList(page)
-                .resultList
-                .map { it.toDomain() }
-                .filter { it.backdropPath.isNotBlank() && !it.backdropPath.endsWith("/") }
-
-            val candidateListWithVideos = coroutineScope {
-                candidateList.map { movie ->
-                    async {
-                        val videoList = runCatching {
-                            apiService.getMovieVideoList(movie.id)
-                                .results
-                                .map { it.toDomain() }
-                                .filter { it.site == YOUTUBE_SITE }
-                        }.getOrElse { emptyList() }
-
-                        videoList.pickPlayableTrailer()?.let { playableVideo ->
+        val candidateListWithVideos = coroutineScope {
+            candidateList.map { movie ->
+                async {
+                    apiService.getMovieVideoList(movie.id)
+                        .results
+                        .map { it.toDomain() }
+                        .pickPlayableTrailer()?.let { playableVideo ->
                             movie.copy(videos = listOf(playableVideo))
                         }
-                    }
-                }.awaitAll()
-            }
-
-            candidateListWithVideos
-                .filterNotNull()
-                .take(limit - movieListWithVideos.size)
-                .also { movieListWithVideos += it }
+                }
+            }.awaitAll()
         }
 
-        emit(movieListWithVideos.toList())
+        emit(candidateListWithVideos.filterNotNull())
     }
 
     override fun getTrendingMovieList(timeWindow: TimeWindow) = flow<List<Movie>> {
