@@ -11,5 +11,8 @@
         android:max="1000"
         android:paddingStart="@dimen/flickora_padding_large"
         android:paddingEnd="@dimen/flickora_padding_large"
-        android:progress="0" />
+        android:progress="0"
+        android:progressTint="@android:color/holo_red_light"
+        android:thumbTint="@android:color/holo_red_light"
+        android:progressBackgroundTint="@android:color/darker_gray" />
 </FrameLayout>

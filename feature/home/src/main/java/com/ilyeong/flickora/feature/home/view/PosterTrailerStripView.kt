@@ -3,13 +3,9 @@ package com.ilyeong.flickora.feature.home.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
-import android.widget.SeekBar
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import coil3.load
@@ -46,7 +42,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
     private var activeTrailerId: Int? = null
     private var activeVideoKey: String? = null
     private var activeBinding: ItemMovieTrailerBackdropBinding? = null
-    private var playerView: YouTubePlayerView? = null
+    private var youtubePlayerView: YouTubePlayerView? = null
     private var youTubePlayer: YouTubePlayer? = null
     private var playerTracker: YouTubePlayerTracker? = null
 
@@ -62,8 +58,8 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     fun submitList(trailerList: List<Movie>) {
         val visibleTrailerList = trailerList.take(MAX_TRAILER_COUNT)
-        currentTrailerList = visibleTrailerList
         val visibleTrailerIdList = visibleTrailerList.map { it.id }
+        currentTrailerList = visibleTrailerList
 
         if (activeTrailerId != null && activeTrailerId !in visibleTrailerIdList) {
             releasePlayer()
@@ -81,13 +77,13 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     fun releasePlayer() {
         activeBinding?.let { showIdle(it) }
-        (playerView?.parent as? ViewGroup)?.removeView(playerView)
+        (youtubePlayerView?.parent as? ViewGroup)?.removeView(youtubePlayerView)
         playerTracker?.let { tracker -> youTubePlayer?.removeListener(tracker) }
-        playerView?.let { view ->
+        youtubePlayerView?.let { view ->
             lifecycle?.removeObserver(view)
             view.release()
         }
-        playerView = null
+        youtubePlayerView = null
         youTubePlayer = null
         playerTracker = null
         activeTrailerId = null
@@ -115,10 +111,6 @@ class PosterTrailerStripView @JvmOverloads constructor(
         }
 
         val trailerIndex = currentTrailerList.indexOfFirst { it.id == state.movieId }
-        if (trailerIndex == -1) {
-            return
-        }
-
         val trailer = currentTrailerList[trailerIndex]
         val videoKey = trailer.videos.firstOrNull { it.key == state.videoKey }?.key ?: return
         val binding = getOrCreateTrailerCardBinding(trailerIndex)
@@ -198,59 +190,20 @@ class PosterTrailerStripView @JvmOverloads constructor(
             )
         }
 
-        val customControls =
-            youtubePlayerView.inflateCustomPlayerUi(R.layout.view_youtube_trailer_controls)
-        val progressSeekBar = customControls.findViewById<SeekBar>(R.id.sb_progress)
-        progressSeekBar.progressTintList = context.getColorStateList(android.R.color.holo_red_light)
-        progressSeekBar.thumbTintList = context.getColorStateList(android.R.color.holo_red_light)
-        progressSeekBar.progressBackgroundTintList =
-            context.getColorStateList(android.R.color.darker_gray)
-        var videoDuration = 0f
-        var isSeeking = false
-
         binding.playerContainer.removeAllViews()
         binding.playerContainer.addView(youtubePlayerView)
         lifecycle?.addObserver(youtubePlayerView)
-        playerView = youtubePlayerView
+        this.youtubePlayerView = youtubePlayerView
 
-        val youtubePlayerListener = object : AbstractYouTubePlayerListener() {
+        val customPlayerUi =
+            youtubePlayerView.inflateCustomPlayerUi(R.layout.view_youtube_trailer_controls)
+        val listener = object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
-                val tracker = YouTubePlayerTracker()
-                this@PosterTrailerStripView.youTubePlayer = youTubePlayer
-                playerTracker = tracker
-                youTubePlayer.addListener(tracker)
-
-                progressSeekBar.setOnTouchListener { touchedView, event ->
-                    touchedView.requestParentsDisallowIntercept(
-                        event.actionMasked != MotionEvent.ACTION_UP &&
-                                event.actionMasked != MotionEvent.ACTION_CANCEL
-                    )
-                    false
-                }
-                progressSeekBar.setOnSeekBarChangeListener(
-                    object : SeekBar.OnSeekBarChangeListener {
-                        override fun onProgressChanged(
-                            seekBar: SeekBar,
-                            progress: Int,
-                            fromUser: Boolean
-                        ) = Unit
-
-                        override fun onStartTrackingTouch(seekBar: SeekBar) {
-                            isSeeking = true
-                            seekBar.requestParentsDisallowIntercept(true)
-                        }
-
-                        override fun onStopTrackingTouch(seekBar: SeekBar) {
-                            if (videoDuration > 0f) {
-                                youTubePlayer.seekTo(
-                                    videoDuration * seekBar.progress / seekBar.max
-                                )
-                            }
-                            isSeeking = false
-                            seekBar.requestParentsDisallowIntercept(false)
-                        }
-                    }
+                val customPlayerUiController = CustomPlayerUiController(
+                    customPlayerUi = customPlayerUi,
+                    youTubePlayer = youTubePlayer
                 )
+                youTubePlayer.addListener(customPlayerUiController)
 
                 if (autoPlay) {
                     youTubePlayer.loadVideo(videoKey, startSeconds)
@@ -282,10 +235,6 @@ class PosterTrailerStripView @JvmOverloads constructor(
                         showPlaying(binding)
                     }
 
-                    PlayerConstants.PlayerState.ENDED -> {
-                        releasePlayer()
-                    }
-
                     else -> Unit
                 }
             }
@@ -296,36 +245,11 @@ class PosterTrailerStripView @JvmOverloads constructor(
             ) {
                 releasePlayer()
             }
-
-            override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-                if (videoDuration <= 0f || isSeeking) {
-                    return
-                }
-
-                progressSeekBar.progress = (
-                        progressSeekBar.max * second / videoDuration
-                        ).toInt().coerceIn(0, progressSeekBar.max)
-            }
-
-            override fun onVideoDuration(youTubePlayer: YouTubePlayer, duration: Float) {
-                videoDuration = duration
-            }
         }
 
-        val options = IFramePlayerOptions.Builder(context)
-            .controls(0)
-            .build()
+        val options = IFramePlayerOptions.Builder(context).controls(0).build()
 
-        youtubePlayerView.initialize(youtubePlayerListener, options)
-    }
-
-
-    private fun View.requestParentsDisallowIntercept(disallow: Boolean) {
-        var currentParent: ViewParent? = parent
-        while (currentParent != null) {
-            currentParent.requestDisallowInterceptTouchEvent(disallow)
-            currentParent = currentParent.parent
-        }
+        youtubePlayerView.initialize(listener, options)
     }
 
     private fun showIdle(binding: ItemMovieTrailerBackdropBinding) {
