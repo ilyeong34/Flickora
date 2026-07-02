@@ -5,7 +5,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewParent
 import android.widget.SeekBar
+import androidx.core.view.isVisible
 import com.ilyeong.flickora.feature.home.R
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
@@ -15,12 +17,26 @@ internal class CustomPlayerUiController(
     private val youTubePlayer: YouTubePlayer
 ) : AbstractYouTubePlayerListener() {
 
-    private var sbProgress: SeekBar = customPlayerUi.findViewById(R.id.sb_progress)
+    private val touchOverlay: View = customPlayerUi.findViewById(R.id.touch_overlay)
+    private val sbProgress: SeekBar = customPlayerUi.findViewById(R.id.sb_progress)
     private var videoDuration = 0f
     private var isSeeking = false
+    private var playerState: PlayerConstants.PlayerState? = null
+    private val hideProgressRunnable = Runnable {
+        if (!isSeeking && playerState == PlayerConstants.PlayerState.PLAYING) {
+            sbProgress.isVisible = false
+        }
+    }
 
     init {
+        touchOverlay.setOnTouchListener { touchedView, event ->
+            touchedView.requestParentsDisallowIntercept(event.actionMasked == MotionEvent.ACTION_UP)
+            toggleProgress()
+            false
+        }
+
         sbProgress.setOnTouchListener { touchedView, event ->
+            showProgress()
             touchedView.requestParentsDisallowIntercept(
                 event.actionMasked != MotionEvent.ACTION_UP &&
                         event.actionMasked != MotionEvent.ACTION_CANCEL
@@ -37,6 +53,7 @@ internal class CustomPlayerUiController(
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
                     isSeeking = true
+                    showProgress()
                     seekBar.requestParentsDisallowIntercept(true)
                 }
 
@@ -48,9 +65,23 @@ internal class CustomPlayerUiController(
                     }
                     isSeeking = false
                     seekBar.requestParentsDisallowIntercept(false)
+                    showProgressTemporarily()
                 }
             }
         )
+    }
+
+    override fun onStateChange(youTubePlayer: YouTubePlayer, state: PlayerConstants.PlayerState) {
+        playerState = state
+        when (state) {
+            PlayerConstants.PlayerState.PLAYING -> showProgressTemporarily()
+            PlayerConstants.PlayerState.BUFFERING,
+            PlayerConstants.PlayerState.PAUSED,
+            PlayerConstants.PlayerState.VIDEO_CUED -> showProgress()
+
+            PlayerConstants.PlayerState.ENDED -> sbProgress.removeCallbacks(hideProgressRunnable)
+            else -> Unit
+        }
     }
 
     override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
@@ -66,11 +97,34 @@ internal class CustomPlayerUiController(
         videoDuration = duration
     }
 
+    private fun showProgress() {
+        sbProgress.removeCallbacks(hideProgressRunnable)
+        sbProgress.isVisible = true
+    }
+
+    private fun showProgressTemporarily() {
+        showProgress()
+        sbProgress.postDelayed(hideProgressRunnable, PROGRESS_HIDE_DELAY_MILLIS)
+    }
+
+    private fun toggleProgress() {
+        if (sbProgress.isVisible) {
+            sbProgress.removeCallbacks(hideProgressRunnable)
+            sbProgress.isVisible = false
+        } else {
+            showProgressTemporarily()
+        }
+    }
+
     private fun View.requestParentsDisallowIntercept(disallow: Boolean) {
         var currentParent: ViewParent? = parent
         while (currentParent != null) {
             currentParent.requestDisallowInterceptTouchEvent(disallow)
             currentParent = currentParent.parent
         }
+    }
+
+    private companion object {
+        const val PROGRESS_HIDE_DELAY_MILLIS = 4000L
     }
 }

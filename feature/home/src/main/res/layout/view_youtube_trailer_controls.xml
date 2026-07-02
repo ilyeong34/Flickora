@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/touch_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/transparent" />
 
     <SeekBar
         android:id="@+id/sb_progress"
@@ -15,4 +23,4 @@
         android:progressTint="@android:color/holo_red_light"
         android:thumbTint="@android:color/holo_red_light"
         android:progressBackgroundTint="@android:color/darker_gray" />
-</FrameLayout>
+</LinearLayout>
