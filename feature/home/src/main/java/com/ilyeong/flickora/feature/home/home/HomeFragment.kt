@@ -226,7 +226,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         repeatOnViewStarted {
             viewModel.popularMoviePaging.collectLatest {
-                tvPopularAdapter.submitData(it)
+                moviePopularAdapter.submitData(it)
             }
         }
 
@@ -238,7 +238,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         repeatOnViewStarted {
             viewModel.popularTvPaging.collectLatest {
-                moviePopularAdapter.submitData(it)
+                tvPopularAdapter.submitData(it)
             }
         }
 
