@@ -54,7 +54,6 @@ internal class CustomPlayerUiController(
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
                     isSeeking = true
                     showProgress()
-                    seekBar.requestParentsDisallowIntercept(true)
                 }
 
                 override fun onStopTrackingTouch(seekBar: SeekBar) {
@@ -64,7 +63,6 @@ internal class CustomPlayerUiController(
                         )
                     }
                     isSeeking = false
-                    seekBar.requestParentsDisallowIntercept(false)
                     showProgressTemporarily()
                 }
             }
