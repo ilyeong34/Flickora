@@ -28,4 +28,4 @@
 
 - Local source: [docs/privacy-policy.html](/Users/ds/Documents/dev/android/movieverse/docs/privacy-policy.html)
 - GitHub Pages source: set the repository Pages source to `docs/`
-- Public URL: replace this with your GitHub Pages link after publishing
+- Public URL: https://ilyeong34.github.io/Flickora/privacy-policy.html
