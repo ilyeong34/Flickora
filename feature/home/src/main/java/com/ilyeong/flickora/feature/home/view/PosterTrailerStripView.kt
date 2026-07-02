@@ -111,6 +111,8 @@ class PosterTrailerStripView @JvmOverloads constructor(
         }
 
         val trailerIndex = currentTrailerList.indexOfFirst { it.id == state.movieId }
+        if (trailerIndex == -1) return
+
         val trailer = currentTrailerList[trailerIndex]
         val videoKey = trailer.videos.firstOrNull { it.key == state.videoKey }?.key ?: return
         val binding = getOrCreateTrailerCardBinding(trailerIndex)
@@ -199,6 +201,12 @@ class PosterTrailerStripView @JvmOverloads constructor(
             youtubePlayerView.inflateCustomPlayerUi(R.layout.view_youtube_trailer_controls)
         val listener = object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
+                this@PosterTrailerStripView.youTubePlayer = youTubePlayer
+
+                val tracker = YouTubePlayerTracker()
+                youTubePlayer.addListener(tracker)
+                playerTracker = tracker
+
                 val customPlayerUiController = CustomPlayerUiController(
                     customPlayerUi = customPlayerUi,
                     youTubePlayer = youTubePlayer
