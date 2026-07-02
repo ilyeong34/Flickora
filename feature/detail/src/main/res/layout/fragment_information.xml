@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/overview"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small" />
+
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:lineSpacingExtra="@dimen/flickora_padding_small"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
+            tools:text="Eddie Brock and his symbiote Venom flee together while being chased by an unknown force. Meanwhile, Venom's creator, Knull, invades Earth to track them down, and Eddie and Venom are pushed into the worst crisis of their lives..." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/credit"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            tools:text="Main Cast" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_movie_cast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_movie_cast" />
+
+        <TextView
+            android:id="@+id/tv_movie_cast_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:text="@string/info_empty"
+            android:layout_marginTop="@dimen/flickora_padding_small"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/genre"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_movie_genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/flickora_padding_large"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_movie_genre_chip" />
+
+        <TextView
+            android:id="@+id/tv_movie_genre_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:text="@string/info_empty"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_large" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/more_info"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            tools:text="Additional Info" />
+
+        <TextView
+            android:id="@+id/tv_release"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            tools:text="Release Date   2024-10-22" />
+
+        <TextView
+            android:id="@+id/tv_runtime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            tools:text="Runtime   1h 49m" />
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            android:layout_marginHorizontal="@dimen/flickora_padding_large"
+            android:layout_marginBottom="@dimen/flickora_padding_small"
+            tools:text="Audio   English" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/flickora_poster_default_height"
+    android:orientation="horizontal"
+    android:background="@color/black">
+
+    <include
+        android:id="@+id/poster_default"
+        layout="@layout/item_movie_poster_fixed_size" />
+
+    <Space
+        android:layout_width="@dimen/flickora_padding_large"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Venom: The Last Dance" />
+
+        <com.ilyeong.flickora.core.ui.common.view.ReviewRatingView
+            android:id="@+id/rrv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/gray"
+            android:ellipsize="end"
+            tools:text="Until death do us part! Eddie Brock (Tom Hardy) and his symbiote Venom are forced to flee together while being hunted by an unknown entity. Meanwhile, Venom's creator, 'Knull,' invades Earth from his home planet to track them down, and Eddie and Venom are thrown into the worst crisis they've ever faced... the climax of an epic final showdown, together until the end!" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

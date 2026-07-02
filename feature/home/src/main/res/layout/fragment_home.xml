@@ -1,0 +1,338 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:clipChildren="false">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:clipChildren="false">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_banner"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:paddingTop="?attr/actionBarSize"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:layout_constraintWidth_percent="0.725"
+                app:layout_constraintDimensionRatio="1:1.7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/flickora_padding_large"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/vp_banner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_genre_chip" />
+
+            <TextView
+                android:id="@+id/tv_section1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_genre"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/media_section_watchlist" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
+            <TextView
+                android:id="@+id/tv_section2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/tv_section_trending_top_10" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_ranking_poster" />
+
+            <TextView
+                android:id="@+id/tv_section3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/movie_section_upcoming" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
+            <TextView
+                android:id="@+id/tv_section4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/tv_section_popular" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
+            <TextView
+                android:id="@+id/tv_section5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/movie_section_trending_top_10" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_ranking_poster" />
+
+            <TextView
+                android:id="@+id/tv_section6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/tv_section_on_the_air" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
+            <TextView
+                android:id="@+id/tv_section7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/movie_section_popular" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
+            <TextView
+                android:id="@+id/tv_section8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/tv_section_top_rated" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
+            <TextView
+                android:id="@+id/tv_section9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/movie_section_now_playing" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
+            <TextView
+                android:id="@+id/tv_section10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/rv_section9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/tv_section_airing_today" />
+
+            <com.ilyeong.flickora.feature.home.view.PosterTrailerStripView
+                android:id="@+id/poster_trailer_strip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_section10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_section11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/flickora_padding_large"
+                android:paddingTop="@dimen/flickora_padding_large"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/poster_trailer_strip"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/movie_section_top_rated" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_section11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_section11"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_poster_fixed_size" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/sfl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:shimmer_auto_start="false"
+        android:visibility="gone">
+
+        <include layout="@layout/shimmer_fragment_home" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <include
+        layout="@layout/view_load_data_fail"
+        android:id="@+id/ldf"
+        android:visibility="gone" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black_alpha60"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/tb"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_flickora_top_app_bar_24"
+            app:logoDescription="@string/app_name"
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/TextAppearance.Flickora.HomeToolbarTitle"
+            app:titleTextColor="@color/white"
+            app:menu="@menu/home_app_bar_menu"
+            app:layout_scrollFlags="noScroll" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:importantForAccessibility="noHideDescendants"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shimmer_banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:fitsSystemWindows="true">
+
+        <FrameLayout
+            android:id="@+id/shimmer_banner_previous"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/flickora_padding_xlarge"
+            android:paddingTop="?attr/actionBarSize"
+            android:scaleY="0.85"
+            app:layout_constraintDimensionRatio="1:1.7"
+            app:layout_constraintEnd_toStartOf="@id/shimmer_banner_center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.725">
+
+            <include layout="@layout/shimmer_item_movie_poster_full_size" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/shimmer_banner_center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingTop="?attr/actionBarSize"
+            app:layout_constraintDimensionRatio="1:1.7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.725">
+
+            <include layout="@layout/shimmer_item_movie_poster_full_size" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/shimmer_banner_next"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/flickora_padding_xlarge"
+            android:paddingTop="?attr/actionBarSize"
+            android:scaleY="0.85"
+            app:layout_constraintDimensionRatio="1:1.7"
+            app:layout_constraintStart_toEndOf="@id/shimmer_banner_center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.725">
+
+            <include layout="@layout/shimmer_item_movie_poster_full_size" />
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/flickora_padding_large"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/flickora_padding_medium"
+        android:paddingEnd="@dimen/flickora_padding_medium">
+
+        <include layout="@layout/shimmer_item_movie_genre_chip" />
+
+        <include layout="@layout/shimmer_item_movie_genre_chip" />
+
+        <include layout="@layout/shimmer_item_movie_genre_chip" />
+
+        <include layout="@layout/shimmer_item_movie_genre_chip" />
+
+        <include layout="@layout/shimmer_item_movie_genre_chip" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/flickora_padding_large"
+        android:paddingStart="@dimen/flickora_padding_medium"
+        android:paddingEnd="@dimen/flickora_padding_medium">
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/flickora_padding_large"
+        android:paddingStart="@dimen/flickora_padding_medium"
+        android:paddingEnd="@dimen/flickora_padding_medium">
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+
+    </LinearLayout>
+
+</LinearLayout>

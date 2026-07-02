@@ -1,0 +1,39 @@
+package com.ilyeong.flickora.core.ui.common.viewholder
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import coil3.load
+import coil3.request.crossfade
+import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.ui.databinding.ItemMoviePosterFixedSizeBinding
+
+class PosterFixedViewHolder private constructor(
+    private val binding: ItemMoviePosterFixedSizeBinding
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(media: Media, onItemClick: (Media) -> Unit) {
+        binding.ivPoster.load(media.posterPath) {
+            crossfade(true)
+            listener(
+                onStart = { _ -> binding.tvPosterTitle.text = null },
+                onError = { _, _ -> binding.tvPosterTitle.text = media.title }
+            )
+        }
+        binding.root.setOnClickListener {
+            onItemClick(media)
+        }
+    }
+
+    companion object {
+        fun create(parent: ViewGroup): PosterFixedViewHolder {
+            val binding =
+                ItemMoviePosterFixedSizeBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            return PosterFixedViewHolder(binding)
+        }
+    }
+}

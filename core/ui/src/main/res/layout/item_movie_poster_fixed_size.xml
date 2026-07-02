@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/flickora_poster_default_width"
+    android:layout_height="@dimen/flickora_poster_default_height"
+    app:cardBackgroundColor="@color/black"
+    app:strokeColor="@color/transparent"
+    app:cardCornerRadius="@dimen/flickora_padding_medium">
+
+    <ImageView
+        android:id="@+id/iv_poster"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dark_gray"
+        android:contentDescription="@string/des_movie_poster"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/tv_poster_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/white"
+        style="@style/TextAppearance.Material3.BodyMedium"
+        tools:text="Movie title" />
+
+</com.google.android.material.card.MaterialCardView>

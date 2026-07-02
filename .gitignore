@@ -14,3 +14,10 @@
 .cxx
 local.properties
 .idea/
+.kotlin
+.omx
+app/release/
+keystore.properties
+AGENTS.md
+PLAN.md
+SKILLS.md
