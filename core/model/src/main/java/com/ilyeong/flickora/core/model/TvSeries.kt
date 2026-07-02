@@ -23,7 +23,8 @@ data class TvSeries(
     val numberOfEpisodes: Int = 0,
     val inProduction: Boolean = false,
     val seasonList: List<TvSeason> = emptyList(),
-    override val isInWatchlist: Boolean = false
+    override val isInWatchlist: Boolean = false,
+    override val videos: List<MediaVideo> = emptyList()
 ) : Media(
     id = id,
     title = name.ifBlank { originalName },
@@ -31,5 +32,6 @@ data class TvSeries(
     overview = overview,
     voteAverage = voteAverage,
     voteCount = voteCount,
-    isInWatchlist = isInWatchlist
+    isInWatchlist = isInWatchlist,
+    videos = videos
 )

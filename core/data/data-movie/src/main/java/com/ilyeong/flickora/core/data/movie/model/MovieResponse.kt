@@ -39,6 +39,7 @@ internal fun MovieResponse.toDomain() = Movie(
     spokenLanguageList = emptyList(),
     title = title,
     video = video,
+    videos = emptyList(),
     voteAverage = voteAverage,
     voteCount = voteCount,
     isInWatchlist = false,

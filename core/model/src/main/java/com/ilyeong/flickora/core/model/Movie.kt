@@ -18,7 +18,8 @@ data class Movie(
     val video: Boolean,
     override val voteAverage: Double,
     override val voteCount: Int,
-    override val isInWatchlist: Boolean
+    override val isInWatchlist: Boolean,
+    override val videos: List<MediaVideo> = emptyList()
 ) : Media(
     id = id,
     title = title,
@@ -26,5 +27,6 @@ data class Movie(
     overview = overview,
     voteAverage = voteAverage,
     voteCount = voteCount,
-    isInWatchlist = isInWatchlist
+    isInWatchlist = isInWatchlist,
+    videos = videos
 )

@@ -14,9 +14,13 @@ import com.ilyeong.flickora.core.data.movie.paging.TrendingPagingSource
 import com.ilyeong.flickora.core.data.movie.paging.UpcomingPagingSource
 import com.ilyeong.flickora.core.model.Credit
 import com.ilyeong.flickora.core.model.Genre
+import com.ilyeong.flickora.core.model.MediaVideo
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -117,6 +121,28 @@ internal class MovieRepositoryImpl @Inject constructor(
         ).flow
     }
 
+    override fun getNowPlayingMovieListWithVideos() = flow<List<Movie>> {
+        val candidateList = apiService.getNowPlayingMovieList()
+            .resultList
+            .map { it.toDomain() }
+            .filter { it.backdropPath.isNotBlank() && !it.backdropPath.endsWith("/") }
+
+        val candidateListWithVideos = coroutineScope {
+            candidateList.map { movie ->
+                async {
+                    apiService.getMovieVideoList(movie.id)
+                        .results
+                        .map { it.toDomain() }
+                        .pickPlayableTrailer()?.let { playableVideo ->
+                            movie.copy(videos = listOf(playableVideo))
+                        }
+                }
+            }.awaitAll()
+        }
+
+        emit(candidateListWithVideos.filterNotNull())
+    }
+
     override fun getTrendingMovieList(timeWindow: TimeWindow) = flow<List<Movie>> {
         val trendingMovieList =
             apiService.getTrendingMovieList(timeWindow.name.lowercase()).resultList.map { it.toDomain() }
@@ -146,4 +172,19 @@ internal class MovieRepositoryImpl @Inject constructor(
         val genreList = apiService.getMovieGenreList().genreList.map { it.toDomain() }
         emit(genreList)
     }
+
+    private companion object {
+        const val MAX_TRAILER_SEARCH_PAGE = 3
+    }
 }
+
+private fun List<MediaVideo>.pickPlayableTrailer(): MediaVideo? {
+    return firstOrNull { it.site == YOUTUBE_SITE && it.type == TRAILER_TYPE && it.official }
+        ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TRAILER_TYPE }
+        ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TEASER_TYPE && it.official }
+        ?: firstOrNull { it.site == YOUTUBE_SITE && it.type == TEASER_TYPE }
+}
+
+private const val YOUTUBE_SITE = "YouTube"
+private const val TRAILER_TYPE = "Trailer"
+private const val TEASER_TYPE = "Teaser"

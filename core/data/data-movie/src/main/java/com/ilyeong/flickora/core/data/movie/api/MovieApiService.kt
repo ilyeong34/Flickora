@@ -5,6 +5,7 @@ import com.ilyeong.flickora.core.data.movie.model.CreditResponse
 import com.ilyeong.flickora.core.data.movie.model.DiscoverResponse
 import com.ilyeong.flickora.core.data.movie.model.GenreListResponse
 import com.ilyeong.flickora.core.data.movie.model.MovieDetailResponse
+import com.ilyeong.flickora.core.data.movie.model.MovieVideoListResponse
 import com.ilyeong.flickora.core.data.movie.model.NowPlayingResponse
 import com.ilyeong.flickora.core.data.movie.model.PopularResponse
 import com.ilyeong.flickora.core.data.movie.model.RecommendationListResponse
@@ -45,6 +46,11 @@ internal interface MovieApiService {
         @Path("movie_id") movieId: Int,
         @Query("page") page: Int = 1
     ): ReviewListResponse
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getMovieVideoList(
+        @Path("movie_id") movieId: Int
+    ): MovieVideoListResponse
 
     @GET("movie/top_rated")
     suspend fun getTopRatedMovieList(

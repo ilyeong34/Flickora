@@ -66,24 +66,27 @@
     <string name="movie_section_upcoming">Upcoming Movie</string>
     <string name="movie_section_popular">Popular Movie</string>
     <string name="movie_section_now_playing">Now Playing Movie</string>
-    <string name="movie_section_trending_week">Trending Week Movie</string>
+    <string name="movie_section_now_playing_trailer">Now Playing Movie Trailer</string>
     <string name="movie_section_trending_day">Trending Day</string>
-    <string name="movie_section_watchlist">Watchlist Movie</string>
+    <string name="media_section_watchlist">Watchlist</string>
     <string name="watchlist_movie_chip">Movie</string>
     <string name="watchlist_tv_series_chip">TV Series</string>
     <string name="tv_section_popular">Popular TV Series</string>
     <string name="tv_section_top_rated">Top Rated TV Series</string>
-    <string name="tv_section_trending_week">Trending Week TV Series</string>
     <string name="tv_section_on_the_air">On The Air TV Series</string>
     <string name="tv_section_airing_today">Airing Today TV Series</string>
     <string name="movie_section_collection">Collection</string>
     <string name="movie_section_recommendation">Recommendation</string>
     <string name="movie_section_similar">Similar</string>
+    <string name="movie_section_trending_top_10">Movie Trending Top 10</string>
+    <string name="tv_section_trending_top_10">TV Series Trending Top 10</string>
 
     <string name="rating_count">(%1$d)</string>
 
     <string name="fail_login_message">Failed to login.</string>
     <string name="fail_refresh_message">Failed to fetch the latest data. Please try again later.</string>
+    <string name="trailer_video_unavailable_message">영상 정보가 없습니다. 다음에 시도해주세요.</string>
+    <string name="trailer_playback_error_message">트레일러를 재생할 수 없습니다.</string>
     <string name="unknown_user">Unknown User</string>
 
     <string name="feature_coming_soon">This feature will be available soon.</string>

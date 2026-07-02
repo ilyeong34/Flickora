@@ -12,6 +12,7 @@ import com.ilyeong.flickora.core.model.AccountStates
 import com.ilyeong.flickora.core.model.Credit
 import com.ilyeong.flickora.core.model.Genre
 import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.model.MediaVideo
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.Review
 import com.ilyeong.flickora.core.model.TimeWindow
@@ -21,15 +22,15 @@ import com.ilyeong.flickora.feature.home.model.HomeUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -44,13 +45,22 @@ class HomeViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun loadData_emitsSuccess_andPopularTvPagingEmitsMedia() = runTest {
-        val movieFixture = movieFixture()
-        val tvFixture = tvSeriesFixture()
+    fun loadData_emitsSuccess_withSeparatedRankingListsLimitedTo10() = runTest {
+        val bannerMovie = movieFixture()
+        val bannerTv = tvSeriesFixture()
+        val movieRankingFixtures = movieRankingFixtures()
+        val tvRankingFixtures = tvRankingFixtures()
+        val trailerMovie = movieFixture().copy(id = 100, title = "Trailer Movie")
         val viewModel = HomeViewModel(
-            mediaRepository = FakeMediaRepository(movieFixture, tvFixture),
-            movieRepository = FakeMovieRepository(),
-            tvRepository = FakeTvRepository(tvFixture),
+            mediaRepository = FakeMediaRepository(
+                dayList = listOf(bannerMovie, bannerTv),
+                weekList = emptyList()
+            ),
+            movieRepository = FakeMovieRepository(
+                trendingMovieList = movieRankingFixtures,
+                nowPlayingTrailerEmissions = listOf(listOf(trailerMovie))
+            ),
+            tvRepository = FakeTvRepository(bannerTv, tvRankingFixtures),
             userRepository = FakeUserRepository()
         )
 
@@ -59,8 +69,12 @@ class HomeViewModelTest {
         assertTrue(viewModel.uiState.value is HomeUiState.Success)
         val success = viewModel.uiState.value as HomeUiState.Success
         assertEquals(2, success.bannerMediaList.size)
-        assertEquals(movieFixture as Media, success.bannerMediaList.first())
-        assertEquals(tvFixture as Media, success.bannerMediaList.last())
+        assertTrue(success.bannerMediaList.containsAll(listOf(bannerMovie, bannerTv)))
+        assertEquals(10, success.rankingMovieList.size)
+        assertEquals(movieRankingFixtures.take(10), success.rankingMovieList)
+        assertEquals(10, success.rankingTvList.size)
+        assertEquals(tvRankingFixtures.take(10), success.rankingTvList)
+        assertEquals(listOf(trailerMovie), success.nowPlayingTrailerList)
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = MediaDiffUtil,
@@ -72,24 +86,89 @@ class HomeViewModelTest {
         differ.submitData(viewModel.popularTvPaging.first())
         advanceUntilIdle()
 
-        assertEquals(tvFixture as Media, differ.snapshot().items.single())
+        assertEquals(bannerTv as Media, differ.snapshot().items.single())
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun loadData_keepsSuccess_whenRankingListIsEmpty() = runTest {
+        val bannerMovie = movieFixture()
+        val bannerTv = tvSeriesFixture()
+        val viewModel = HomeViewModel(
+            mediaRepository = FakeMediaRepository(
+                dayList = listOf(bannerMovie, bannerTv),
+                weekList = emptyList()
+            ),
+            movieRepository = FakeMovieRepository(emptyList()),
+            tvRepository = FakeTvRepository(bannerTv, emptyList()),
+            userRepository = FakeUserRepository()
+        )
+
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value is HomeUiState.Success)
+        val success = viewModel.uiState.value as HomeUiState.Success
+        assertTrue(success.rankingMovieList.isEmpty())
+        assertTrue(success.rankingTvList.isEmpty())
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun loadData_updatesNowPlayingTrailerListWhenVideosArrive() = runTest {
+        val bannerMovie = movieFixture()
+        val bannerTv = tvSeriesFixture()
+        val trailerMovie = movieFixture().copy(id = 100, title = "Trailer Movie")
+        val trailerMovieWithVideos = trailerMovie.copy(videos = listOf(movieVideoFixture()))
+        val viewModel = HomeViewModel(
+            mediaRepository = FakeMediaRepository(
+                dayList = listOf(bannerMovie, bannerTv),
+                weekList = emptyList()
+            ),
+            movieRepository = FakeMovieRepository(
+                trendingMovieList = emptyList(),
+                nowPlayingTrailerEmissions = listOf(
+                    emptyList(),
+                    listOf(trailerMovie),
+                    listOf(trailerMovieWithVideos)
+                )
+            ),
+            tvRepository = FakeTvRepository(bannerTv, emptyList()),
+            userRepository = FakeUserRepository()
+        )
+
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value is HomeUiState.Success)
+        val success = viewModel.uiState.value as HomeUiState.Success
+        assertEquals(listOf(trailerMovieWithVideos), success.nowPlayingTrailerList)
+        assertEquals(listOf(movieVideoFixture()), success.nowPlayingTrailerList.single().videos)
     }
 
     private class FakeMediaRepository(
-        private val movieFixture: Movie,
-        private val tvFixture: TvSeries
+        private val dayList: List<Media>,
+        private val weekList: List<Media>
     ) : MediaRepository {
         override fun searchMediaPaging(query: String): Flow<PagingData<Media>> =
             flowOf(PagingData.from(emptyList()))
 
         override fun getTrendingMediaList(timeWindow: TimeWindow): Flow<List<Media>> =
-            flowOf(listOf(movieFixture, tvFixture))
+            flowOf(
+                when (timeWindow) {
+                    TimeWindow.DAY -> dayList
+                    TimeWindow.WEEK -> weekList
+                }
+            )
     }
 
-    private class FakeMovieRepository : MovieRepository {
+    private class FakeMovieRepository(
+        private val trendingMovieList: List<Movie>,
+        private val nowPlayingTrailerEmissions: List<List<Movie>> = listOf(emptyList())
+    ) : MovieRepository {
         override fun getMovieDetail(movieId: Int): Flow<Movie> = unusedFlow()
         override fun getMovieCredit(movieId: Int): Flow<Credit> = unusedFlow()
-        override fun getMovieRecommendationList(movieId: Int): Flow<List<Movie>> = flowOf(emptyList())
+        override fun getMovieRecommendationList(movieId: Int): Flow<List<Movie>> =
+            flowOf(emptyList())
+
         override fun getMovieSimilarList(movieId: Int): Flow<List<Movie>> = flowOf(emptyList())
         override fun getMovieReviewPaging(movieId: Int): Flow<PagingData<Review>> =
             flowOf(PagingData.from(emptyList()))
@@ -109,29 +188,12 @@ class HomeViewModelTest {
         override fun getNowPlayingMoviePaging(maxPage: Int): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
 
+        override fun getNowPlayingMovieListWithVideos(): Flow<List<Movie>> = flow {
+            nowPlayingTrailerEmissions.forEach { emit(it) }
+        }
+
         override fun getTrendingMovieList(timeWindow: TimeWindow): Flow<List<Movie>> = flowOf(
-            listOf(
-                Movie(
-                    adult = false,
-                    collection = null,
-                    backdropPath = "",
-                    genreList = emptyList(),
-                    id = 1,
-                    originalLanguage = "en",
-                    originalTitle = "Trending Movie",
-                    overview = "",
-                    popularity = 1.0,
-                    posterPath = "",
-                    releaseDate = "",
-                    runtime = 0,
-                    spokenLanguageList = emptyList(),
-                    title = "Trending Movie",
-                    video = false,
-                    voteAverage = 0.0,
-                    voteCount = 0,
-                    isInWatchlist = false
-                )
-            )
+            trendingMovieList
         )
 
         override fun getTrendingMoviePaging(
@@ -145,7 +207,8 @@ class HomeViewModelTest {
     }
 
     private class FakeTvRepository(
-        private val tvFixture: TvSeries
+        private val tvFixture: TvSeries,
+        private val trendingTvList: List<TvSeries>
     ) : TvRepository {
         override fun getTvDetail(tvSeriesId: Int): Flow<TvSeries> = unusedFlow()
 
@@ -172,6 +235,9 @@ class HomeViewModelTest {
             maxPage: Int
         ): Flow<PagingData<TvSeries>> = flowOf(PagingData.from(emptyList()))
 
+        override fun getTrendingTvList(timeWindow: TimeWindow): Flow<List<TvSeries>> =
+            flowOf(trendingTvList)
+
         override fun getOnTheAirTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> =
             flowOf(PagingData.from(emptyList()))
 
@@ -183,12 +249,15 @@ class HomeViewModelTest {
         override fun getAccount(): Flow<Account> = unusedFlow()
         override fun getWatchlistMoviePaging(): Flow<PagingData<Movie>> =
             flowOf(PagingData.from(emptyList()))
+
         override fun getWatchlistTvPaging(): Flow<PagingData<TvSeries>> =
             flowOf(PagingData.from(emptyList()))
 
         override fun getMovieAccountStates(movieId: Int): Flow<AccountStates> = unusedFlow()
         override fun getTvAccountStates(tvSeriesId: Int): Flow<AccountStates> = unusedFlow()
-        override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> = unusedFlow()
+        override fun addMovieToWatchlist(movie: Movie, watchlist: Boolean): Flow<Unit> =
+            unusedFlow()
+
         override fun addTvToWatchlist(tvSeries: TvSeries, watchlist: Boolean): Flow<Unit> =
             unusedFlow()
     }
@@ -232,6 +301,32 @@ private fun tvSeriesFixture() = TvSeries(
     voteCount = 1000
 )
 
+private fun movieRankingFixtures(): List<Movie> = buildList {
+    repeat(12) { index ->
+        val rank = index + 1
+        add(
+            movieFixture().copy(
+                id = 10 + rank,
+                originalTitle = "Ranking Movie $rank",
+                title = "Ranking Movie $rank"
+            )
+        )
+    }
+}
+
+private fun tvRankingFixtures(): List<TvSeries> = buildList {
+    repeat(12) { index ->
+        val rank = index + 1
+        add(
+            tvSeriesFixture().copy(
+                id = 20 + rank,
+                originalName = "Ranking TV $rank",
+                name = "Ranking TV $rank"
+            )
+        )
+    }
+}
+
 private fun movieFixture() = Movie(
     adult = false,
     collection = null,
@@ -248,9 +343,19 @@ private fun movieFixture() = Movie(
     spokenLanguageList = emptyList(),
     title = "Trending Movie",
     video = false,
+    videos = emptyList(),
     voteAverage = 8.5,
     voteCount = 1234,
     isInWatchlist = false
+)
+
+private fun movieVideoFixture() = MediaVideo(
+    id = "video-id",
+    key = "youtube-key",
+    name = "Official Trailer",
+    site = "YouTube",
+    type = "Trailer",
+    official = true
 )
 
 private fun <T> unusedFlow(): Flow<T> = flow {

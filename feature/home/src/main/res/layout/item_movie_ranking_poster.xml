@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="bottom">
+
+    <TextView
+        android:id="@+id/tv_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/flickora_padding_small"
+        android:layout_marginBottom="-6dp"
+        android:includeFontPadding="false"
+        android:gravity="bottom"
+        android:textColor="@color/white"
+        android:textSize="88sp"
+        android:textStyle="bold"
+        android:alpha="0.85"
+        tools:text="1" />
+
+    <include
+        android:id="@+id/poster"
+        layout="@layout/item_movie_poster_fixed_size" />
+
+</LinearLayout>

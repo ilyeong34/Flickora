@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.map as flowMap
 internal class HomeViewModel @Inject constructor(
     private val mediaRepository: MediaRepository,
     private val movieRepository: MovieRepository,
-    tvRepository: TvRepository,
+    private val tvRepository: TvRepository,
     userRepository: UserRepository,
 ) : ViewModel() {
 
@@ -47,14 +47,6 @@ internal class HomeViewModel @Inject constructor(
         movieRepository.getPopularMoviePaging(maxPage = 3)
             .flowMap { pagingData -> pagingData.map { it as Media } }
             .cachedIn(viewModelScope)
-    val nowPlayingMoviePaging =
-        movieRepository.getNowPlayingMoviePaging(maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it as Media } }
-            .cachedIn(viewModelScope)
-    val trendingWeekMoviePaging =
-        movieRepository.getTrendingMoviePaging(timeWindow = TimeWindow.WEEK, maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it as Media } }
-            .cachedIn(viewModelScope)
     val topRatedMoviePaging =
         movieRepository.getTopRatedMoviePaging(maxPage = 3)
             .flowMap { pagingData -> pagingData.map { it as Media } }
@@ -65,10 +57,6 @@ internal class HomeViewModel @Inject constructor(
     val topRatedTvPaging = tvRepository.getTopRatedTvPaging(maxPage = 3)
         .flowMap { pagingData -> pagingData.map { it as Media } }
         .cachedIn(viewModelScope)
-    val trendingWeekTvPaging =
-        tvRepository.getTrendingTvPaging(timeWindow = TimeWindow.WEEK, maxPage = 3)
-            .flowMap { pagingData -> pagingData.map { it as Media } }
-            .cachedIn(viewModelScope)
     val onTheAirTvPaging = tvRepository.getOnTheAirTvPaging(maxPage = 3)
         .flowMap { pagingData -> pagingData.map { it as Media } }
         .cachedIn(viewModelScope)
@@ -84,14 +72,31 @@ internal class HomeViewModel @Inject constructor(
         if (_uiState.value is Success) return
 
         val trendingDayFlow = mediaRepository.getTrendingMediaList(TimeWindow.DAY)
+        val trendingMovieWeekFlow = movieRepository.getTrendingMovieList(TimeWindow.WEEK)
+        val trendingTvWeekFlow = tvRepository.getTrendingTvList(TimeWindow.WEEK)
         val genreFlow = movieRepository.getMovieGenreList()
+        val nowPlayingTrailerFlow = movieRepository.getNowPlayingMovieListWithVideos()
 
-        combine(trendingDayFlow, genreFlow, ::Pair)
+        combine(
+            trendingDayFlow,
+            trendingMovieWeekFlow,
+            trendingTvWeekFlow,
+            genreFlow,
+            nowPlayingTrailerFlow
+        ) { dayList, movieWeekList, tvWeekList, genreList, nowPlayingTrailerList ->
+            Success(
+                bannerMediaList = dayList.take(5),
+                rankingMovieList = movieWeekList.take(10),
+                rankingTvList = tvWeekList.take(10),
+                genreList = genreList,
+                nowPlayingTrailerList = nowPlayingTrailerList
+            )
+        }
             .onStart {
                 _uiState.value = Loading
                 // delay(2000L)
             }
-            .onEach { _uiState.value = Success(it.first, it.second) }
+            .onEach { _uiState.value = it }
             .catch { _uiState.value = HomeUiState.Failure }
             .launchIn(viewModelScope)
     }

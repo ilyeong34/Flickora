@@ -106,6 +106,13 @@ internal class TvRepositoryImpl @Inject constructor(
         ).flow
     }
 
+    override fun getTrendingTvList(timeWindow: TimeWindow) = flow<List<TvSeries>> {
+        val trendingTvList = apiService.getTrendingTvList(timeWindow.name.lowercase())
+            .resultList
+            .map { it.toDomain() }
+        emit(trendingTvList)
+    }
+
     override fun getOnTheAirTvPaging(maxPage: Int): Flow<PagingData<TvSeries>> {
         return Pager(
             config = PagingConfig(

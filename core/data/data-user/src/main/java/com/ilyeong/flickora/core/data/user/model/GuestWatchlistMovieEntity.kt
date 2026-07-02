@@ -46,6 +46,7 @@ internal fun GuestWatchlistMovieEntity.toDomain(): Movie = Movie(
     spokenLanguageList = emptyList<SpokenLanguage>(),
     title = title,
     video = false,
+    videos = emptyList(),
     voteAverage = voteAverage,
     voteCount = voteCount,
     isInWatchlist = true,

@@ -15,6 +15,7 @@ interface TvRepository {
     fun getTvReviewPaging(tvSeriesId: Int): Flow<PagingData<Review>>
     fun getPopularTvPaging(maxPage: Int = Int.MAX_VALUE): Flow<PagingData<TvSeries>>
     fun getTopRatedTvPaging(maxPage: Int = Int.MAX_VALUE): Flow<PagingData<TvSeries>>
+    fun getTrendingTvList(timeWindow: TimeWindow): Flow<List<TvSeries>>
     fun getTrendingTvPaging(
         timeWindow: TimeWindow,
         maxPage: Int = Int.MAX_VALUE

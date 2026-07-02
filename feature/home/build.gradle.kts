@@ -80,4 +80,7 @@ dependencies {
 
     // paging
     implementation(libs.paging)
+
+    // youtube player
+    implementation(libs.android.youtube.player.core)
 }
