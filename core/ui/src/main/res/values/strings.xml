@@ -85,8 +85,8 @@
 
     <string name="fail_login_message">Failed to login.</string>
     <string name="fail_refresh_message">Failed to fetch the latest data. Please try again later.</string>
-    <string name="trailer_video_unavailable_message">영상 정보가 없습니다. 다음에 시도해주세요.</string>
-    <string name="trailer_playback_error_message">트레일러를 재생할 수 없습니다.</string>
+    <string name="trailer_video_unavailable_message">No video information is available. Please try again later.</string>
+    <string name="trailer_playback_error_message">Trailer playback is unavailable.</string>
     <string name="unknown_user">Unknown User</string>
 
     <string name="feature_coming_soon">This feature will be available soon.</string>
