@@ -3,23 +3,14 @@ package com.ilyeong.flickora.feature.home.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
 import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Movie
-import com.ilyeong.flickora.feature.home.R
 import com.ilyeong.flickora.feature.home.databinding.ItemMovieTrailerBackdropBinding
 import com.ilyeong.flickora.feature.home.model.TrailerPlaybackState
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class PosterTrailerStripView @JvmOverloads constructor(
     context: Context,
@@ -37,23 +28,17 @@ class PosterTrailerStripView @JvmOverloads constructor(
         )
     }
     private val inflater = LayoutInflater.from(context)
-    private var lifecycle: Lifecycle? = null
     private var currentTrailerList: List<Movie> = emptyList()
     private var activeTrailerId: Int? = null
     private var activeVideoKey: String? = null
     private var activeBinding: ItemMovieTrailerBackdropBinding? = null
-    private var youtubePlayerView: YouTubePlayerView? = null
-    private var youTubePlayer: YouTubePlayer? = null
-    private var playerTracker: YouTubePlayerTracker? = null
+    private var youtubeWebPlayerView: YoutubeWebPlayerView? = null
+    private var hasShownPlaybackFrame = false
 
     init {
         isHorizontalScrollBarEnabled = false
         overScrollMode = OVER_SCROLL_NEVER
         addView(container)
-    }
-
-    fun bindLifecycle(lifecycle: Lifecycle) {
-        this.lifecycle = lifecycle
     }
 
     fun submitList(trailerList: List<Movie>) {
@@ -77,24 +62,19 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     fun releasePlayer() {
         activeBinding?.let { showIdle(it) }
-        (youtubePlayerView?.parent as? ViewGroup)?.removeView(youtubePlayerView)
-        playerTracker?.let { tracker -> youTubePlayer?.removeListener(tracker) }
-        youtubePlayerView?.let { view ->
-            lifecycle?.removeObserver(view)
-            view.release()
-        }
-        youtubePlayerView = null
-        youTubePlayer = null
-        playerTracker = null
+        youtubeWebPlayerView?.release()
+        youtubeWebPlayerView = null
         activeTrailerId = null
         activeVideoKey = null
         activeBinding = null
+        hasShownPlaybackFrame = false
     }
 
     internal fun capturePlaybackState(): TrailerPlaybackState? {
         val movieId = activeTrailerId ?: return null
         val videoKey = activeVideoKey ?: return null
-        val currentSecond = playerTracker?.currentSecond ?: return null
+        val currentSecond = youtubeWebPlayerView?.captureState()
+            ?: return null
 
         return TrailerPlaybackState(
             movieId = movieId,
@@ -181,83 +161,51 @@ class PosterTrailerStripView @JvmOverloads constructor(
         activeTrailerId = trailer.id
         activeVideoKey = videoKey
         activeBinding = binding
+        hasShownPlaybackFrame = false
         showLoading(binding)
 
-        val youtubePlayerView = YouTubePlayerView(context).apply {
-            enableAutomaticInitialization = false
-            alpha = 0f
+        val webPlayerView = YoutubeWebPlayerView(context).apply {
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT
             )
+            listener = object : YoutubeWebPlayerView.Listener {
+                override fun onStateChange(state: Int) {
+                    when (state) {
+                        YoutubeWebPlayerState.BUFFERING -> {
+                            if (hasShownPlaybackFrame) {
+                                showPlaying(binding)
+                            } else {
+                                showLoading(binding)
+                            }
+                        }
+                        YoutubeWebPlayerState.PLAYING,
+                        YoutubeWebPlayerState.PAUSED,
+                        YoutubeWebPlayerState.ENDED -> {
+                            hasShownPlaybackFrame = true
+                            showPlaying(binding)
+                        }
+                        YoutubeWebPlayerState.CUED,
+                        YoutubeWebPlayerState.UNSTARTED -> showLoading(binding)
+                        else -> Unit
+                    }
+                }
+
+                override fun onError(errorCode: Int) {
+                    showPlaying(binding)
+                }
+            }
         }
 
         binding.playerContainer.removeAllViews()
-        binding.playerContainer.addView(youtubePlayerView)
-        lifecycle?.addObserver(youtubePlayerView)
-        this.youtubePlayerView = youtubePlayerView
+        binding.playerContainer.addView(webPlayerView)
+        youtubeWebPlayerView = webPlayerView
 
-        val customPlayerUi =
-            youtubePlayerView.inflateCustomPlayerUi(R.layout.view_youtube_trailer_controls)
-        val listener = object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: YouTubePlayer) {
-                this@PosterTrailerStripView.youTubePlayer = youTubePlayer
-
-                val tracker = YouTubePlayerTracker()
-                youTubePlayer.addListener(tracker)
-                playerTracker = tracker
-
-                val customPlayerUiController = CustomPlayerUiController(
-                    customPlayerUi = customPlayerUi,
-                    youTubePlayer = youTubePlayer
-                )
-                youTubePlayer.addListener(customPlayerUiController)
-
-                if (autoPlay) {
-                    youTubePlayer.loadVideo(videoKey, startSeconds)
-                } else {
-                    youTubePlayer.cueVideo(videoKey, startSeconds)
-                }
-            }
-
-            override fun onStateChange(
-                youTubePlayer: YouTubePlayer,
-                state: PlayerConstants.PlayerState
-            ) {
-                when (state) {
-                    PlayerConstants.PlayerState.PLAYING -> {
-                        youtubePlayerView.alpha = 1f
-                        showPlaying(binding)
-                    }
-
-                    PlayerConstants.PlayerState.BUFFERING -> {
-                        if (youtubePlayerView.alpha == 1f) {
-                            showPlaying(binding)
-                        } else {
-                            showLoading(binding)
-                        }
-                    }
-
-                    PlayerConstants.PlayerState.VIDEO_CUED -> {
-                        youtubePlayerView.alpha = 1f
-                        showPlaying(binding)
-                    }
-
-                    else -> Unit
-                }
-            }
-
-            override fun onError(
-                youTubePlayer: YouTubePlayer,
-                error: PlayerConstants.PlayerError
-            ) {
-                releasePlayer()
-            }
+        if (autoPlay) {
+            webPlayerView.load(videoKey, startSeconds, autoPlay = true)
+        } else {
+            webPlayerView.restorePaused(videoKey, startSeconds)
         }
-
-        val options = IFramePlayerOptions.Builder(context).controls(0).build()
-
-        youtubePlayerView.initialize(listener, options)
     }
 
     private fun showIdle(binding: ItemMovieTrailerBackdropBinding) {
