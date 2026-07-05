@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Movie
+import com.ilyeong.flickora.feature.home.R
 import com.ilyeong.flickora.feature.home.databinding.ItemMovieTrailerBackdropBinding
 import com.ilyeong.flickora.feature.home.model.TrailerPlaybackState
 
@@ -33,7 +34,6 @@ class PosterTrailerStripView @JvmOverloads constructor(
     private var activeVideoKey: String? = null
     private var activeBinding: ItemMovieTrailerBackdropBinding? = null
     private var youtubeWebPlayerView: YoutubeWebPlayerView? = null
-    private var hasShownPlaybackFrame = false
 
     init {
         isHorizontalScrollBarEnabled = false
@@ -67,7 +67,6 @@ class PosterTrailerStripView @JvmOverloads constructor(
         activeTrailerId = null
         activeVideoKey = null
         activeBinding = null
-        hasShownPlaybackFrame = false
     }
 
     internal fun capturePlaybackState(): TrailerPlaybackState? {
@@ -102,7 +101,8 @@ class PosterTrailerStripView @JvmOverloads constructor(
             binding = binding,
             videoKey = videoKey,
             startSeconds = state.currentSecond.coerceAtLeast(0f),
-            autoPlay = false
+            autoPlay = false,
+            restorePaused = true
         )
     }
 
@@ -150,7 +150,8 @@ class PosterTrailerStripView @JvmOverloads constructor(
         binding: ItemMovieTrailerBackdropBinding,
         videoKey: String?,
         startSeconds: Float = 0f,
-        autoPlay: Boolean = true
+        autoPlay: Boolean = true,
+        restorePaused: Boolean = false
     ) {
         if (videoKey == null) {
             onTrailerUnavailable?.invoke()
@@ -161,7 +162,6 @@ class PosterTrailerStripView @JvmOverloads constructor(
         activeTrailerId = trailer.id
         activeVideoKey = videoKey
         activeBinding = binding
-        hasShownPlaybackFrame = false
         showLoading(binding)
 
         val webPlayerView = YoutubeWebPlayerView(context).apply {
@@ -169,43 +169,47 @@ class PosterTrailerStripView @JvmOverloads constructor(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT
             )
-            listener = object : YoutubeWebPlayerView.Listener {
-                override fun onStateChange(state: Int) {
-                    when (state) {
-                        YoutubeWebPlayerState.BUFFERING -> {
-                            if (hasShownPlaybackFrame) {
-                                showPlaying(binding)
-                            } else {
-                                showLoading(binding)
-                            }
-                        }
-                        YoutubeWebPlayerState.PLAYING,
-                        YoutubeWebPlayerState.PAUSED,
-                        YoutubeWebPlayerState.ENDED -> {
-                            hasShownPlaybackFrame = true
-                            showPlaying(binding)
-                        }
-                        YoutubeWebPlayerState.CUED,
-                        YoutubeWebPlayerState.UNSTARTED -> showLoading(binding)
-                        else -> Unit
-                    }
-                }
-
-                override fun onError(errorCode: Int) {
-                    showPlaying(binding)
-                }
-            }
         }
+        val customPlayerUi = LayoutInflater.from(context)
+            .inflate(R.layout.view_youtube_trailer_controls, binding.playerContainer, false)
+        val customPlayerUiController = CustomPlayerUiController(
+            customPlayerUi = customPlayerUi,
+            youtubeWebPlayerView = webPlayerView,
+            onPlayerStateChanged = { state ->
+                when (state) {
+                    YoutubeWebPlayerState.BUFFERING -> {
+                        if (binding.playerContainer.alpha == 1f) {
+                            showPlaying(binding)
+                        } else {
+                            showLoading(binding)
+                        }
+                    }
+                    YoutubeWebPlayerState.PLAYING,
+                    YoutubeWebPlayerState.PAUSED,
+                    YoutubeWebPlayerState.CUED -> {
+                        showPlaying(binding)
+                    }
+                    YoutubeWebPlayerState.UNSTARTED -> showLoading(binding)
+                    else -> Unit
+                }
+            },
+            onPlayerError = {
+                releasePlayer()
+            }
+        )
+        webPlayerView.listener = customPlayerUiController
 
         binding.playerContainer.removeAllViews()
         binding.playerContainer.addView(webPlayerView)
+        binding.playerContainer.addView(customPlayerUi)
         youtubeWebPlayerView = webPlayerView
 
-        if (autoPlay) {
-            webPlayerView.load(videoKey, startSeconds, autoPlay = true)
-        } else {
-            webPlayerView.restorePaused(videoKey, startSeconds)
-        }
+        webPlayerView.load(
+            videoKey = videoKey,
+            startSeconds = startSeconds,
+            autoPlay = autoPlay,
+            restorePaused = restorePaused
+        )
     }
 
     private fun showIdle(binding: ItemMovieTrailerBackdropBinding) {
@@ -215,6 +219,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
         binding.lpbLoading.isVisible = false
         binding.tvTitle.isVisible = true
         binding.playerContainer.isVisible = false
+        binding.playerContainer.alpha = 1f
         binding.playerContainer.removeAllViews()
     }
 
@@ -225,6 +230,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
         binding.lpbLoading.isVisible = true
         binding.tvTitle.isVisible = true
         binding.playerContainer.isVisible = true
+        binding.playerContainer.alpha = 0f
     }
 
     private fun showPlaying(binding: ItemMovieTrailerBackdropBinding) {
@@ -234,6 +240,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
         binding.lpbLoading.isVisible = false
         binding.tvTitle.isVisible = false
         binding.playerContainer.isVisible = true
+        binding.playerContainer.alpha = 1f
     }
 
     override fun onDetachedFromWindow() {

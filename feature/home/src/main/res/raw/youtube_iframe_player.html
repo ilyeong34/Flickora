@@ -19,11 +19,14 @@
 <script>
     var player = null;
     var progressTimer = null;
-    var pauseAfterFirstPlay = false;
+    var isReady = false;
+    var pendingCommand = null;
     var queryParams = new URLSearchParams(window.location.search);
     var initialVideoId = queryParams.get('videoId') || null;
     var initialStartSeconds = Number(queryParams.get('startSeconds') || 0);
     var initialMode = queryParams.get('initialMode') || 'cue';
+    var shouldPauseAfterFirstPlay = initialMode === 'restore_paused';
+    var shouldUnMuteAfterRestorePause = false;
 
     function notifyAndroid(method, value) {
         if (window.AndroidPlayer && window.AndroidPlayer[method]) {
@@ -32,11 +35,9 @@
     }
 
     function onYouTubeIframeAPIReady() {
-        pauseAfterFirstPlay = initialMode === 'restore_paused';
-
         var playerVars = {
-            autoplay: initialMode === 'autoplay' || initialMode === 'restore_paused' ? 1 : 0,
-            controls: 1,
+            autoplay: initialMode === 'autoplay' ? 1 : 0,
+            controls: 0,
             enablejsapi: 1,
             fs: 1,
             modestbranding: 1,
@@ -57,7 +58,7 @@
             }
         };
 
-        if (initialVideoId) {
+        if (initialVideoId && initialMode !== 'restore_paused') {
             options.videoId = initialVideoId;
         }
 
@@ -65,21 +66,34 @@
     }
 
     function onPlayerReady() {
+        isReady = true;
         startProgressTimer();
+        if (initialMode === 'restore_paused' && initialVideoId) {
+            player.mute();
+            player.loadVideoById({
+                videoId: initialVideoId,
+                startSeconds: Math.max(0, initialStartSeconds || 0)
+            });
+        }
+        if (pendingCommand) {
+            var command = pendingCommand;
+            pendingCommand = null;
+            eval(command);
+        }
+        notifyAndroid('onReady', '');
     }
 
     function onPlayerStateChange(event) {
+        if (shouldPauseAfterFirstPlay && event.data === YT.PlayerState.PLAYING) {
+            shouldPauseAfterFirstPlay = false;
+            shouldUnMuteAfterRestorePause = true;
+            player.pauseVideo();
+        } else if (shouldUnMuteAfterRestorePause && event.data === YT.PlayerState.PAUSED) {
+            shouldUnMuteAfterRestorePause = false;
+            player.unMute();
+        }
         notifyAndroid('onStateChange', event.data);
         sendProgress();
-
-        if (event.data === YT.PlayerState.PLAYING && pauseAfterFirstPlay) {
-            pauseAfterFirstPlay = false;
-            setTimeout(function () {
-                if (player) {
-                    player.pauseVideo();
-                }
-            }, 0);
-        }
     }
 
     function onPlayerError(event) {
@@ -93,11 +107,24 @@
         progressTimer = setInterval(sendProgress, 500);
     }
 
-function sendProgress() {
+    function sendProgress() {
         if (!player || typeof player.getCurrentTime !== 'function') {
             return;
         }
         notifyAndroid('onCurrentSecond', player.getCurrentTime());
+        notifyAndroid('onDuration', player.getDuration());
+    }
+
+    function evaluateWhenReady(command) {
+        if (isReady) {
+            eval(command);
+        } else {
+            pendingCommand = command;
+        }
+    }
+
+    function seekTo(seconds) {
+        evaluateWhenReady("player.seekTo(" + seconds + ", true);");
     }
 
 </script>
