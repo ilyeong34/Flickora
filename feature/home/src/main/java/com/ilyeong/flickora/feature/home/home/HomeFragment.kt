@@ -26,7 +26,6 @@ import com.ilyeong.flickora.feature.home.adapter.PosterFullAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterRankingAdapter
 import com.ilyeong.flickora.feature.home.databinding.FragmentHomeBinding
 import com.ilyeong.flickora.feature.home.model.HomeUiState
-import com.ilyeong.flickora.feature.home.model.TrailerPlaybackState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -86,7 +85,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val tvOnTheAirAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private val tvAiringTodayAdapter = PosterFixedPagingAdapter(mediaClickListener)
     private var latestTrailerList: List<Movie> = emptyList()
-    private var latestTrailerPlaybackState: TrailerPlaybackState? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,7 +102,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setTrailerSection() {
-        binding.posterTrailerStrip.bindLifecycle(viewLifecycleOwner.lifecycle)
         binding.posterTrailerStrip.onTrailerUnavailable = {
             showMessage(getString(CoreR.string.trailer_video_unavailable_message))
         }
@@ -117,7 +114,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun bindTrailerSection(trailerList: List<Movie>) {
         latestTrailerList = trailerList
         binding.posterTrailerStrip.submitList(trailerList)
-        binding.posterTrailerStrip.restorePlaybackState(latestTrailerPlaybackState)
+        binding.posterTrailerStrip.restorePlaybackState(viewModel.trailerPlaybackState.value)
 
         val hasTrailerList = trailerList.isNotEmpty()
         binding.tvSection10.isVisible = hasTrailerList
@@ -373,7 +370,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun onStop() {
-        latestTrailerPlaybackState = binding.posterTrailerStrip.capturePlaybackState()
+        viewModel.saveTrailerPlaybackState(binding.posterTrailerStrip.capturePlaybackState())
         binding.posterTrailerStrip.releasePlayer()
         super.onStop()
     }

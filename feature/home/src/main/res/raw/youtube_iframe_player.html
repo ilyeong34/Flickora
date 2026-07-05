@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body, #player {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+<div id="player"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    var player = null;
+    var progressTimer = null;
+    var isReady = false;
+    var pendingCommand = null;
+    var queryParams = new URLSearchParams(window.location.search);
+    var initialVideoId = queryParams.get('videoId') || null;
+    var initialStartSeconds = Number(queryParams.get('startSeconds') || 0);
+    var initialMode = queryParams.get('initialMode') || 'cue';
+    var shouldPauseAfterFirstPlay = initialMode === 'restore_paused';
+    var shouldUnMuteAfterRestorePause = false;
+
+    function notifyAndroid(method, value) {
+        if (window.AndroidPlayer && window.AndroidPlayer[method]) {
+            window.AndroidPlayer[method](value);
+        }
+    }
+
+    function onYouTubeIframeAPIReady() {
+        var playerVars = {
+            autoplay: initialMode === 'autoplay' ? 1 : 0,
+            controls: 0,
+            enablejsapi: 1,
+            fs: 1,
+            modestbranding: 1,
+            origin: 'https://www.youtube.com',
+            playsinline: 1,
+            rel: 0,
+            start: Math.max(0, Math.floor(initialStartSeconds || 0))
+        };
+
+        var options = {
+            width: '100%',
+            height: '100%',
+            playerVars: playerVars,
+            events: {
+                onReady: onPlayerReady,
+                onStateChange: onPlayerStateChange,
+                onError: onPlayerError
+            }
+        };
+
+        if (initialVideoId && initialMode !== 'restore_paused') {
+            options.videoId = initialVideoId;
+        }
+
+        player = new YT.Player('player', options);
+    }
+
+    function onPlayerReady() {
+        isReady = true;
+        startProgressTimer();
+        if (initialMode === 'restore_paused' && initialVideoId) {
+            player.setVolume(0);
+            player.mute();
+            player.loadVideoById({
+                videoId: initialVideoId,
+                startSeconds: Math.max(0, initialStartSeconds || 0)
+            });
+        }
+        if (pendingCommand) {
+            var command = pendingCommand;
+            pendingCommand = null;
+            eval(command);
+        }
+        notifyAndroid('onReady', '');
+    }
+
+    function onPlayerStateChange(event) {
+        if (shouldPauseAfterFirstPlay && event.data === YT.PlayerState.PLAYING) {
+            shouldPauseAfterFirstPlay = false;
+            shouldUnMuteAfterRestorePause = true;
+            player.setVolume(0);
+            player.mute();
+            player.pauseVideo();
+        } else if (!shouldUnMuteAfterRestorePause && event.data === YT.PlayerState.PLAYING) {
+            player.unMute();
+            player.setVolume(100);
+        } else if (shouldUnMuteAfterRestorePause && event.data === YT.PlayerState.PAUSED) {
+            shouldUnMuteAfterRestorePause = false;
+        }
+        notifyAndroid('onStateChange', event.data);
+        sendProgress();
+    }
+
+    function onPlayerError(event) {
+        notifyAndroid('onError', event.data);
+    }
+
+    function startProgressTimer() {
+        if (progressTimer !== null) {
+            clearInterval(progressTimer);
+        }
+        progressTimer = setInterval(sendProgress, 500);
+    }
+
+    function sendProgress() {
+        if (!player || typeof player.getCurrentTime !== 'function') {
+            return;
+        }
+        notifyAndroid('onCurrentSecond', player.getCurrentTime());
+        notifyAndroid('onDuration', player.getDuration());
+    }
+
+    function evaluateWhenReady(command) {
+        if (isReady) {
+            eval(command);
+        } else {
+            pendingCommand = command;
+        }
+    }
+
+    function seekTo(seconds) {
+        evaluateWhenReady("player.seekTo(" + seconds + ", true);");
+    }
+
+</script>
+</body>
+</html>

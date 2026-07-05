@@ -20,8 +20,8 @@ android {
     defaultConfig {
         applicationId = "com.ilyeong.flickora"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
+        targetSdk = 35
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -62,7 +62,7 @@ dependencies {
     implementation(project(":core:data:data-user"))
     implementation(project(":core:data:data-movie"))
     implementation(project(":core:data:data-tv"))
-    
+
     implementation(project(":feature:login"))
     implementation(project(":feature:home"))
     implementation(project(":feature:watchlist"))

@@ -23,3 +23,9 @@
 | Image        | Coil                                                                                                             |
 | Data Storage | DataStore                                                                                                        |
 | Design       | [Figma](https://www.figma.com/design/6AzrrR3JMb3xTHrfsnCs5a/Flickora?node-id=4-12945&p=f&t=3f4WV3Spmi3MYlMN-0) |
+
+## 🔒 Privacy Policy
+
+- Local source: [docs/privacy-policy.html](/Users/ds/Documents/dev/android/movieverse/docs/privacy-policy.html)
+- GitHub Pages source: set the repository Pages source to `docs/`
+- Public URL: replace this with your GitHub Pages link after publishing

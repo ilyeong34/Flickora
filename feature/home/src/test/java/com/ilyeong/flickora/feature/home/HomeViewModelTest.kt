@@ -19,6 +19,7 @@ import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.core.ui.common.diffutil.MediaDiffUtil
 import com.ilyeong.flickora.feature.home.model.HomeUiState
+import com.ilyeong.flickora.feature.home.model.TrailerPlaybackState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -32,6 +33,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -143,6 +145,46 @@ class HomeViewModelTest {
         assertEquals(listOf(trailerMovieWithVideos), success.nowPlayingTrailerList)
         assertEquals(listOf(movieVideoFixture()), success.nowPlayingTrailerList.single().videos)
     }
+
+    @Test
+    fun saveTrailerPlaybackState_updatesPlaybackState() {
+        val viewModel = homeViewModel()
+        val playbackState = TrailerPlaybackState(
+            movieId = 100,
+            videoKey = "youtube-key",
+            currentSecond = 12.5f
+        )
+
+        viewModel.saveTrailerPlaybackState(playbackState)
+
+        assertEquals(playbackState, viewModel.trailerPlaybackState.value)
+    }
+
+    @Test
+    fun clearTrailerPlaybackState_removesPlaybackState() {
+        val viewModel = homeViewModel()
+        viewModel.saveTrailerPlaybackState(
+            TrailerPlaybackState(
+                movieId = 100,
+                videoKey = "youtube-key",
+                currentSecond = 12.5f
+            )
+        )
+
+        viewModel.clearTrailerPlaybackState()
+
+        assertNull(viewModel.trailerPlaybackState.value)
+    }
+
+    private fun homeViewModel() = HomeViewModel(
+        mediaRepository = FakeMediaRepository(
+            dayList = emptyList(),
+            weekList = emptyList()
+        ),
+        movieRepository = FakeMovieRepository(emptyList()),
+        tvRepository = FakeTvRepository(tvSeriesFixture(), emptyList()),
+        userRepository = FakeUserRepository()
+    )
 
     private class FakeMediaRepository(
         private val dayList: List<Media>,

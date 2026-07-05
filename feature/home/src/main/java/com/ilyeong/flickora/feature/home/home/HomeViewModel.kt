@@ -13,6 +13,7 @@ import com.ilyeong.flickora.core.model.TimeWindow
 import com.ilyeong.flickora.feature.home.model.HomeUiState
 import com.ilyeong.flickora.feature.home.model.HomeUiState.Loading
 import com.ilyeong.flickora.feature.home.model.HomeUiState.Success
+import com.ilyeong.flickora.feature.home.model.TrailerPlaybackState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,6 +36,10 @@ internal class HomeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<HomeUiState>(Loading)
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    private val _trailerPlaybackState = MutableStateFlow<TrailerPlaybackState?>(null)
+    val trailerPlaybackState: StateFlow<TrailerPlaybackState?> =
+        _trailerPlaybackState.asStateFlow()
 
     val watchlistPaging = userRepository.getWatchlistMoviePaging()
         .flowMap { pagingData -> pagingData.map { it as Media } }
@@ -99,5 +104,13 @@ internal class HomeViewModel @Inject constructor(
             .onEach { _uiState.value = it }
             .catch { _uiState.value = HomeUiState.Failure }
             .launchIn(viewModelScope)
+    }
+
+    fun saveTrailerPlaybackState(state: TrailerPlaybackState?) {
+        _trailerPlaybackState.value = state
+    }
+
+    fun clearTrailerPlaybackState() {
+        _trailerPlaybackState.value = null
     }
 }

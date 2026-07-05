@@ -52,6 +52,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.webkit)
     implementation(libs.material)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
@@ -81,6 +82,4 @@ dependencies {
     // paging
     implementation(libs.paging)
 
-    // youtube player
-    implementation(libs.android.youtube.player.core)
 }
