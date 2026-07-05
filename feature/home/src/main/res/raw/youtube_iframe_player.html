@@ -69,6 +69,7 @@
         isReady = true;
         startProgressTimer();
         if (initialMode === 'restore_paused' && initialVideoId) {
+            player.setVolume(0);
             player.mute();
             player.loadVideoById({
                 videoId: initialVideoId,
@@ -87,10 +88,14 @@
         if (shouldPauseAfterFirstPlay && event.data === YT.PlayerState.PLAYING) {
             shouldPauseAfterFirstPlay = false;
             shouldUnMuteAfterRestorePause = true;
+            player.setVolume(0);
+            player.mute();
             player.pauseVideo();
+        } else if (!shouldUnMuteAfterRestorePause && event.data === YT.PlayerState.PLAYING) {
+            player.unMute();
+            player.setVolume(100);
         } else if (shouldUnMuteAfterRestorePause && event.data === YT.PlayerState.PAUSED) {
             shouldUnMuteAfterRestorePause = false;
-            player.unMute();
         }
         notifyAndroid('onStateChange', event.data);
         sendProgress();
