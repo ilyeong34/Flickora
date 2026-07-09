@@ -336,7 +336,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         bindTrailerSection(uiState.nowPlayingTrailerList)
 
                         binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
-                        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
                     }
 
                     isFirstLoadingFailure -> {
