@@ -97,10 +97,7 @@ internal class HomeViewModel @Inject constructor(
                 nowPlayingTrailerList = nowPlayingTrailerList
             )
         }
-            .onStart {
-                _uiState.value = Loading
-                // delay(2000L)
-            }
+            .onStart { _uiState.value = Loading }
             .onEach { _uiState.value = it }
             .catch { _uiState.value = HomeUiState.Failure }
             .launchIn(viewModelScope)
