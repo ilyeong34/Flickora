@@ -47,7 +47,7 @@ internal class ProfileViewModel @Inject constructor(
     fun logout() {
         oAuthRepository.logout()
             .onEach { _events.emit(NavigateToLogin) }
-            .catch { _events.emit(ProfileEvent.ShowMessage(UiR.string.fail_login_message)) }
+            .catch { _events.emit(ProfileEvent.ShowMessage(UiR.string.fail_login_message)) }  // TODO: error model 추가 필요
             .launchIn(viewModelScope)
     }
 }
