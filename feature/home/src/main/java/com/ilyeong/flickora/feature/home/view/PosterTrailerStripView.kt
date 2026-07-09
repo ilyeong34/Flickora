@@ -214,7 +214,6 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     private fun showIdle(binding: ItemMovieTrailerBackdropBinding) {
         binding.ivBackdrop.isVisible = true
-        binding.vGradient.isVisible = true
         binding.ivPlay.isVisible = true
         binding.lpbLoading.isVisible = false
         binding.tvTitle.isVisible = true
@@ -225,7 +224,6 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     private fun showLoading(binding: ItemMovieTrailerBackdropBinding) {
         binding.ivBackdrop.isVisible = true
-        binding.vGradient.isVisible = true
         binding.ivPlay.isVisible = false
         binding.lpbLoading.isVisible = true
         binding.tvTitle.isVisible = true
@@ -235,7 +233,6 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     private fun showPlaying(binding: ItemMovieTrailerBackdropBinding) {
         binding.ivBackdrop.isVisible = false
-        binding.vGradient.isVisible = false
         binding.ivPlay.isVisible = false
         binding.lpbLoading.isVisible = false
         binding.tvTitle.isVisible = false
