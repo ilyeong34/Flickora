@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/movie_section_collection" />
+        tools:text="@string/media_section_collection" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movie_section1"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@id/rv_movie_section1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/movie_section_collection" />
+        tools:text="@string/media_section_collection" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movie_section2"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@id/rv_movie_section2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/movie_section_collection" />
+        tools:text="@string/media_section_collection" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movie_section3"
