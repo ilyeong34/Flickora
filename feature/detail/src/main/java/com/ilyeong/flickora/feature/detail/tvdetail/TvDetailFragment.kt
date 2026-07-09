@@ -15,6 +15,7 @@ import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.TvDetailTabAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentTvDetailBinding
+import com.ilyeong.flickora.feature.detail.model.DetailEvent
 import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,6 +43,7 @@ class TvDetailFragment : BaseFragment<FragmentTvDetailBinding>() {
         setRetryBtn()
 
         observeUiState()
+        observeEvents()
     }
 
     private fun setToolBarNavigationIcon() {
@@ -93,27 +95,26 @@ class TvDetailFragment : BaseFragment<FragmentTvDetailBinding>() {
                         binding.content.isVisible = true
                         binding.ldf.root.isVisible = false
 
-                        with(state.tvSeries) {
-                            binding.ivBackdrop.load(this.backdropPath) { crossfade(true) }
+                        val tvSeries = state.tvSeries
+                        binding.ivBackdrop.load(tvSeries.backdropPath) { crossfade(true) }
 
-                            binding.posterDefault.ivPoster.load(this.posterPath) {
-                                crossfade(true)
-                                listener(
-                                    onStart = { _ ->
-                                        binding.posterDefault.tvPosterTitle.text = null
-                                    },
-                                    onError = { _, _ ->
-                                        binding.posterDefault.tvPosterTitle.text =
-                                            this@with.name.ifBlank { this@with.originalName }
-                                    }
-                                )
-                            }
-
-                            binding.tvTvTitle.text = this.name.ifBlank { this.originalName }
-                            binding.ivWatchlist.isSelected = this.isInWatchlist
-                            binding.rrv.rating = this.voteAverage
-                            binding.rrv.ratingCount = this.voteCount
+                        binding.posterDefault.ivPoster.load(tvSeries.posterPath) {
+                            crossfade(true)
+                            listener(
+                                onStart = { _ ->
+                                    binding.posterDefault.tvPosterTitle.text = null
+                                },
+                                onError = { _, _ ->
+                                    binding.posterDefault.tvPosterTitle.text =
+                                        tvSeries.name.ifBlank { tvSeries.originalName }
+                                }
+                            )
                         }
+
+                        binding.tvTvTitle.text = tvSeries.name.ifBlank { tvSeries.originalName }
+                        binding.ivWatchlist.isSelected = tvSeries.isInWatchlist
+                        binding.rrv.rating = tvSeries.voteAverage
+                        binding.rrv.ratingCount = tvSeries.voteCount
                     }
 
                     TvDetailUiState.Failure -> {
@@ -122,6 +123,16 @@ class TvDetailFragment : BaseFragment<FragmentTvDetailBinding>() {
                         binding.content.isVisible = false
                         binding.ldf.root.isVisible = true
                     }
+                }
+            }
+        }
+    }
+
+    private fun observeEvents() {
+        repeatOnViewStarted {
+            viewModel.events.collect {
+                when (it) {
+                    is DetailEvent.ShowMessage -> showMessage(it.error.message.toString())
                 }
             }
         }
