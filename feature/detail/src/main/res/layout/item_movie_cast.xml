@@ -18,7 +18,7 @@
             android:id="@+id/iv_cast"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/des_movie_cast"
+            android:contentDescription="@string/des_media_cast"
             android:scaleType="centerCrop"
             tools:src="@drawable/test_credit" />
 

@@ -26,14 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/dark_gray"
-            android:contentDescription="@string/des_movie_backdrop"
+            android:contentDescription="@string/des_media_backdrop"
             android:scaleType="centerCrop" />
-
-        <View
-            android:id="@+id/v_gradient"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_trailer_card_gradient" />
 
         <ImageView
             android:id="@+id/iv_play"

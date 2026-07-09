@@ -22,6 +22,6 @@
 
     <include
         android:id="@+id/poster"
-        layout="@layout/item_movie_poster_fixed_size" />
+        layout="@layout/item_media_poster_fixed_size" />
 
 </LinearLayout>

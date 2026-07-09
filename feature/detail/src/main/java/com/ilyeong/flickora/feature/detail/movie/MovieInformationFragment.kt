@@ -1,4 +1,4 @@
-package com.ilyeong.flickora.feature.detail
+package com.ilyeong.flickora.feature.detail.movie
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,6 @@ import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.CastAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentInformationBinding
 import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
-import com.ilyeong.flickora.feature.detail.movie.MovieDetailViewModel
 
 internal class MovieInformationFragment : BaseFragment<FragmentInformationBinding>() {
 

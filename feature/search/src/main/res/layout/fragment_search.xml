@@ -30,7 +30,7 @@
             app:searchIcon="@drawable/ic_search_light_gray_24"
             app:closeIcon="@drawable/ic_close_24"
             app:iconifiedByDefault="false"
-            app:queryHint="Search for movies..."
+            app:queryHint="@string/search_hint"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -52,7 +52,7 @@
             android:layout_height="0dp"
             android:paddingHorizontal="@dimen/flickora_padding_large"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_movie_poster_description"
+            tools:listitem="@layout/item_media_poster_description"
             app:layout_constraintTop_toBottomOf="@id/sv"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_movie_poster_description" />
+            tools:listitem="@layout/item_media_poster_description" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/lpb"

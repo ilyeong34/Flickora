@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/poster_default"
-        layout="@layout/item_movie_poster_fixed_size" />
+        layout="@layout/item_media_poster_fixed_size" />
 
     <Space
         android:layout_width="@dimen/flickora_padding_large"

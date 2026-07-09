@@ -2,9 +2,9 @@ package com.ilyeong.flickora.feature.detail.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.ilyeong.flickora.feature.detail.MovieInformationFragment
-import com.ilyeong.flickora.feature.detail.MovieRecommendedFragment
-import com.ilyeong.flickora.feature.detail.MovieReviewFragment
+import com.ilyeong.flickora.feature.detail.movie.MovieInformationFragment
+import com.ilyeong.flickora.feature.detail.movie.MovieRecommendedFragment
+import com.ilyeong.flickora.feature.detail.movie.MovieReviewFragment
 
 internal class MovieDetailTabAdapter(parentFragment: Fragment) :
     FragmentStateAdapter(parentFragment) {

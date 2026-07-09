@@ -19,7 +19,6 @@ import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.watchlist.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.watchlist.adapter.PosterDescriptionPagingAdapter
 import com.ilyeong.flickora.feature.watchlist.databinding.FragmentWatchlistBinding
-import com.ilyeong.flickora.feature.watchlist.model.WatchlistMediaType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

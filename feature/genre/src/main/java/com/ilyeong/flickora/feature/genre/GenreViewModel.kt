@@ -28,7 +28,6 @@ internal class GenreViewModel @Inject constructor(
     val genreMoviePaging = _genreId
         .filterNotNull()
         .flatMapLatest {
-            // delay(1000L)        // Shimmer Test
             movieRepository.getMovieListByGenrePaging(it)
         }
         .cachedIn(viewModelScope)

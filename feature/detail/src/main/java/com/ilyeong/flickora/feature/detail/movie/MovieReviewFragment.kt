@@ -1,4 +1,4 @@
-package com.ilyeong.flickora.feature.detail
+package com.ilyeong.flickora.feature.detail.movie
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import androidx.paging.LoadState
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.ReviewAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentReviewBinding
-import com.ilyeong.flickora.feature.detail.movie.MovieDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 internal class MovieReviewFragment : BaseFragment<FragmentReviewBinding>() {

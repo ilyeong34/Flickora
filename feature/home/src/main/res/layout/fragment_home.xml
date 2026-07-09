@@ -40,7 +40,7 @@
                 app:layout_constraintTop_toBottomOf="@id/vp_banner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_genre_chip" />
+                tools:listitem="@layout/item_media_genre_chip" />
 
             <TextView
                 android:id="@+id/tv_section1"
@@ -63,7 +63,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                tools:listitem="@layout/item_media_poster_fixed_size" />
 
             <TextView
                 android:id="@+id/tv_section2"
@@ -86,7 +86,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_ranking_poster" />
+                tools:listitem="@layout/item_media_ranking_poster" />
 
             <TextView
                 android:id="@+id/tv_section3"
@@ -109,7 +109,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                tools:listitem="@layout/item_media_poster_fixed_size" />
 
             <TextView
                 android:id="@+id/tv_section4"
@@ -132,7 +132,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                tools:listitem="@layout/item_media_poster_fixed_size" />
 
             <TextView
                 android:id="@+id/tv_section5"
@@ -155,7 +155,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_ranking_poster" />
+                tools:listitem="@layout/item_media_ranking_poster" />
 
             <TextView
                 android:id="@+id/tv_section6"
@@ -178,7 +178,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                tools:listitem="@layout/item_media_poster_fixed_size" />
 
             <TextView
                 android:id="@+id/tv_section7"
@@ -201,7 +201,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                tools:listitem="@layout/item_media_poster_fixed_size" />
 
             <TextView
                 android:id="@+id/tv_section8"
@@ -224,7 +224,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                tools:listitem="@layout/item_media_poster_fixed_size" />
 
             <TextView
                 android:id="@+id/tv_section9"
@@ -247,7 +247,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                tools:listitem="@layout/item_media_poster_fixed_size" />
 
             <TextView
                 android:id="@+id/tv_section10"
@@ -290,7 +290,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_section11"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_movie_poster_fixed_size" />
+                tools:listitem="@layout/item_media_poster_fixed_size" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

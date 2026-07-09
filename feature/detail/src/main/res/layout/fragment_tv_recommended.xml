@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/movie_section_recommendation" />
+        tools:text="@string/media_section_recommendation" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_recommendation"
@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_recommendation_section"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_movie_poster_fixed_size" />
+        tools:listitem="@layout/item_media_poster_fixed_size" />
 
     <TextView
         android:id="@+id/tv_similar_section"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@id/rv_recommendation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/movie_section_similar" />
+        tools:text="@string/media_section_similar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_similar"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_similar_section"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_movie_poster_fixed_size" />
+        tools:listitem="@layout/item_media_poster_fixed_size" />
 
     <TextView
         android:id="@+id/tv_recommendation_empty"

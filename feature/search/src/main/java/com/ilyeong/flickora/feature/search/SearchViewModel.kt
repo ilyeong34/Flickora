@@ -40,7 +40,6 @@ internal class SearchViewModel @Inject constructor(
         mediaRepository.getTrendingMediaList(TimeWindow.DAY)
             .onStart {
                 _uiState.update { it.copy(trendState = TrendState.Loading) }
-                // delay(1000L)    // Loading Test
             }
             .onEach { trendMediaList ->
                 when (trendMediaList.isEmpty()) {

@@ -1,4 +1,4 @@
-package com.ilyeong.flickora.feature.home.home
+package com.ilyeong.flickora.feature.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,6 @@ import com.ilyeong.flickora.core.ui.common.adapter.GenreAdapter
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
-import com.ilyeong.flickora.feature.home.HomeViewModel
 import com.ilyeong.flickora.feature.home.adapter.PosterFixedPagingAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterFullAdapter
 import com.ilyeong.flickora.feature.home.adapter.PosterRankingAdapter
@@ -90,35 +89,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         setToolbarMenu()
-        setMovieBanner()
-        setMovieGenre()
-        setTrailerSection()
-        setMovieSection()
+
+        setMediaBanner()
+        setGenreSection()
+        setMediaSection()
+
         setRetryBtn()
 
         observeUiState()
 
         refreshData()
-    }
-
-    private fun setTrailerSection() {
-        binding.posterTrailerStrip.onTrailerUnavailable = {
-            showMessage(getString(CoreR.string.trailer_video_unavailable_message))
-        }
-
-        if (latestTrailerList.isNotEmpty()) {
-            bindTrailerSection(latestTrailerList)
-        }
-    }
-
-    private fun bindTrailerSection(trailerList: List<Movie>) {
-        latestTrailerList = trailerList
-        binding.posterTrailerStrip.submitList(trailerList)
-        binding.posterTrailerStrip.restorePlaybackState(viewModel.trailerPlaybackState.value)
-
-        val hasTrailerList = trailerList.isNotEmpty()
-        binding.tvSection10.isVisible = hasTrailerList
-        binding.posterTrailerStrip.isVisible = hasTrailerList
     }
 
     private fun setToolbarMenu() {
@@ -132,8 +112,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun setMovieBanner() {
-
+    private fun setMediaBanner() {
         binding.vpBanner.adapter = posterFullAdapter
         binding.vpBanner.offscreenPageLimit = 1
         binding.vpBanner.setPageTransformer(
@@ -153,12 +132,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         )
     }
 
-    private fun setMovieGenre() {
+    private fun setGenreSection() {
         binding.rvGenre.adapter = genreAdapter
         binding.rvGenre.addItemDecoration(PosterFixedItemDecoration)
     }
 
-    private fun setMovieSection() {
+    private fun setMediaSection() {
         binding.tvSection1.text = getString(CoreR.string.media_section_watchlist)
         binding.tvSection2.text = getString(CoreR.string.movie_section_upcoming)
         binding.tvSection3.text = getString(CoreR.string.tv_section_on_the_air)
@@ -192,6 +171,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.rvSection8.addItemDecoration(PosterFixedItemDecoration)
         binding.rvSection9.addItemDecoration(PosterFixedItemDecoration)
         binding.rvSection11.addItemDecoration(PosterFixedItemDecoration)
+
+        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
+
+        setTrailerSection()
+    }
+
+    private fun setTrailerSection() {
+        binding.posterTrailerStrip.onTrailerUnavailable = {
+            showMessage(getString(CoreR.string.trailer_video_unavailable_message))
+        }
+
+        if (latestTrailerList.isNotEmpty()) {
+            bindTrailerSection(latestTrailerList)
+        }
+    }
+
+    private fun bindTrailerSection(trailerList: List<Movie>) {
+        latestTrailerList = trailerList
+        binding.posterTrailerStrip.submitList(trailerList)
+        binding.posterTrailerStrip.restorePlaybackState(viewModel.trailerPlaybackState.value)
+
+        val hasTrailerList = trailerList.isNotEmpty()
+        binding.tvSection10.isVisible = hasTrailerList
+        binding.posterTrailerStrip.isVisible = hasTrailerList
     }
 
     private fun setRetryBtn() {
@@ -256,9 +259,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 tvAiringTodayAdapter.submitData(it)
             }
         }
-
-        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
-        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
 
         repeatOnViewStarted {
             combine(
@@ -329,14 +329,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         binding.content.isVisible = true
                         binding.ldf.root.isVisible = false
 
-                        val successState = uiState
-                        posterFullAdapter.submitList(successState.bannerMediaList)
-                        movieRankingAdapter.submitList(successState.rankingMovieList)
-                        tvRankingAdapter.submitList(successState.rankingTvList)
-                        genreAdapter.submitList(successState.genreList)
-                        bindTrailerSection(successState.nowPlayingTrailerList)
+                        posterFullAdapter.submitList(uiState.bannerMediaList)
+                        movieRankingAdapter.submitList(uiState.rankingMovieList)
+                        tvRankingAdapter.submitList(uiState.rankingTvList)
+                        genreAdapter.submitList(uiState.genreList)
+                        bindTrailerSection(uiState.nowPlayingTrailerList)
 
-                        binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
                         binding.tvSection1.isVisible = (mediaWatchlistAdapter.itemCount > 0)
                     }
 

@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.725">
 
-            <include layout="@layout/shimmer_item_movie_poster_full_size" />
+            <include layout="@layout/shimmer_item_media_poster_full_size" />
         </FrameLayout>
 
         <FrameLayout
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.725">
 
-            <include layout="@layout/shimmer_item_movie_poster_full_size" />
+            <include layout="@layout/shimmer_item_media_poster_full_size" />
         </FrameLayout>
 
         <FrameLayout
@@ -57,7 +57,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.725">
 
-            <include layout="@layout/shimmer_item_movie_poster_full_size" />
+            <include layout="@layout/shimmer_item_media_poster_full_size" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,35 +69,15 @@
         android:paddingStart="@dimen/flickora_padding_medium"
         android:paddingEnd="@dimen/flickora_padding_medium">
 
-        <include layout="@layout/shimmer_item_movie_genre_chip" />
+        <include layout="@layout/shimmer_item_media_genre_chip" />
 
-        <include layout="@layout/shimmer_item_movie_genre_chip" />
+        <include layout="@layout/shimmer_item_media_genre_chip" />
 
-        <include layout="@layout/shimmer_item_movie_genre_chip" />
+        <include layout="@layout/shimmer_item_media_genre_chip" />
 
-        <include layout="@layout/shimmer_item_movie_genre_chip" />
+        <include layout="@layout/shimmer_item_media_genre_chip" />
 
-        <include layout="@layout/shimmer_item_movie_genre_chip" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/flickora_padding_large"
-        android:paddingStart="@dimen/flickora_padding_medium"
-        android:paddingEnd="@dimen/flickora_padding_medium">
-
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
-
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
-
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
-
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
-
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+        <include layout="@layout/shimmer_item_media_genre_chip" />
 
     </LinearLayout>
 
@@ -109,15 +89,35 @@
         android:paddingStart="@dimen/flickora_padding_medium"
         android:paddingEnd="@dimen/flickora_padding_medium">
 
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
 
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
 
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
 
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
 
-        <include layout="@layout/shimmer_item_movie_poster_fixed_size" />
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/flickora_padding_large"
+        android:paddingStart="@dimen/flickora_padding_medium"
+        android:paddingEnd="@dimen/flickora_padding_medium">
+
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
+
+        <include layout="@layout/shimmer_item_media_poster_fixed_size" />
 
     </LinearLayout>
 

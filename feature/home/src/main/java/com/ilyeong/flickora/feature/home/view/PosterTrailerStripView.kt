@@ -10,7 +10,7 @@ import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.feature.home.R
-import com.ilyeong.flickora.feature.home.databinding.ItemMovieTrailerBackdropBinding
+import com.ilyeong.flickora.feature.home.databinding.ItemMediaTrailerBackdropBinding
 import com.ilyeong.flickora.feature.home.model.TrailerPlaybackState
 
 class PosterTrailerStripView @JvmOverloads constructor(
@@ -32,7 +32,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
     private var currentTrailerList: List<Movie> = emptyList()
     private var activeTrailerId: Int? = null
     private var activeVideoKey: String? = null
-    private var activeBinding: ItemMovieTrailerBackdropBinding? = null
+    private var activeBinding: ItemMediaTrailerBackdropBinding? = null
     private var youtubeWebPlayerView: YoutubeWebPlayerView? = null
 
     init {
@@ -106,13 +106,13 @@ class PosterTrailerStripView @JvmOverloads constructor(
         )
     }
 
-    private fun getOrCreateTrailerCardBinding(index: Int): ItemMovieTrailerBackdropBinding {
+    private fun getOrCreateTrailerCardBinding(index: Int): ItemMediaTrailerBackdropBinding {
         val existingView = container.getChildAt(index)
         if (existingView != null) {
-            return ItemMovieTrailerBackdropBinding.bind(existingView)
+            return ItemMediaTrailerBackdropBinding.bind(existingView)
         }
 
-        return ItemMovieTrailerBackdropBinding.inflate(
+        return ItemMediaTrailerBackdropBinding.inflate(
             inflater,
             container,
             true
@@ -120,7 +120,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
     }
 
     private fun bindTrailerCard(
-        binding: ItemMovieTrailerBackdropBinding,
+        binding: ItemMediaTrailerBackdropBinding,
         trailer: Movie
     ) {
         binding.root.isVisible = true
@@ -147,7 +147,7 @@ class PosterTrailerStripView @JvmOverloads constructor(
 
     private fun playTrailer(
         trailer: Movie,
-        binding: ItemMovieTrailerBackdropBinding,
+        binding: ItemMediaTrailerBackdropBinding,
         videoKey: String?,
         startSeconds: Float = 0f,
         autoPlay: Boolean = true,
@@ -184,11 +184,13 @@ class PosterTrailerStripView @JvmOverloads constructor(
                             showLoading(binding)
                         }
                     }
+
                     YoutubeWebPlayerState.PLAYING,
                     YoutubeWebPlayerState.PAUSED,
                     YoutubeWebPlayerState.CUED -> {
                         showPlaying(binding)
                     }
+
                     YoutubeWebPlayerState.UNSTARTED -> showLoading(binding)
                     else -> Unit
                 }
@@ -212,9 +214,8 @@ class PosterTrailerStripView @JvmOverloads constructor(
         )
     }
 
-    private fun showIdle(binding: ItemMovieTrailerBackdropBinding) {
+    private fun showIdle(binding: ItemMediaTrailerBackdropBinding) {
         binding.ivBackdrop.isVisible = true
-        binding.vGradient.isVisible = true
         binding.ivPlay.isVisible = true
         binding.lpbLoading.isVisible = false
         binding.tvTitle.isVisible = true
@@ -223,9 +224,8 @@ class PosterTrailerStripView @JvmOverloads constructor(
         binding.playerContainer.removeAllViews()
     }
 
-    private fun showLoading(binding: ItemMovieTrailerBackdropBinding) {
+    private fun showLoading(binding: ItemMediaTrailerBackdropBinding) {
         binding.ivBackdrop.isVisible = true
-        binding.vGradient.isVisible = true
         binding.ivPlay.isVisible = false
         binding.lpbLoading.isVisible = true
         binding.tvTitle.isVisible = true
@@ -233,9 +233,8 @@ class PosterTrailerStripView @JvmOverloads constructor(
         binding.playerContainer.alpha = 0f
     }
 
-    private fun showPlaying(binding: ItemMovieTrailerBackdropBinding) {
+    private fun showPlaying(binding: ItemMediaTrailerBackdropBinding) {
         binding.ivBackdrop.isVisible = false
-        binding.vGradient.isVisible = false
         binding.ivPlay.isVisible = false
         binding.lpbLoading.isVisible = false
         binding.tvTitle.isVisible = false

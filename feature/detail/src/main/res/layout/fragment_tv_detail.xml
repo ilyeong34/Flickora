@@ -15,7 +15,7 @@
             android:id="@+id/iv_backdrop"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:contentDescription="@string/des_movie_backdrop"
+            android:contentDescription="@string/des_media_backdrop"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="1:0.5"
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
             tools:src="@drawable/test_backdrop" />
 
         <include
-            layout="@layout/item_movie_poster_fixed_size"
+            layout="@layout/item_media_poster_fixed_size"
             android:id="@+id/poster_default"
             android:layout_width="100dp"
             android:layout_height="140dp"
