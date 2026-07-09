@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Media
-import com.ilyeong.flickora.core.ui.databinding.ItemMoviePosterFixedSizeBinding
+import com.ilyeong.flickora.core.ui.databinding.ItemMediaPosterFixedSizeBinding
 
 class PosterFixedViewHolder private constructor(
-    private val binding: ItemMoviePosterFixedSizeBinding
+    private val binding: ItemMediaPosterFixedSizeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(media: Media, onItemClick: (Media) -> Unit) {
@@ -28,7 +28,7 @@ class PosterFixedViewHolder private constructor(
     companion object {
         fun create(parent: ViewGroup): PosterFixedViewHolder {
             val binding =
-                ItemMoviePosterFixedSizeBinding.inflate(
+                ItemMediaPosterFixedSizeBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false

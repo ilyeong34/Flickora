@@ -56,9 +56,9 @@
     <string name="episode_air_date">Air Date &#160;&#160;&#160; %s</string>
     <string name="episode_runtime_short">Runtime &#160;&#160;&#160; %dm</string>
 
-    <string name="des_movie_poster">Movie Poster</string>
-    <string name="des_movie_backdrop">Movie Backdrop</string>
-    <string name="des_movie_cast">Movie Cast</string>
+    <string name="des_media_poster">Media Poster</string>
+    <string name="des_media_backdrop">Media Backdrop</string>
+    <string name="des_media_cast">Media Cast</string>
     <string name="des_tv_episode_still">TV Episode Still</string>
     <string name="des_user_avatar">User Avatar</string>
 
@@ -67,7 +67,7 @@
     <string name="movie_section_popular">Popular Movie</string>
     <string name="movie_section_now_playing">Now Playing Movie</string>
     <string name="movie_section_now_playing_trailer">Now Playing Movie Trailer</string>
-    <string name="movie_section_trending_day">Trending Day</string>
+    <string name="media_section_trending_day">Trending Day</string>
     <string name="media_section_watchlist">Watchlist</string>
     <string name="watchlist_movie_chip">Movie</string>
     <string name="watchlist_tv_series_chip">TV Series</string>
@@ -75,9 +75,9 @@
     <string name="tv_section_top_rated">Top Rated TV Series</string>
     <string name="tv_section_on_the_air">On The Air TV Series</string>
     <string name="tv_section_airing_today">Airing Today TV Series</string>
-    <string name="movie_section_collection">Collection</string>
-    <string name="movie_section_recommendation">Recommendation</string>
-    <string name="movie_section_similar">Similar</string>
+    <string name="media_section_collection">Collection</string>
+    <string name="media_section_recommendation">Recommendation</string>
+    <string name="media_section_similar">Similar</string>
     <string name="movie_section_trending_top_10">Movie Trending Top 10</string>
     <string name="tv_section_trending_top_10">TV Series Trending Top 10</string>
 

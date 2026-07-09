@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Media
-import com.ilyeong.flickora.feature.home.databinding.ItemMovieRankingPosterBinding
+import com.ilyeong.flickora.feature.home.databinding.ItemMediaRankingPosterBinding
 
 internal class PosterRankingViewHolder private constructor(
-    private val binding: ItemMovieRankingPosterBinding
+    private val binding: ItemMediaRankingPosterBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
@@ -33,7 +33,7 @@ internal class PosterRankingViewHolder private constructor(
 
     companion object {
         fun create(parent: ViewGroup): PosterRankingViewHolder {
-            val binding = ItemMovieRankingPosterBinding.inflate(
+            val binding = ItemMediaRankingPosterBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

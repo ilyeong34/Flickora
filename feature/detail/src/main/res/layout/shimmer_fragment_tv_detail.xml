@@ -8,7 +8,7 @@
         android:id="@+id/iv_backdrop"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:contentDescription="@string/des_movie_backdrop"
+        android:contentDescription="@string/des_media_backdrop"
         android:background="@color/medium_gray"
         app:layout_constraintDimensionRatio="1:0.5"
         app:layout_constraintTop_toTopOf="parent"

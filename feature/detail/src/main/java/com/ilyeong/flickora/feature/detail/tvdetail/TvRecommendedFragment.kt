@@ -48,13 +48,13 @@ internal class TvRecommendedFragment : BaseFragment<FragmentTvRecommendedBinding
     private fun setRecommendation() {
         binding.rvRecommendation.adapter = recommendationAdapter
         binding.rvRecommendation.addItemDecoration(PosterFixedItemDecoration)
-        binding.tvRecommendationSection.text = getString(R.string.movie_section_recommendation)
+        binding.tvRecommendationSection.text = getString(R.string.media_section_recommendation)
     }
 
     private fun setSimilar() {
         binding.rvSimilar.adapter = similarAdapter
         binding.rvSimilar.addItemDecoration(PosterFixedItemDecoration)
-        binding.tvSimilarSection.text = getString(R.string.movie_section_similar)
+        binding.tvSimilarSection.text = getString(R.string.media_section_similar)
     }
 
     private fun observeRecommendationContent() {

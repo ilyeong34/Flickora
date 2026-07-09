@@ -2,8 +2,8 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="@dimen/flickora_poster_default_width"
+    android:layout_height="@dimen/flickora_poster_default_height"
     app:cardBackgroundColor="@color/black"
     app:strokeColor="@color/transparent"
     app:cardCornerRadius="@dimen/flickora_padding_medium">
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/dark_gray"
-        android:contentDescription="@string/des_movie_poster"
+        android:contentDescription="@string/des_media_poster"
         android:scaleType="centerCrop" />
 
     <TextView

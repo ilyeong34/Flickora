@@ -208,7 +208,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                         binding.rvTrend.isVisible = true
 
                         trendHeaderAdapter.updateHeaderTitle(
-                            getString(R.string.movie_section_trending_day)
+                            getString(R.string.media_section_trending_day)
                         )
                         posterDescriptionAdapter.submitList(uiState.trendState.mediaList)
                     }

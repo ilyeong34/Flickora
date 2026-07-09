@@ -81,7 +81,7 @@
             android:layout_marginBottom="@dimen/flickora_padding_large"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_movie_genre_chip" />
+            tools:listitem="@layout/item_media_genre_chip" />
 
         <TextView
             android:id="@+id/tv_tv_genre_empty"

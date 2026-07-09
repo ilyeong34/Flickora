@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_movie_section1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_movie_poster_fixed_size" />
+        tools:listitem="@layout/item_media_poster_fixed_size" />
 
     <TextView
         android:id="@+id/tv_movie_section2"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_movie_section2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_movie_poster_fixed_size" />
+        tools:listitem="@layout/item_media_poster_fixed_size" />
 
     <TextView
         android:id="@+id/tv_movie_section3"
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_movie_section3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_movie_poster_fixed_size" />
+        tools:listitem="@layout/item_media_poster_fixed_size" />
 
     <TextView
         android:id="@+id/tv_review_empty"
