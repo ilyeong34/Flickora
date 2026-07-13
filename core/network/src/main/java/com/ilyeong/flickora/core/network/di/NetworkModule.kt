@@ -1,5 +1,6 @@
 package com.ilyeong.flickora.core.network.di
 
+import com.ilyeong.flickora.core.model.FlickoraError
 import com.ilyeong.flickora.core.network.BuildConfig
 import com.ilyeong.flickora.core.network.FlickoraNetwork
 import com.ilyeong.flickora.core.network.FlickoraNetworkImpl
@@ -15,6 +16,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.io.IOException
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -35,9 +38,10 @@ internal object NetworkModule {
             level = HttpLoggingInterceptor.Level.BASIC
         }
 
-    /* Creating another @Provides Interceptor causes duplicates again. */
+    /* Named bindings keep the base and error interceptors distinct. */
     @Provides
     @Singleton
+    @Named("base")
     fun provideBaseInterceptor(): Interceptor =
         Interceptor { chain ->
             val originalRequest = chain.request()
@@ -50,13 +54,35 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
+    @Named("error")
+    fun provideErrorInterceptor(): Interceptor =
+        Interceptor { chain ->
+            val response = try {
+                chain.proceed(chain.request())
+            } catch (_: IOException) {
+                throw FlickoraError.Network()
+            }
+
+            if (response.isSuccessful) {
+                response
+            } else {
+                val error = response.code.toFlickoraError()
+                response.close()
+                throw error
+            }
+        }
+
+    @Provides
+    @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        baseInterceptor: Interceptor
+        @Named("base") baseInterceptor: Interceptor,
+        @Named("error") errorInterceptor: Interceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(baseInterceptor)
+            .addInterceptor(errorInterceptor)
             .build()
 
     @Provides
@@ -82,4 +108,11 @@ internal object NetworkModule {
         okHttpClient: OkHttpClient
     ): FlickoraNetwork =
         FlickoraNetworkImpl(retrofitBuilder, okHttpClient)
+}
+
+internal fun Int.toFlickoraError(): FlickoraError = when (this) {
+    401, 403 -> FlickoraError.Authentication()
+    404 -> FlickoraError.NotFound()
+    in 500..599 -> FlickoraError.Server()
+    else -> FlickoraError.Unknown()
 }

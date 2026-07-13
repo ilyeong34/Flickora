@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
 import com.ilyeong.flickora.core.ui.common.activity.BaseActivity
+import com.ilyeong.flickora.core.ui.common.extension.toMessageResId
 import com.ilyeong.flickora.feature.login.databinding.ActivityLoginBinding
 import com.ilyeong.flickora.feature.login.model.LoginEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,7 +98,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     }
 
                     is LoginEvent.ShowMessage -> {
-                        showMessage(it.error.message.toString())
+                        showMessage(getString(it.error.toMessageResId()))
                     }
                 }
             }

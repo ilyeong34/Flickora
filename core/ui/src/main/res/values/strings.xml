@@ -36,6 +36,11 @@
     <string name="logout">Logout</string>
 
     <string name="load_error_message">Failed to load data.</string>
+    <string name="error_network">Please check your network connection.</string>
+    <string name="error_authentication">Authentication failed.</string>
+    <string name="error_not_found">The requested data could not be found.</string>
+    <string name="error_server">A server error occurred. Please try again later.</string>
+    <string name="error_unknown">An unexpected error occurred.</string>
     <string name="retry">Retry</string>
 
     <string name="watchlist_empty">No items in watchlist.</string>
@@ -83,7 +88,6 @@
 
     <string name="rating_count">(%1$d)</string>
 
-    <string name="fail_login_message">Failed to login.</string>
     <string name="fail_refresh_message">Failed to fetch the latest data. Please try again later.</string>
     <string name="trailer_video_unavailable_message">No video information is available. Please try again later.</string>
     <string name="trailer_playback_error_message">Trailer playback is unavailable.</string>

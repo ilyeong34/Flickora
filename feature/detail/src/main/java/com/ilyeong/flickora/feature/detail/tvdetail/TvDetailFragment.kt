@@ -12,6 +12,7 @@ import coil3.load
 import coil3.request.crossfade
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ilyeong.flickora.core.ui.R
+import com.ilyeong.flickora.core.ui.common.extension.toMessageResId
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.TvDetailTabAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentTvDetailBinding
@@ -132,7 +133,9 @@ class TvDetailFragment : BaseFragment<FragmentTvDetailBinding>() {
         repeatOnViewStarted {
             viewModel.events.collect {
                 when (it) {
-                    is DetailEvent.ShowMessage -> showMessage(it.error.message.toString())
+                    is DetailEvent.ShowMessage -> {
+                        showMessage(getString(it.error.toMessageResId()))
+                    }
                 }
             }
         }
