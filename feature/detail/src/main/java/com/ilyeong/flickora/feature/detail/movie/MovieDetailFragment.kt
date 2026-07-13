@@ -12,10 +12,10 @@ import coil3.load
 import coil3.request.crossfade
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ilyeong.flickora.core.ui.R
+import com.ilyeong.flickora.core.ui.common.extension.toMessageResId
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
 import com.ilyeong.flickora.feature.detail.adapter.MovieDetailTabAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentDetailBinding
-import com.ilyeong.flickora.feature.detail.movie.MovieDetailFragmentArgs
 import com.ilyeong.flickora.feature.detail.model.DetailEvent
 import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -133,7 +133,9 @@ class MovieDetailFragment : BaseFragment<FragmentDetailBinding>() {
         repeatOnViewStarted {
             viewModel.events.collect {
                 when (it) {
-                    is DetailEvent.ShowMessage -> showMessage(it.error.message.toString())
+                    is DetailEvent.ShowMessage -> {
+                        showMessage(getString(it.error.toMessageResId()))
+                    }
                 }
             }
         }

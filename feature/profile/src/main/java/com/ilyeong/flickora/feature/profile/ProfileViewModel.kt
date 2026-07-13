@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
-import com.ilyeong.flickora.core.ui.R as UiR
 
 @HiltViewModel
 internal class ProfileViewModel @Inject constructor(
@@ -47,7 +46,7 @@ internal class ProfileViewModel @Inject constructor(
     fun logout() {
         oAuthRepository.logout()
             .onEach { _events.emit(NavigateToLogin) }
-            .catch { _events.emit(ProfileEvent.ShowMessage(UiR.string.fail_login_message)) }  // TODO: error model 추가 필요
+            .catch { _events.emit(ProfileEvent.ShowMessage(it)) }
             .launchIn(viewModelScope)
     }
 }

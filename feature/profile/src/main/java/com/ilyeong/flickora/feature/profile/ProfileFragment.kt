@@ -13,6 +13,7 @@ import coil3.request.error
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
+import com.ilyeong.flickora.core.ui.common.extension.toMessageResId
 import com.ilyeong.flickora.feature.profile.databinding.FragmentProfileBinding
 import com.ilyeong.flickora.feature.profile.model.ProfileEvent.NavigateToLogin
 import com.ilyeong.flickora.feature.profile.model.ProfileEvent.ShowMessage
@@ -118,7 +119,7 @@ internal class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     }
 
                     is ShowMessage -> {
-                        showMessage(getString(it.message))
+                        showMessage(getString(it.error.toMessageResId()))
                     }
                 }
             }
