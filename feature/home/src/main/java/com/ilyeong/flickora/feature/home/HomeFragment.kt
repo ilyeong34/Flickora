@@ -11,6 +11,7 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.ilyeong.flickora.core.model.Media
@@ -115,6 +116,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setMediaBanner() {
         binding.vpBanner.adapter = posterFullAdapter
         binding.vpBanner.offscreenPageLimit = 1
+        (binding.vpBanner.getChildAt(0) as? RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
         binding.vpBanner.setPageTransformer(
             CompositePageTransformer().also {
                 it.addTransformer(
