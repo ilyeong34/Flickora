@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDeepLinkRequest
@@ -14,6 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.TvSeries
@@ -31,10 +33,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlin.math.abs
+import kotlin.math.roundToInt
 import com.ilyeong.flickora.core.ui.R as CoreR
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+
+    private companion object {
+        const val BANNER_SIDE_PADDING_RATIO = 0.1375f
+    }
 
     override val viewBindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding =
         FragmentHomeBinding::inflate
@@ -116,7 +123,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setMediaBanner() {
         binding.vpBanner.adapter = posterFullAdapter
         binding.vpBanner.offscreenPageLimit = 1
-        (binding.vpBanner.getChildAt(0) as? RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
+        binding.vpBanner.doOnLayout { viewPager ->
+            val recyclerView =
+                (viewPager as ViewPager2).getChildAt(0) as? RecyclerView ?: return@doOnLayout
+            val sidePadding = (viewPager.width * BANNER_SIDE_PADDING_RATIO).roundToInt()
+
+            recyclerView.setPadding(
+                sidePadding,
+                recyclerView.paddingTop,
+                sidePadding,
+                recyclerView.paddingBottom
+            )
+            recyclerView.clipToPadding = false
+            recyclerView.overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
+        }
         binding.vpBanner.setPageTransformer(
             CompositePageTransformer().also {
                 it.addTransformer(

@@ -24,8 +24,7 @@
                 android:paddingTop="?attr/actionBarSize"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                app:layout_constraintWidth_percent="0.725"
-                app:layout_constraintDimensionRatio="1:1.7"
+                app:layout_constraintDimensionRatio="400:493"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
