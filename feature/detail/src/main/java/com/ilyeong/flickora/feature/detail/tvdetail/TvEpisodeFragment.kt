@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import com.ilyeong.flickora.core.model.TvSeason
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
-import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.detail.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.detail.adapter.TvEpisodeAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentTvEpisodeBinding
@@ -22,11 +21,9 @@ internal class TvEpisodeFragment : BaseFragment<FragmentTvEpisodeBinding>() {
 
     private val viewModel: TvDetailViewModel by viewModels({ requireParentFragment() })
 
-    private val seasonHeaderAdapter = HeaderAdapter(
-        ItemClickListener { seasonNumber ->
-            viewModel.selectSeason(seasonNumber)
-        }
-    )
+    private val seasonHeaderAdapter = HeaderAdapter { seasonNumber ->
+        viewModel.selectSeason(seasonNumber)
+    }
     private val tvEpisodeAdapter = TvEpisodeAdapter()
     private var seasonList: List<TvSeason> = emptyList()
 

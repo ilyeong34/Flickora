@@ -8,7 +8,7 @@ import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.core.ui.common.viewholder.GenreViewHolder
 
 class GenreAdapter(
-    private val itemClickListener: ItemClickListener? = null,
+    private val itemClickListener: ItemClickListener<Int>? = null,
 ) : ListAdapter<Genre, GenreViewHolder>(genreDiffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,

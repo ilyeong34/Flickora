@@ -23,6 +23,7 @@ import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecor
 import com.ilyeong.flickora.core.ui.common.extension.calculateSpanCount
 import com.ilyeong.flickora.core.ui.common.extension.getQueryFlow
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.search.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.search.adapter.PosterDescriptionAdapter
 import com.ilyeong.flickora.feature.search.adapter.PosterRatioPagingAdapter
@@ -42,7 +43,7 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     private val viewModel: SearchViewModel by viewModels()
 
-    private val mediaClickListener: (Media) -> Unit = { media ->
+    private val mediaClickListener = ItemClickListener<Media> { media ->
         val uri = when (media) {
             is Movie -> "android-app://com.ilyeong.flickora/detail_fragment?movieId=${media.id}"
             is TvSeries -> "android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${media.id}"
@@ -55,12 +56,8 @@ internal class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         findNavController().navigate(request)
     }
 
-    private val posterDescriptionClickListener: (Media) -> Unit = { media ->
-        mediaClickListener(media)
-    }
-
     private val trendHeaderAdapter = HeaderAdapter()
-    private val posterDescriptionAdapter = PosterDescriptionAdapter(posterDescriptionClickListener)
+    private val posterDescriptionAdapter = PosterDescriptionAdapter(mediaClickListener)
 
     private val searchHeaderAdapter = HeaderAdapter()
     private val searchAdapter = PosterRatioPagingAdapter(mediaClickListener)

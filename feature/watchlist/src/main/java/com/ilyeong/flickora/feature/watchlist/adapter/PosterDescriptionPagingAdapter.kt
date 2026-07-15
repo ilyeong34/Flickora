@@ -4,10 +4,11 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.common.diffutil.MediaDiffUtil
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.core.ui.common.viewholder.PosterDescriptionViewHolder
 
 internal class PosterDescriptionPagingAdapter(
-    private val itemClickListener: (Media) -> Unit
+    private val itemClickListener: ItemClickListener<Media>
 ) : PagingDataAdapter<Media, PosterDescriptionViewHolder>(MediaDiffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,

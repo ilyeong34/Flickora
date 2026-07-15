@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.home.databinding.ItemMediaRankingPosterBinding
 
 internal class PosterRankingViewHolder private constructor(
@@ -15,7 +16,7 @@ internal class PosterRankingViewHolder private constructor(
     fun bind(
         media: Media,
         rank: String,
-        onItemClick: (Media) -> Unit
+        itemClickListener: ItemClickListener<Media>
     ) {
         binding.poster.ivPoster.load(media.posterPath) {
             crossfade(true)
@@ -27,7 +28,7 @@ internal class PosterRankingViewHolder private constructor(
         binding.tvRank.text = rank
 
         binding.root.setOnClickListener {
-            onItemClick(media)
+            itemClickListener.onItemClick(media)
         }
     }
 

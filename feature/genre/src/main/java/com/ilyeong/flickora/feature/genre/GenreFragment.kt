@@ -34,9 +34,9 @@ internal class GenreFragment : BaseFragment<FragmentGenreBinding>() {
 
     private val genreId: GenreFragmentArgs by navArgs()
 
-    private val genreMovieAdapter = PosterRatioPagingAdapter { movieId ->
+    private val genreMovieAdapter = PosterRatioPagingAdapter { media ->
         val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?movieId=${movieId}".toUri())
+            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?movieId=${media.id}".toUri())
             .build()
 
         findNavController().navigate(request)

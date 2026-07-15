@@ -4,9 +4,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.common.diffutil.MediaDiffUtil
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.home.viewholder.PosterFullViewHolder
 
-internal class PosterFullAdapter(private val itemClickListener: (Media) -> Unit) :
+internal class PosterFullAdapter(private val itemClickListener: ItemClickListener<Media>) :
     ListAdapter<Media, PosterFullViewHolder>(MediaDiffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
