@@ -13,30 +13,12 @@ object PosterFixedItemDecoration : ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        val position = parent.getChildAdapterPosition(view)
-        val itemCount = state.itemCount
-        val resources = parent.context.resources
-
-        val smallPadding =
-            resources.getDimensionPixelOffset(R.dimen.flickora_padding_small)
-        val largePadding =
-            resources.getDimensionPixelOffset(R.dimen.flickora_padding_large)
+        val smallPadding = parent.context.resources
+            .getDimensionPixelOffset(R.dimen.flickora_padding_small)
 
         outRect.top = smallPadding
         outRect.bottom = smallPadding
         outRect.left = smallPadding
         outRect.right = smallPadding
-
-        when (position) {
-            0 -> {
-                outRect.left = largePadding
-                outRect.right = smallPadding
-            }
-
-            itemCount - 1 -> {
-                outRect.left = smallPadding
-                outRect.right = largePadding
-            }
-        }
     }
 }

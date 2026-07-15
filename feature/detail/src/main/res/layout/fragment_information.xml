@@ -49,8 +49,10 @@
             android:id="@+id/rv_movie_cast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="horizontal"
             android:layout_marginBottom="@dimen/flickora_padding_large"
+            android:paddingHorizontal="@dimen/flickora_padding_medium"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_movie_cast" />
 
@@ -77,8 +79,10 @@
             android:id="@+id/rv_movie_genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="horizontal"
             android:layout_marginBottom="@dimen/flickora_padding_large"
+            android:paddingHorizontal="@dimen/flickora_padding_medium"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_media_genre_chip" />
 
