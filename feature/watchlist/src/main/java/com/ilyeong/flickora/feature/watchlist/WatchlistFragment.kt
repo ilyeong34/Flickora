@@ -16,6 +16,7 @@ import com.ilyeong.flickora.core.model.Movie
 import com.ilyeong.flickora.core.model.TvSeries
 import com.ilyeong.flickora.core.ui.common.decoration.PosterDescriptionItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.watchlist.adapter.HeaderAdapter
 import com.ilyeong.flickora.feature.watchlist.adapter.PosterDescriptionPagingAdapter
 import com.ilyeong.flickora.feature.watchlist.databinding.FragmentWatchlistBinding
@@ -30,11 +31,17 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
 
     private val viewModel: WatchlistViewModel by viewModels()
 
-    private val watchlistItemClickListener: (Media) -> Unit = { media ->
-        when (media) {
-            is Movie -> navigateToMovieDetail(media.id)
-            is TvSeries -> navigateToTvDetail(media.id)
+    private val watchlistItemClickListener = ItemClickListener<Media> { media ->
+        val uri = when (media) {
+            is Movie -> "android-app://com.ilyeong.flickora/detail_fragment?movieId=${media.id}"
+            is TvSeries -> "android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${media.id}"
         }
+
+        val request = NavDeepLinkRequest.Builder
+            .fromUri(uri.toUri())
+            .build()
+
+        findNavController().navigate(request)
     }
 
     private val headerAdapter = HeaderAdapter { mediaType ->
@@ -43,22 +50,6 @@ internal class WatchlistFragment : BaseFragment<FragmentWatchlistBinding>() {
     private val watchlistAdapter = PosterDescriptionPagingAdapter(watchlistItemClickListener)
 
     private val watchlistAdapterWithHeader = ConcatAdapter(headerAdapter, watchlistAdapter)
-
-    private fun navigateToMovieDetail(movieId: Int) {
-        val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?movieId=${movieId}".toUri())
-            .build()
-
-        findNavController().navigate(request)
-    }
-
-    private fun navigateToTvDetail(tvSeriesId: Int) {
-        val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
-            .build()
-
-        findNavController().navigate(request)
-    }
 
     private var shouldRefresh = true
 

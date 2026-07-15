@@ -11,6 +11,7 @@ import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.detail.adapter.PosterFixedAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentRecommendedBinding
 import com.ilyeong.flickora.feature.detail.model.MovieDetailUiState
@@ -22,7 +23,7 @@ internal class MovieRecommendedFragment : BaseFragment<FragmentRecommendedBindin
 
     private val viewModel: MovieDetailViewModel by viewModels({ requireParentFragment() })
 
-    private val itemClickListener: (Media) -> Unit = { media ->
+    private val itemClickListener = ItemClickListener<Media> { media ->
         val movieId = media.id
         val action = MovieDetailFragmentDirections.actionDetailFragmentToDetailFragment(movieId)
         findNavController().navigate(action)

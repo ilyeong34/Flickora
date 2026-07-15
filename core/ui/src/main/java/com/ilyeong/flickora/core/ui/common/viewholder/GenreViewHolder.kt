@@ -11,7 +11,7 @@ class GenreViewHolder private constructor(
     private val binding: ItemMediaGenreChipBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(genre: Genre, itemClickListener: ItemClickListener?) {
+    fun bind(genre: Genre, itemClickListener: ItemClickListener<Int>?) {
         binding.chipGenre.text = genre.name
 
         binding.root.setOnClickListener {

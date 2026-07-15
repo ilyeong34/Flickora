@@ -7,7 +7,7 @@ import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.detail.viewholder.TvSeasonDropdownViewHolder
 
 internal class HeaderAdapter(
-    private val itemClickListener: ItemClickListener
+    private val itemClickListener: ItemClickListener<Int>
 ) : Adapter<TvSeasonDropdownViewHolder>() {
     private var seasonList: List<TvSeason> = emptyList()
     private var selectedSeason: TvSeason? = null

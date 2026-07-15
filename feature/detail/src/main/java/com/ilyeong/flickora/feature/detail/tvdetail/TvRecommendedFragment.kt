@@ -13,6 +13,7 @@ import com.ilyeong.flickora.core.model.Media
 import com.ilyeong.flickora.core.ui.R
 import com.ilyeong.flickora.core.ui.common.decoration.PosterFixedItemDecoration
 import com.ilyeong.flickora.core.ui.common.fragment.BaseFragment
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.feature.detail.adapter.PosterFixedAdapter
 import com.ilyeong.flickora.feature.detail.databinding.FragmentTvRecommendedBinding
 import com.ilyeong.flickora.feature.detail.model.TvDetailUiState
@@ -25,7 +26,7 @@ internal class TvRecommendedFragment : BaseFragment<FragmentTvRecommendedBinding
 
     private val viewModel: TvDetailViewModel by viewModels({ requireParentFragment() })
 
-    private val itemClickListener: (Media) -> Unit = { media ->
+    private val itemClickListener = ItemClickListener<Media> { media ->
         val tvSeriesId = media.id
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${tvSeriesId}".toUri())

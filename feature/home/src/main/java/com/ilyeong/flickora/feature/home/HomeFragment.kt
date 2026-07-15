@@ -48,30 +48,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private val movieClickListener = ItemClickListener { movieId ->
-        val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?movieId=${movieId}".toUri())
-            .build()
-
-        findNavController().navigate(request)
-    }
-
-    private val tvSeriesClickListener = ItemClickListener { tvSeriesId ->
-        val request = NavDeepLinkRequest.Builder
-            .fromUri("android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${tvSeriesId}".toUri())
-            .build()
-
-        findNavController().navigate(request)
-    }
-
-    private val mediaClickListener: (Media) -> Unit = { media ->
-        when (media) {
-            is Movie -> movieClickListener.onItemClick(media.id)
-            is TvSeries -> tvSeriesClickListener.onItemClick(media.id)
+    private val mediaClickListener = ItemClickListener<Media> { media ->
+        val uri = when (media) {
+            is Movie -> "android-app://com.ilyeong.flickora/detail_fragment?movieId=${media.id}"
+            is TvSeries -> "android-app://com.ilyeong.flickora/detail_fragment?tvSeriesId=${media.id}"
         }
+
+        val request = NavDeepLinkRequest.Builder
+            .fromUri(uri.toUri())
+            .build()
+
+        findNavController().navigate(request)
     }
 
-    private val genreClickListener = ItemClickListener { genreId ->
+    private val genreClickListener = ItemClickListener<Int> { genreId ->
         val request = NavDeepLinkRequest.Builder
             .fromUri("android-app://com.ilyeong.flickora/genre_fragment?genreId=${genreId}".toUri())
             .build()

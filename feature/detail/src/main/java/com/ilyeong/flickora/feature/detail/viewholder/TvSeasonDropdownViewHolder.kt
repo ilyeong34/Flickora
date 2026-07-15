@@ -16,7 +16,7 @@ internal class TvSeasonDropdownViewHolder private constructor(
     fun bind(
         seasonList: List<TvSeason>,
         selectedSeason: TvSeason?,
-        itemClickListener: ItemClickListener
+        itemClickListener: ItemClickListener<Int>
     ) {
         binding.actvSeason.setAdapter(
             ArrayAdapter(

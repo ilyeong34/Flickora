@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
 import com.ilyeong.flickora.core.model.Media
+import com.ilyeong.flickora.core.ui.common.listener.ItemClickListener
 import com.ilyeong.flickora.core.ui.databinding.ItemMediaPosterDescriptionBinding
 
 class PosterDescriptionViewHolder private constructor(
@@ -14,7 +15,7 @@ class PosterDescriptionViewHolder private constructor(
 
     fun bind(
         media: Media,
-        onItemClick: (Media) -> Unit
+        itemClickListener: ItemClickListener<Media>
     ) {
         binding.posterDefault.ivPoster.load(media.posterPath) {
             crossfade(true)
@@ -31,7 +32,7 @@ class PosterDescriptionViewHolder private constructor(
         binding.tvDescription.text = media.overview
 
         binding.root.setOnClickListener {
-            onItemClick(media)
+            itemClickListener.onItemClick(media)
         }
     }
 
